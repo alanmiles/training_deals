@@ -33,19 +33,29 @@ describe "UserPages" do
       it { should_not have_link('delete') }
 
       describe "as an admin user" do
-        let(:admin)   { FactoryGirl.create(:admin) }
+        let(:admin)     { FactoryGirl.create(:admin) }
         before do
           sign_in admin
           visit users_path
         end
 
-        it { should have_link('delete', href: user_path(User.first)) }
+        it { should have_link('delete', href: user_path(user)) }
+        it { should_not have_link('delete', href: user_path(admin)) }
+        
         it "should be able to delete another user" do
           expect do
-            click_link('delete', match: :first)
+            click_link('delete', href: user_path(user))
           end.to change(User, :count).by(-1)
         end
-        it { should_not have_link('delete', href: user_path(admin)) }
+        
+        describe "self-deletion is forbidden" do
+           before do
+            click_link "Sign out"
+            sign_in admin, no_capybara: true
+            delete user_path(admin)
+          end                 
+          specify { expect(response).to redirect_to(root_url) }
+        end
       end
     end
   end
@@ -94,13 +104,34 @@ describe "UserPages" do
 
       describe "after saving the user" do
         before { click_button submit }
-        let(:user) { User.find_by(email: 'user@example.com') }
-
+        let(:user)        { User.find_by(email: 'user@example.com') }
+        
         it { should have_link('Sign out') }
         it { should have_title(user.name) }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_selector('div.alert.alert-success', text: 'Welcome') } 
       end
     end
+  end
+
+  describe "prevent a signed-in user from creating another new user record" do
+
+    let(:signed_user) { FactoryGirl.create(:user) }
+    let(:params) do
+      { user: { name: "Second User", email: "second@example.com",
+        password: "foobar", password_confirmation: "foobar" } }
+    end
+    before { sign_in signed_user, no_capybara: true }
+
+    describe "by attempting to access the User#new page" do
+      before { get new_user_path }
+      specify { expect(response).to redirect_to(root_url) }
+    end
+
+    describe "by calling the CREATE action directly" do
+      before { post users_path(params) }
+      specify { expect(response).to redirect_to(root_url) }
+    end
+
   end
 
   describe "edit" do
@@ -139,5 +170,19 @@ describe "UserPages" do
       specify { expect(user.reload.name).to eq new_name }
       specify { expect(user.reload.email).to eq new_email }
     end
+
+    describe "forbidden attributes" do
+      let(:params) do
+        { user: { admin: true, password: user.password,
+                  password_confirmation: user.password } }
+      end
+      
+      before do
+        sign_in user, no_capybara: true
+        patch user_path(user), params
+      end
+
+      specify { expect(user.reload).not_to be_admin }
+    end          
   end
 end
