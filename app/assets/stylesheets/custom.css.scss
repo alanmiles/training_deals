@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2.5em;
   letter-spacing: -2px;
   margin-bottom: 30px;
   text-align: center;
@@ -69,15 +69,15 @@ p {
 #logo {
   float: left;
   margin-right: 10px;
-  font-size: 1.7em;
-  color: white;
-  text-transform: uppercase;
+  font-size: 1.6em;
+  color: #1378b1;
+  /* text-transform: uppercase; */
   letter-spacing: -1px;
   padding-top: 9px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 1;
   &:hover {
-    color: white;
+    color: #233d87;
     text-decoration: none;
   } 
 }
