@@ -44,6 +44,20 @@ describe "Authentication" do
         it { should_not have_link('Settings',   href: edit_user_path(user)) }
       end
   	end
+
+    describe "as admin user" do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before { sign_in(admin) }
+
+      it { should have_title("Admin menu") }
+      it { should have_link('Framework', href: "#") }
+      it { should have_link('Users', href: "#") }
+      it { should have_link('Vendors', href: "#") }
+      it { should have_link('Feedback', href: "#") }
+      it { should have_link('Billing', href: "#") }
+      it { should have_link('Text editor', href: "#") }
+      it { should have_link('Sign out',   href: signout_path) }
+    end
   end
 
   describe "authorization" do
@@ -125,7 +139,18 @@ describe "Authentication" do
 
       describe "submitting a DELETE request to the User#destroy action" do
         before { delete user_path(user) }
-        specify { expect(response).to redirect_to(root_url) }
+        specify do 
+          expect(response).to redirect_to(root_url)
+          expect(flash[:notice]).to eq("Only hrOOMPH administrators can do this.")
+        end
+      end
+
+      describe "trying to access the Admin menu" do
+        before { get admin_menu_path }
+        specify do
+          expect(response).to redirect_to(root_url)
+          expect(flash[:notice]).to eq("You are not an authorized administrator.")
+        end
       end
     end
   end

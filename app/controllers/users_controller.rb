@@ -74,8 +74,9 @@ class UsersController < ApplicationController
     end
 
     def admin_user
+      flash[:notice] = "Only hrOOMPH administrators can do this."
       redirect_to(root_url) unless current_user.admin?
-    end
+    end 
 
     def duplicate_user
       if signed_in?
