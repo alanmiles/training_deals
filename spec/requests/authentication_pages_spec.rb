@@ -9,6 +9,7 @@ describe "Authentication" do
 
   	it { should have_content('Sign in') }
   	it { should have_title('Sign in') }
+    it { should_not have_selector('span#user-id') }
   end
 
   describe "signin" do
@@ -19,6 +20,7 @@ describe "Authentication" do
 
   		it { should have_title('Sign in') }
       it { should have_error_message('Invalid') }
+      it { should_not have_selector('span#user-id') }
 
   		describe "after visiting another page" do
   			before { click_link "Home" }
@@ -31,7 +33,8 @@ describe "Authentication" do
   		before { sign_in(user) }
 
   		it { should have_title(user.name) }
-      it { should have_link('Users',      href: users_path) }
+      it { should_not have_link('Users',      href: users_path) }
+      it { should have_selector('span#user-id', text: user.name) }
   		it { should have_link('Profile',		href: user_path(user)) }
       it { should have_link('Settings',   href: edit_user_path(user)) }
   		it { should have_link('Sign out',		href: signout_path) }
@@ -42,6 +45,7 @@ describe "Authentication" do
         it { should have_link('Sign in') }
         it { should_not have_link('Profile',    href: user_path(user)) }
         it { should_not have_link('Settings',   href: edit_user_path(user)) }
+        it { should_not have_selector('span#user-id') }
       end
   	end
 
@@ -50,12 +54,13 @@ describe "Authentication" do
       before { sign_in(admin) }
 
       it { should have_title("Admin menu") }
-      it { should have_link('Framework', href: "#") }
+      it { should have_link('Framework', href: framework_path) }
       it { should have_link('Users', href: "#") }
       it { should have_link('Vendors', href: "#") }
       it { should have_link('Feedback', href: "#") }
       it { should have_link('Billing', href: "#") }
       it { should have_link('Text editor', href: "#") }
+      it { should have_selector('span#user-id', text: admin.name) }
       it { should have_link('Sign out',   href: signout_path) }
     end
   end
