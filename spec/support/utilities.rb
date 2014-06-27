@@ -32,3 +32,15 @@ Rspec::Matchers.define :have_error_message do |message|
 		expect(page).to have_selector('div.alert.alert-error', text: message)
 	end
 end
+
+def non_admin_illegal_get(title)
+	specify { expect(response.body).not_to match(full_title(title)) }
+	specify { expect(response).to redirect_to(root_url) }
+end
+
+def not_administrator
+	specify do
+		expect(response).to redirect_to(root_url)
+    	expect(flash[:notice]).to eq("You are not an authorized administrator.")
+    end
+end

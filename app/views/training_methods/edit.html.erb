@@ -1,0 +1,16 @@
+<% provide(:title, 'Edit training method') %>
+<h1>Edit training method</h1>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@method) do |f| %>
+
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Confirm", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Cancel", training_methods_path %>
+</div>

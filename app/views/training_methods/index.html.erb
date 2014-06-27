@@ -1,0 +1,17 @@
+<% provide(:title, 'Training methods') %>
+<h1>Training methods</h1>
+ 
+<ul class="lists">
+	<% @methods.each do |m| %>
+		<li>
+			<%= m.description %>
+			| <%= link_to "edit", edit_training_method_path(m) %>
+			| <%= link_to "delete", m, method: :delete,
+					data: { confirm: "Are you sure?" } %>
+		</li>
+	<% end %>
+</ul>
+<div class="navigator">
+    <%= link_to "<- Framework menu", framework_path %> 
+	| <%= link_to "Add a method ->", new_training_method_path %>
+</div>

@@ -126,7 +126,7 @@ describe "UserPages" do
       before { get new_user_path }
       specify { expect(response).to redirect_to(root_url) }
     end
-
+ 
     describe "by calling the CREATE action directly" do
       before { post users_path(params) }
       specify { expect(response).to redirect_to(root_url) }

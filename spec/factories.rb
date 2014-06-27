@@ -9,4 +9,12 @@ FactoryGirl.define do
 			admin true
 		end
 	end
+
+	factory :training_method do
+		description "On-line"
+	end
+
+	factory :duration do
+		time_unit 	"minute"
+	end
 end
