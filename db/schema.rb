@@ -11,15 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140626110906) do
+ActiveRecord::Schema.define(version: 20140628125945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "content_lengths", force: true do |t|
+    t.string   "description"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "content_lengths", ["description"], name: "index_content_lengths_on_description", using: :btree
 
   create_table "durations", force: true do |t|
     t.string   "time_unit"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   add_index "durations", ["time_unit"], name: "index_durations_on_time_unit", using: :btree
@@ -28,6 +38,7 @@ ActiveRecord::Schema.define(version: 20140626110906) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   add_index "training_methods", ["description"], name: "index_training_methods_on_description", using: :btree

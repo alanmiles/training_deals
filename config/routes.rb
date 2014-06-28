@@ -2,8 +2,15 @@ TrainingDeals::Application.routes.draw do
   
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  resources :training_methods
-  resources :durations
+  resources :training_methods do
+    collection { post :sort }
+  end
+  resources :durations do
+    collection { post :sort }
+  end
+  resources :content_lengths do
+    collection { post :sort }
+  end
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'
   match '/signin',          to: 'sessions#new',             via: 'get'

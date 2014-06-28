@@ -1,17 +1,18 @@
-<% provide(:title, 'Duration units') %>
-<h1>Duration units</h1>
+<% provide(:title, 'Time periods') %>
+<h1>Time periods</h1>
  
-<ul class="lists">
-	<% @durations.each do |d| %>
-		<li>
-			<%= d.time_unit %>
-			| <%= link_to "edit", edit_duration_path(d) %>
-			| <%= link_to "delete", d, method: :delete,
+<ul id="durations" class="lists" data-update-url="<%= sort_durations_url %>">
+	<% @durations.each do |duration| %>
+		<%= content_tag_for :li, duration do %>
+			<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+			<%= duration.time_unit %>
+			| <%= link_to "edit", edit_duration_path(duration) %>
+			| <%= link_to "delete", duration, method: :delete,
 					data: { confirm: "Are you sure?" } %>
-		</li>
+		<% end %>
 	<% end %>
 </ul>
 <div class="navigator">
     <%= link_to "<- Framework menu", framework_path %> 
-	| <%= link_to "Add a duration unit ->", new_duration_path %>
+	| <%= link_to "Add a time period ->", new_duration_path %>
 </div>

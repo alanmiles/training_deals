@@ -3,7 +3,7 @@ class DurationsController < ApplicationController
   before_action :not_admin
   
   def index
-  	@durations = Duration.all.order('created_at')
+  	@durations = Duration.order("position")
   end
 
   def new
@@ -38,6 +38,15 @@ class DurationsController < ApplicationController
     @duration = Duration.find(params[:id]).destroy
     flash[:success] = "'#{@duration.time_unit}' deleted"
     redirect_to durations_path
+  end
+
+  def sort
+    params[:duration].each_with_index do |id, index|
+      duration = Duration.find(id)
+      duration.update_attribute(:position, index) if duration
+      #Duration.update_all({position: index+1}, {id: id})
+    end
+    render nothing: true
   end
 
   private

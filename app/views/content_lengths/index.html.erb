@@ -1,0 +1,18 @@
+<% provide(:title, 'Content lengths') %>
+<h1>Content lengths</h1>
+ 
+<ul id="lengths" class="lists" data-update-url="<%= sort_content_lengths_url %>">
+	<% @lengths.each do |lng| %>
+		<%= content_tag_for :li, lng do %>
+			<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+			<%= lng.description %>
+			| <%= link_to "edit", edit_content_length_path(lng) %>
+			| <%= link_to "delete", lng, method: :delete,
+					data: { confirm: "Are you sure?" } %>
+		<% end %>
+	<% end %>
+</ul>
+<div class="navigator">
+    <%= link_to "<- Framework menu", framework_path %> 
+	| <%= link_to "Add a content length ->", new_content_length_path %>
+</div>

@@ -17,4 +17,8 @@ FactoryGirl.define do
 	factory :duration do
 		time_unit 	"minute"
 	end
+
+	factory :content_length do
+		description "Module"
+	end
 end

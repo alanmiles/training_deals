@@ -1,14 +1,15 @@
 <% provide(:title, 'Training methods') %>
 <h1>Training methods</h1>
  
-<ul class="lists">
-	<% @methods.each do |m| %>
-		<li>
-			<%= m.description %>
-			| <%= link_to "edit", edit_training_method_path(m) %>
-			| <%= link_to "delete", m, method: :delete,
+<ul id="methods" class="lists" data-update-url="<%= sort_training_methods_url %>">
+	<% @methods.each do |method| %>
+		<%= content_tag_for :li, method do %>
+			<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+			<%= method.description %>
+			| <%= link_to "edit", edit_training_method_path(method) %>
+			| <%= link_to "delete", method, method: :delete,
 					data: { confirm: "Are you sure?" } %>
-		</li>
+		<% end %>
 	<% end %>
 </ul>
 <div class="navigator">

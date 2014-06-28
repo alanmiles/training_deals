@@ -1,5 +1,5 @@
 jQuery ($) ->
-	$('#methods').sortable(
+	$('#lengths').sortable(
 		axis: 'y'
 		handle: '.glyphicon-sort'
 		update: ->

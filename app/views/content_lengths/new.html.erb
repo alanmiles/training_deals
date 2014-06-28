@@ -1,9 +1,9 @@
-<% provide(:title, 'New time period') %>
-<h1>New time period</h1>
+<% provide(:title, 'New content length') %>
+<h1>New content length</h1>
 
 <div class="row">
 	<div class="span6 offset3">
-		<%= form_for(@duration) do |f| %>
+		<%= form_for(@length) do |f| %>
 
 		 	<%= render 'fields', f: f %>
 
@@ -12,5 +12,5 @@
 	</div>
 </div> 
 <div class="navigator">
-	<%= link_to "<- All time periods", durations_path %>
+	<%= link_to "<- All content lengths", content_lengths_path %>
 </div>

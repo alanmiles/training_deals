@@ -1,8 +1,14 @@
-description
-Training course
-Book
-On-line course
-Audio-visual material
-Conference
-Seminar
-Mentoring
+description;position
+Training course;1
+Book;2
+On-line course;3
+Audio-visual material;4
+Conference;5
+Seminar;6
+Lecture;7
+Event / Activity;8
+Tutoring;9
+Mentoring;10
+Apprenticeship;11
+Internship;12
+On-job training;13
