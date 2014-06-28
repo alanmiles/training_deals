@@ -1,0 +1,16 @@
+<% provide(:title, 'Edit duration unit') %>
+<h1>Edit duration unit</h1>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@duration) do |f| %>
+
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Confirm", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Cancel changes", durations_path %>
+</div>
