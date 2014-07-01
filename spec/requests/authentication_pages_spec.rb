@@ -58,10 +58,12 @@ describe "Authentication" do
       it { should have_link('Users', href: "#") }
       it { should have_link('Vendors', href: "#") }
       it { should have_link('Feedback', href: "#") }
+      it { should have_link('Site activity', href: "#") }
       it { should have_link('Billing', href: "#") }
       it { should have_link('Text editor', href: "#") }
       it { should have_selector('span#user-id', text: admin.name) }
       it { should have_link('Sign out',   href: signout_path) }
+      it { should have_link('Switch to user interface ->', href: "#") }
     end
   end
 

@@ -1,0 +1,16 @@
+<% provide(:title, 'New genre') %>
+<h1>New genre</h1>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@genre) do |f| %>
+
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Create", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- All genres", genres_path %>
+</div>

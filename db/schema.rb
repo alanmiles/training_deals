@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140628125945) do
+ActiveRecord::Schema.define(version: 20140630093438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,17 @@ ActiveRecord::Schema.define(version: 20140628125945) do
   end
 
   add_index "durations", ["time_unit"], name: "index_durations_on_time_unit", using: :btree
+
+  create_table "genres", force: true do |t|
+    t.string   "description"
+    t.integer  "position"
+    t.integer  "created_by",  default: 1
+    t.integer  "status",      default: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "genres", ["description"], name: "index_genres_on_description", using: :btree
 
   create_table "training_methods", force: true do |t|
     t.string   "description"

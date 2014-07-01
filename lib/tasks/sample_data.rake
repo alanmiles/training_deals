@@ -6,6 +6,7 @@ namespace :db do
 		make_training_methods
 		make_durations
 		make_content_lengths
+		make_genres
 
 	end	
 end
@@ -45,6 +46,12 @@ end
 def make_content_lengths
 	@path = 'public/data/content_lengths.csv'
 	@model = ContentLength
+	task_details(@path, @model)
+end
+
+def make_genres
+	@path = 'public/data/genres.csv'
+	@model = Genre
 	task_details(@path, @model)
 end
 

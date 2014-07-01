@@ -30,4 +30,9 @@ describe TrainingMethod do
   	
   	it { should_not be_valid }
   end
+
+  describe "auto-calculation of position field" do
+    before { @training_method.save }
+    specify { expect(@training_method.position).not_to be_blank }
+  end
 end

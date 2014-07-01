@@ -21,4 +21,9 @@ FactoryGirl.define do
 	factory :content_length do
 		description "Module"
 	end
+
+	factory :genre do
+		description "College"
+		status 2
+	end
 end

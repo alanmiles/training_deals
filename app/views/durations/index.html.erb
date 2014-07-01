@@ -1,18 +1,23 @@
 <% provide(:title, 'Time periods') %>
 <h1>Time periods</h1>
- 
-<ul id="durations" class="lists" data-update-url="<%= sort_durations_url %>">
-	<% @durations.each do |duration| %>
-		<%= content_tag_for :li, duration do %>
-			<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
-			<%= duration.time_unit %>
-			| <%= link_to "edit", edit_duration_path(duration) %>
-			| <%= link_to "delete", duration, method: :delete,
-					data: { confirm: "Are you sure?" } %>
+
+<aside class="span3">
+</aside>
+
+<div class="span8">
+	<ul id="durations" class="lists" data-update-url="<%= sort_durations_url %>">
+		<% @durations.each do |duration| %>
+			<%= content_tag_for :li, duration do %>
+				<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+				<%= duration.time_unit %>
+				| <%= link_to "edit", edit_duration_path(duration) %>
+				| <%= link_to "delete", duration, method: :delete,
+						data: { confirm: "Are you sure?" } %>
+			<% end %>
 		<% end %>
-	<% end %>
-</ul>
-<div class="navigator">
-    <%= link_to "<- Framework menu", framework_path %> 
-	| <%= link_to "Add a time period ->", new_duration_path %>
+	</ul>
+	<div class="navigator">
+	    <%= link_to "<- Framework menu", framework_path %> 
+		| <%= link_to "Add a time period ->", new_duration_path %>
+	</div>
 </div>

@@ -18,6 +18,8 @@ describe "AdminPages" do
 	    	it { should have_link('Training methods', href: training_methods_path) }
 	    	it { should have_link('Time periods', href: durations_path) }
         it { should have_link('Content lengths', href: content_lengths_path) }
+        it { should have_link('Genres / categories / topics', href: genres_path) }
+        it { should have_link('Return to main admin menu', href: root_path) }
   		end
 
       describe "working with TrainingMethods" do
@@ -345,6 +347,10 @@ describe "AdminPages" do
   				before { get framework_path }
           non_admin_illegal_get(@title)
 	    	end
+
+
+
+
 
         describe "in the TrainingMethod controller" do
 
@@ -835,7 +841,7 @@ describe "AdminPages" do
 
               describe "should redirect to root" do
 
-                before { patch duration_path(existing_unit), params }
+               before { patch duration_path(existing_unit), params }
                 not_administrator
               end
             end

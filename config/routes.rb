@@ -11,6 +11,9 @@ TrainingDeals::Application.routes.draw do
   resources :content_lengths do
     collection { post :sort }
   end
+  resources :genres do
+    collection { post :sort }
+  end
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'
   match '/signin',          to: 'sessions#new',             via: 'get'

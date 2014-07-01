@@ -3,7 +3,7 @@ class TrainingMethodsController < ApplicationController
   before_action :not_admin
 
   def index
-  	@methods = TrainingMethod.order('position')
+  	@methods = TrainingMethod.order('position') 
   end
 
   def new
