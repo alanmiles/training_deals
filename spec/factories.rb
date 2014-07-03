@@ -26,4 +26,10 @@ FactoryGirl.define do
 		description "College"
 		status 2
 	end
+
+	factory :category do
+		sequence(:description)		{ |n| "Category_#{n}" }
+		status 2
+		genre
+	end
 end

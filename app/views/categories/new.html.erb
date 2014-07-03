@@ -1,0 +1,18 @@
+<% provide(:title, "#{@genre.description}: new category") %>
+<span class="two-line-header"><h1>New category</h1></span>
+<h2><%= "for the '#{@genre.description}' genre" %></h2>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for [@genre, @category] do |f| %>
+
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Create", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- All categories for '#{@genre.description}'", 
+					genre_categories_path(@genre) %>
+</div>

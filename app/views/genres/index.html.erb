@@ -2,28 +2,28 @@
 <h1>Genres</h1>
 
 <div class="row">
-<aside class="span3">
-	
-		<%= render 'index_notes' %>
-	
-</aside>
+	<aside class="span3">
+		
+			<%= render 'index_notes' %>
+		
+	</aside>
 
-<div class="span8">
-	<ul id="genres" class="lists" data-update-url="<%= sort_genres_url %>">
-		<% @genres.each do |genre| %>
-			<%= content_tag_for :li, genre do %>
-				<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
-				<%= genre.description %>
-				| <%= link_to ' 0 categories ', '#' %>
-				| <%= link_to "edit", edit_genre_path(genre) %>
-				| <%= link_to "delete", genre, method: :delete,
-						data: { confirm: "Are you sure?" } %>
+	<div class="span8">
+		<ul id="genres" class="lists" data-update-url="<%= sort_genres_url %>">
+			<% @genres.each do |genre| %>
+				<%= content_tag_for :li, genre do %>
+					<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+					<%= genre.description %>
+					| <%= link_to "  #{pluralize(genre.categories.count, 'category')} -> ", genre_categories_url(genre.id) %>
+					| <%= link_to "edit", edit_genre_path(genre) %>
+					| <%= link_to "delete", genre, method: :delete,
+							data: { confirm: "Are you sure?" } %>
+				<% end %>
 			<% end %>
-		<% end %>
-	</ul>
-	<div class="navigator">
-	    <%= link_to "<- Framework menu", framework_path %> 
-		| <%= link_to "Add a genre ->", new_genre_path %>
+		</ul>
+		<div class="navigator">
+		    <%= link_to "<- Framework menu", framework_path %> 
+			| <%= link_to "Add a genre ->", new_genre_path %>
+		</div>
 	</div>
-</div>
 </div>

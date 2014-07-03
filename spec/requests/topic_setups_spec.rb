@@ -12,13 +12,14 @@ describe "TopicSetups" do
   		describe "working with Genres" do
 
         	describe "index" do
-          
+
 	          	let!(:genre_1) 	{ FactoryGirl.create(:genre, status: 1) }
-	          	let!(:genre_2)	{ FactoryGirl.create(:genre, description: "Not approved")}
-	          	let!(:genre_3)	{ FactoryGirl.create(:genre, description: "Rejected", status: 3)}
-	          	before do
-	           		visit genres_path 
-	        	end
+	          	let!(:genre_2)	{ FactoryGirl.create(:genre, description: "Not approved") }
+	          	let!(:genre_3)	{ FactoryGirl.create(:genre, description: "Rejected", status: 3) }
+	          	let!(:category_1)	{ FactoryGirl.create(:category, status: 1, genre: genre_1) }
+	          	#let!(:category_2)	{ FactoryGirl.create(:category, genre: genre_1) }
+
+	          	before { visit genres_path }
 
 	            it { should have_title('Genres') }
 	            it { should have_content('Genres') }
@@ -27,7 +28,7 @@ describe "TopicSetups" do
 	            it { should have_selector('li', text: genre_1.description) }
 	            it { should_not have_selector('li', text: genre_2.description) }
 	            it { should_not have_selector('li', text: genre_3.description) }
-	            it { should have_link('0 categories', '#')}
+	            it { should have_link('1 category ->', genre_categories_path(genre_1)) }
 	            it { should have_link('edit', href: edit_genre_path(genre_1)) }
 	            it { should have_link('delete', href: genre_path(genre_1)) }
 	            it { should have_link('Add a genre', href: new_genre_path) }
@@ -67,6 +68,7 @@ describe "TopicSetups" do
 		              	before { click_button 'Create' }
 
 		              	it { should have_title('Genres') }
+		              	it { should have_link('0 categories ->', genre_categories_path(Genre.last)) }
 		              	it { should have_selector('li', text: 'Leisure') }   #because approved
 		              	it { should have_selector('div.alert.alert-success', text: "'Leisure' added") } 
 		            end
@@ -117,6 +119,148 @@ describe "TopicSetups" do
 		              	it { should have_title('Genres')}
 		              	it { should have_selector('div.alert.alert-success', text: "Updated to '#{new_description}'") }
 		              	specify { expect(changed_genre.reload.description).to eq new_description }
+		            end
+
+		            describe "unsuccessfully" do
+
+		            	before do
+		                	fill_in "Description",    with: "  "
+		                	click_button "Confirm"
+		              	end
+
+		              	it { should have_title('Edit genre')}
+		              	it { should have_content('error') }
+		              	specify { expect(changed_genre.reload.description).to eq old_description }
+
+		            end
+		        end
+		    end
+        end
+
+        describe "working with Categories" do
+
+        	let!(:genre_1) 	{ FactoryGirl.create(:genre, status: 1) }
+
+        	describe "Index" do
+        		
+        		let!(:approved_category) {FactoryGirl.create(:category, genre: genre_1, status: 1) }
+				let!(:unapproved_category) {FactoryGirl.create(:category, genre: genre_1, status: 2) }
+				let!(:rejected_category) {FactoryGirl.create(:category, genre: genre_1, status: 3) }
+
+				before { visit genre_categories_path(genre_1) }
+
+	            it { should have_title("Categories: #{genre_1.description}") }
+	            it { should have_content("Categories") }
+	            it { should have_selector('h2', text: "for the '#{genre_1.description}' genre")}
+	            it { should have_link("<- All genres", href: genres_path) }
+	            it { should have_selector('li', text: approved_category.description) }
+	            it { should_not have_selector('li', text: unapproved_category.description) }
+	            it { should_not have_selector('li', text: rejected_category.description) }
+	            it { should have_link("0 topics ->", href: "#")}
+	            it { should have_link('edit', href: edit_category_path(approved_category)) }
+	            it { should have_link('delete', href: category_path(approved_category)) }
+	            it { should have_link('Add a category', href: new_genre_category_path(genre_1)) }
+		        
+		        pending "No delete link when the category has been used by providers."
+		        pending "Include link to Categories awaiting approval."
+
+		        it "should be able to delete a category" do
+		            expect do
+		              click_link('delete', href: category_path(approved_category))
+		            end.to change(genre_1.categories, :count).by(-1)
+		            expect(page).to have_title("Categories: #{genre_1.description}")
+		            expect(page).not_to have_selector('li', text: approved_category.description)
+		        end
+        	end
+
+        	describe "visit the New page" do
+
+		        before { visit new_genre_category_path(genre_1) }
+
+		        it { should have_title("#{genre_1.description}: new category") }
+		        it { should have_content("New category") }
+		        it { should have_selector('h2', text: "for the '#{genre_1.description}' genre")}
+		        it { should_not have_field("Status") }
+		        it { should have_link("<- All categories for '#{genre_1.description}'", 
+		        							href: genre_categories_path(genre_1)) }
+
+		        describe "then create a new approved Category successfully" do
+		            before do
+		               	fill_in "Description",    with: "New Category"
+		            end
+
+		            it "should create a Category" do
+		              	expect { click_button "Create" }.to change(genre_1.categories, :count).by(1) 
+		            end
+
+		            describe "and redirect to the Category index for this Genre" do
+		              	before { click_button 'Create' }
+
+		              	it { should have_title("Categories: #{genre_1.description}") }
+		              	it { should have_selector('li', text: 'New Category') }   #because approved
+		              	it { should have_selector('div.alert.alert-success', 
+		              		     text: "'New Category' added to the '#{genre_1.description}' genre") } 
+		            end
+		        end
+
+		        describe "then fail to create a new Category successfully" do
+		            
+		            it "should not create a Category" do    #no parameters
+		              	expect { click_button 'Create' }.not_to change(genre_1.categories, :count)
+		            end
+
+		            describe "continue to show the New page with an error message" do
+
+		              	before do
+		                	fill_in "Description",    with: "   "
+		                	click_button "Create"
+		              	end
+		            
+		              	it { should have_title("#{genre_1.description}: new category") }
+		              	it { should have_content('error') }
+		            end
+		        end
+		    end
+
+		    describe "visit the Edit page" do
+
+		        let!(:changed_category) { FactoryGirl.create(:category, genre: genre_1, status: 1) }
+		        before do
+		           	visit edit_category_path(changed_category) 
+		        end
+
+	          	it { should have_title("#{genre_1.description}: edit category") }
+	          	it { should have_content('Edit category') }
+	          	it { should have_selector('h2', text: "for the '#{genre_1.description}' genre")}
+	          	it { should_not have_field('Approved') }
+	          	it { should have_link('<- Cancel', href: genre_categories_path(genre_1)) }
+
+		        describe "and update the Category" do
+
+		            let(:old_description) { changed_category.description }
+		            describe "succesfully" do
+
+		              	let(:new_description)   { "Updated description" }
+		              	before do
+		                	fill_in "Description",    with: new_description
+		                	click_button "Confirm"
+		              	end
+
+		              	it { should have_title("Categories: #{genre_1.description}") }
+		              	it { should have_selector('div.alert.alert-success', text: "Updated to '#{new_description}'") }
+		              	specify { expect(changed_category.reload.description).to eq new_description }
+		            end
+
+		            describe "unsuccessfully" do
+
+		            	before do
+		                	fill_in "Description",    with: "  "
+		                	click_button "Confirm"
+		              	end
+
+		              	it { should have_title("#{genre_1.description}: edit category")}
+		              	it { should have_content('error') }
+		              	specify { expect(changed_category.reload.description).to eq old_description }
 		            end
 		        end
 		    end

@@ -72,4 +72,24 @@ describe Genre do
     end
   end
 
+  describe "Category associations" do
+    before { @genre.save }
+    let!(:category_1) do
+      FactoryGirl.create(:category, genre: @genre, status: 1)
+    end
+
+    it "should have a new associated category" do
+      expect(@genre.categories.count).to eq 1
+    end
+
+    it "should destroy associated categories" do
+      categories = @genre.categories.to_a
+      @genre.destroy
+      expect(categories).not_to be_empty
+      categories.each do |category|
+        expect(Category.where(id: category.id)).to be_empty
+      end
+    end
+  end
+
 end

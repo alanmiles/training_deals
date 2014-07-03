@@ -1,0 +1,17 @@
+<% provide(:title, "#{@genre.description}: edit category") %>
+<span class="two-line-header"><h1>Edit category</h1></span>
+<h2><%= "for the '#{@genre.description}' genre" %></h2>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for (@category) do |f| %>
+
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Confirm", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Cancel", genre_categories_path(@genre) %>
+</div>

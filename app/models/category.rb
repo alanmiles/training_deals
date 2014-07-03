@@ -1,13 +1,11 @@
-class Genre < ActiveRecord::Base
+class Category < ActiveRecord::Base
 
-	acts_as_list
-	
-	has_many :categories,			dependent: :destroy
+	belongs_to :genre
 
-	accepts_nested_attributes_for 	:categories
+	validates :genre,				presence: true
 
 	validates :description, 		presence: true, length: { maximum: 25 },
-									uniqueness: { case_sensitive: false }
+									uniqueness: { case_sensitive: false, scope: :genre_id }
 
 	validates :created_by,			presence: true, 
 									numericality: { greater_than: 0, 
