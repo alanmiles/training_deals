@@ -11,7 +11,7 @@
 			<% @categories.each do |category| %>
 				<li>
 					<%= category.description %>
-					| <%= link_to ' 0 topics -> ', '#' %>
+					| <%= link_to "  #{pluralize(category.topics.count, 'topic')} -> ", category_topics_url(category.id) %>
 					| <%= link_to "edit", edit_category_path(category) %>
 					| <%= link_to "delete", category, method: :delete,
 							data: { confirm: "Are you sure?" } %>

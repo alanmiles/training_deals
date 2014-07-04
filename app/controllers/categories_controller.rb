@@ -1,5 +1,7 @@
 class CategoriesController < ApplicationController
   
+  before_action :not_admin
+
   def index
   	@genre = Genre.find(params[:genre_id])
   	@categories = @genre.categories.where("categories.status = ?", 1).order('categories.description') 

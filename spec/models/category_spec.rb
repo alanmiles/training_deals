@@ -37,7 +37,7 @@ describe Category do
   	it { should_not be_valid }
   end
 
-  describe "auto-calculation of Genre default fields" do
+  describe "auto-calculation of Category default fields" do
     before { @category.save }
     specify { expect(@category.created_by).to eq 1 }
     specify { expect(@category.status).to eq 2 }
@@ -93,5 +93,25 @@ describe Category do
   	end
 
   	it { should be_valid }
+  end
+
+  describe "Topic associations" do
+    before { @category.save }
+    let!(:topic_1) do
+      FactoryGirl.create(:topic, category: @category, status: 1)
+    end
+
+    it "should have a new associated topic" do
+      expect(@category.topics.count).to eq 1
+    end
+
+    it "should destroy associated topics" do
+      topics = @category.topics.to_a
+      @category.destroy
+      expect(topics).not_to be_empty
+      topics.each do |topic|
+        expect(Topic.where(id: topic.id)).to be_empty
+      end
+    end
   end
 end

@@ -7,6 +7,8 @@ namespace :db do
 		make_durations
 		make_content_lengths
 		make_genres
+		make_categories
+		make_topics
 
 	end	
 end
@@ -53,6 +55,40 @@ def make_genres
 	@path = 'public/data/genres.csv'
 	@model = Genre
 	task_details(@path, @model)
+end
+
+def make_categories
+	lines = File.new('public/data/genre_categories.csv').readlines
+	header = lines.shift.strip
+	keys = header.split(';')
+	lines.each do |line|
+		values = line.strip.split(';')
+		genre = values[0]
+		cat = values[1]
+		creator = values[2]
+		approved = values[3]
+		@genre = Genre.find_by(description: genre)
+		@attr = { description: cat, genre_id: @genre.id, created_by: creator, status: approved }
+		Category.create(@attr)
+	end
+end
+
+def make_topics
+	lines = File.new('public/data/genre_category_topics.csv').readlines
+	header = lines.shift.strip
+	keys = header.split(';')
+	lines.each do |line|
+		values = line.strip.split(';')
+		genre = values[0]
+		cat = values[1]
+		topic = values[2]
+		creator = values[3]
+		approved = values[4]
+		@genre = Genre.find_by(description: genre)
+		@category = Category.find_by(description: cat, genre_id: @genre.id)
+		@attr = { description: topic, category_id: @category.id, created_by: creator, status: approved }
+		Topic.create(@attr)
+	end
 end
 
 def task_details(path, model)

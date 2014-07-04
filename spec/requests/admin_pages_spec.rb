@@ -348,10 +348,6 @@ describe "AdminPages" do
           non_admin_illegal_get(@title)
 	    	end
 
-
-
-
-
         describe "in the TrainingMethod controller" do
 
           let!(:existing_method) { FactoryGirl.create(:training_method) }

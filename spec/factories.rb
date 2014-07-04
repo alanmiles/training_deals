@@ -32,4 +32,10 @@ FactoryGirl.define do
 		status 2
 		genre
 	end
+
+	factory :topic do
+		sequence(:description)			{ |n| "Topic_#{n}" }
+		status 2
+		category
+	end
 end

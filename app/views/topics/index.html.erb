@@ -1,0 +1,26 @@
+<% provide(:title, "Topics: #{@category.description}") %>
+<span class="two-line-header"><h1>Topics</h1></span>
+<h2><%= "for the '#{@category.description}' category (#{@genre.description} genre)" %></h2>
+
+<div class="row">
+	<aside class="span3">
+	</aside>
+
+	<div class="span8">
+		<ul class="lists"> 
+			<% @topics.each do |topic| %>
+				<li>
+					<%= topic.description %>
+					| <%= link_to "edit", edit_topic_path(topic) %>
+					| <%= link_to "delete", topic, method: :delete,
+							data: { confirm: "Are you sure?" } %>
+				</li>
+			<% end %>
+		</ul>
+		<div class="navigator">
+		    <%= link_to "<- All categories", genre_categories_path(@genre) %> 
+			| <%= link_to "Add a topic ->", new_category_topic_path(@category) %>
+		</div>
+	</div>
+</div>
+

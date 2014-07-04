@@ -1,6 +1,9 @@
 class Category < ActiveRecord::Base
 
-	belongs_to :genre
+	belongs_to 	:genre
+	has_many	:topics, 			dependent: :destroy
+
+	accepts_nested_attributes_for 	:topics
 
 	validates :genre,				presence: true
 

@@ -15,6 +15,9 @@ TrainingDeals::Application.routes.draw do
     collection { post :sort }
     resources :categories, shallow: true 
   end
+  resources :categories do
+    resources :topics, shallow: true
+  end
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'
   match '/signin',          to: 'sessions#new',             via: 'get'
