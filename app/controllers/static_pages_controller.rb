@@ -17,8 +17,12 @@ class StaticPagesController < ApplicationController
 
   	private
   		def home_open
-  			if signed_in? && current_user.admin?
-    				redirect_to admin_menu_path 
+  			if signed_in?
+          if current_user.admin?
+    				redirect_to admin_menu_path
+          else
+            redirect_to current_user
+          end
     		end
     	end
 

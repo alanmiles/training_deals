@@ -1,11 +1,38 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-	<aside class="span4">
+	<aside class="span3">
 		<section>			
 			<h1>
 				<%= gravatar_for @user, size: 40 %>
 				<%= @user.name %>
 			</h1>
 		</section>
+		<section>
+			<div class="well sidebar-nav">
+				<ul class="nav nav-list">
+					<li class="nav-header">Looking for training</li>
+					<li><%= link_to "Your location", "#" %></li>
+					<li><%= link_to "Instant search", "#" %></li>
+					<li><%= link_to "Saved search set-up", "#" %></li>
+					<li><%= link_to "Saved search results", "#" %></li>
+					<li><%= link_to "hrOOMPH deals", "#" %></li>
+					<li><%= link_to "Training history", "#" %></li>
+					<li><%= link_to "Your reviews", "#" %></li>
+					<li><%= link_to "Favourites", "#" %></li>
+					<li><%= link_to "Find trainers", "#" %></li>
+					<li class="nav-header">Offering training</li>
+					<li><%= link_to "Add a business", "#" %></li>
+					<li><%= link_to "Manage your business", "#" %></li>
+				</ul>
+
+			</div>
+
+
+		</section>
 	</aside>
+	<% if @user.admin? %>
+		<div class="navigator">
+		    <%= link_to "Switch to admin interface ->", admin_menu_path %> 
+		</div>
+	<% end %>
 </div>

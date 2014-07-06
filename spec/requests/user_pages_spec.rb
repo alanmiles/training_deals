@@ -61,12 +61,31 @@ describe "UserPages" do
   end
 
 
-  describe "profile page" do
+  describe "user home page" do
   	let(:user) { FactoryGirl.create(:user) }
   	before { visit user_path(user) }
 
   	it { should have_content(user.name) }
   	it { should have_title(user.name) }
+    it { should_not have_link("Switch to admin interface ->", admin_menu_path) }
+    it { should have_link("Your location", href: "#") }
+    it { should have_link("Instant search", href: "#") }
+    it { should have_link("Saved search set-up", href: "#") }
+    it { should have_link("Saved search results", href: "#") }
+    it { should have_link("hrOOMPH deals", href: "#") }
+    it { should have_link("Training history", href: "#") }
+    it { should have_link("Your reviews", href: "#") }
+    it { should have_link("Favourites", href: "#") }
+    it { should have_link("Find trainers", href: "#") }
+    it { should have_link("Add a business", href: "#") }
+    it { should have_link("Manage your business", href: "#") }
+
+    describe "when user is a hrOOMPH admin" do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before { visit user_path(admin) }
+
+      it { should have_link("Switch to admin interface ->", href: admin_menu_path) }
+    end
   end
 
   describe "signup page" do

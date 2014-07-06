@@ -63,7 +63,7 @@ describe "Authentication" do
       it { should have_link('Text editor', href: "#") }
       it { should have_selector('span#user-id', text: admin.name) }
       it { should have_link('Sign out',   href: signout_path) }
-      it { should have_link('Switch to user interface ->', href: "#") }
+      it { should have_link('Switch to user interface ->', href: user_path(admin)) }
     end
   end
 
