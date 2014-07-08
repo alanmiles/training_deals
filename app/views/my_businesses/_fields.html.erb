@@ -1,0 +1,62 @@
+<%= render 'shared/error_messages', object: f.object %>
+<div class="entry-page">
+	<div class="entry">
+		<div class="add-this"><%= f.label :name %></div>
+		<div class="box-fill"><%= f.text_field :name %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :country %></div>
+		<div class="box-fill"><%= f.text_field :country %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :postalcode, "Post/zip code" %></div>
+		<div class="box-fill"><%= f.text_field :postalcode %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :region, "State/county" %></div>
+		<div class="box-fill"><%= f.text_field :region %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :city, "Town/city" %></div>
+		<div class="box-fill"><%= f.text_field :city %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :street, "Street address" %></div>
+		<div class="box-fill"><%= f.text_field :street %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :phone %></div>
+		<div class="box-fill"><%= f.text_field :phone %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :alt_phone, "Alternative phone" %></div>
+		<div class="box-fill"><%= f.text_field :alt_phone %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :email %></div>
+		<div class="box-fill"><%= f.text_field :email %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :description %><small><i>(Max 140 characters)</i></small></div>
+		<div class="box-fill"><%= f.text_area :description %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :logo %></div>
+		<div class="box-fill"><%= f.text_field :logo %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :image_1 %></div>
+		<div class="box-fill"><%= f.text_field :image_1 %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :image_2 %></div>
+		<div class="box-fill"><%= f.text_field :image_2 %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :hidden, "De-activate" %></div>
+		<div class="box-fill"><%= f.check_box :hidden %></div>
+	</div>
+	<div class="entry">
+		<%= f.hidden_field :created_by %>
+	</div>
+</div>

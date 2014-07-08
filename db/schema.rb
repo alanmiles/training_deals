@@ -11,10 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140703224544) do
+ActiveRecord::Schema.define(version: 20140706111617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "businesses", force: true do |t|
+    t.string   "name"
+    t.string   "country"
+    t.string   "postalcode"
+    t.string   "region"
+    t.string   "city"
+    t.string   "street"
+    t.string   "phone"
+    t.string   "alt_phone"
+    t.string   "email"
+    t.string   "description"
+    t.string   "logo"
+    t.string   "image_1"
+    t.string   "image_2"
+    t.boolean  "hidden",      default: false
+    t.integer  "created_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "businesses", ["country", "city", "name"], name: "index_businesses_on_country_and_city_and_name", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "description"

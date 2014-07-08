@@ -1,0 +1,16 @@
+<% provide(:title, "Edit business") %>
+<h1>Edit business</h1>
+
+<div class="row">
+	<div class="span8 offset3">
+		<%= form_for @business, url: { controller: 'my_businesses', action: 'update' } do |f| %>
+
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Confirm", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Cancel", my_businesses_path %>
+</div>

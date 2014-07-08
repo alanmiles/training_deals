@@ -77,8 +77,8 @@ describe "UserPages" do
     it { should have_link("Your reviews", href: "#") }
     it { should have_link("Favourites", href: "#") }
     it { should have_link("Find trainers", href: "#") }
-    it { should have_link("Add a business", href: "#") }
-    it { should have_link("Manage your business", href: "#") }
+    it { should have_link("Add a business", href: new_my_business_path) }
+    it { should have_link("Manage your business", href: my_businesses_path) }
 
     describe "when user is a hrOOMPH admin" do
       let(:admin) { FactoryGirl.create(:admin) }

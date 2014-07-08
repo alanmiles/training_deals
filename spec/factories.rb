@@ -38,4 +38,15 @@ FactoryGirl.define do
 		status 2
 		category
 	end
+
+	factory :business do
+		sequence(:name)					{ |n| "Business_#{n}" }
+		country		"United Kingdom"
+		postalcode	"M6 5GS"
+		city 		"Salford"
+		sequence(:street)				{ |n| "#{n} Pembroke Street" }
+		sequence(:email)				{ |n| "business_#{n}@example.com" }
+		description	"Simply the best"
+		created_by 1		
+	end			
 end

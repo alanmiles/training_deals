@@ -18,6 +18,7 @@ TrainingDeals::Application.routes.draw do
   resources :categories do
     resources :topics, shallow: true
   end
+  resources :my_businesses
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'
   match '/signin',          to: 'sessions#new',             via: 'get'

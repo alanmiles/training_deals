@@ -1,0 +1,29 @@
+<% provide(:title, "#{@business.name}, #{@business.city}") %>
+<h1>Business details</h1>
+
+<div class="row">
+	<aside class="span3">
+	</aside>
+	<div class="present span8">
+		<div class="paragraph">
+			<div class="subject">Business name:</div>
+			<div class="detail"><%= @business.name %></div>
+		</div>
+		<div class="paragraph">
+			<div class="subject"><em>Address:</em></div>
+			<div class="detail"> <%= @business.full_address %></div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Phone:</div>
+			<div class="detail"><%= @business.all_phones_vendor %></div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Email:</div>
+			<div class="detail"><%= @business.email %></div>
+		</div>
+	</div>
+</div>
+<div class="navigator">
+	<%= link_to "<- My business list", my_businesses_path %>
+	| <%= link_to "Update ->", edit_my_business_path(@business) %>
+</div>

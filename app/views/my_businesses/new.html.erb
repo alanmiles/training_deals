@@ -1,0 +1,14 @@
+<% provide(:title, 'Add business') %>
+<h1>Add my business</h1>
+
+<div class="row">
+	<div class="span8 offset3">
+		<%= form_for(@business, url: my_businesses_path) do |f| %>
+			<%= render 'fields', f: f %>
+			<%= f.submit "Create", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- My business list", my_businesses_path %> 
+</div>

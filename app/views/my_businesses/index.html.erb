@@ -1,0 +1,27 @@
+<% provide(:title, "My businesses") %>
+<h1>My businesses</h1>
+<div class="row">
+	<aside class="span3">
+	</aside>
+
+	<div class="span8">
+		<ul class="lists"> 
+			<% @businesses.each do |business| %>
+				<li>
+					<strong><%= business.name %></strong>,
+					<%= business.city %>,
+					<%= business.country %>
+					| <%= link_to "details", my_business_path(business) %>
+					| <%= link_to "delete", { controller: 'my_businesses',
+											action: 'destroy', 
+											id: business.id }, 
+											{ method: :delete,
+											data: { confirm: "Are you sure?" } } %>
+				</li>
+			<% end %>
+		</ul>
+		<div class="navigator">
+			<%= link_to "Add a business ->", new_my_business_path %>
+		</div>
+	</div>
+</div>

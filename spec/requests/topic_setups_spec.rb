@@ -17,7 +17,6 @@ describe "TopicSetups" do
 	          	let!(:genre_2)	{ FactoryGirl.create(:genre, description: "Not approved") }
 	          	let!(:genre_3)	{ FactoryGirl.create(:genre, description: "Rejected", status: 3) }
 	          	let!(:category_1)	{ FactoryGirl.create(:category, status: 1, genre: genre_1) }
-	          	#let!(:category_2)	{ FactoryGirl.create(:category, genre: genre_1) }
 
 	          	before { visit genres_path }
 
