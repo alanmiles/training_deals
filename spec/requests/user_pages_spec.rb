@@ -72,7 +72,7 @@ describe "UserPages" do
     it { should have_link("Instant search", href: "#") }
     it { should have_link("Saved search set-up", href: "#") }
     it { should have_link("Saved search results", href: "#") }
-    it { should have_link("hrOOMPH deals", href: "#") }
+    
     it { should have_link("Training history", href: "#") }
     it { should have_link("Your reviews", href: "#") }
     it { should have_link("Favourites", href: "#") }

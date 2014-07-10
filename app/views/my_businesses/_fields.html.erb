@@ -6,7 +6,8 @@
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :country %></div>
-		<div class="box-fill"><%= f.text_field :country %></div>
+		<div class="box-fill"><%= f.country_select :country, priority_countries, 
+			required: true %></div>
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :postalcode, "Post/zip code" %></div>

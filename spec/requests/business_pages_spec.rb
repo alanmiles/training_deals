@@ -50,7 +50,7 @@ describe "BusinessPages" do
 		        describe "then create a new Business successfully" do
 		            before do
 		               	fill_in "Name",    			with: "Business X"
-		               	fill_in "Country",			with: "United Kingdom"
+		               	select "Sweden",	from: "Country"
 		               	fill_in "Town/city",		with: "London"
 		               	fill_in "Street address",	with: "1 Old Street"
 		               	fill_in "Phone",			with: "071-456-7890"
@@ -121,6 +121,12 @@ describe "BusinessPages" do
 		              	describe "revealing contents of the Show page" do
 		              		it { should have_selector('h1', text: "Business details") }
 		              		it { should have_selector('div.present', text: "#{new_name}") }
+		              		it { should have_selector('div.detail', text: new_name) }
+		              		it { should have_selector('div.detail', 
+		              			text: "#{changed_business.street}, #{changed_business.city}, #{changed_business.postalcode}, #{changed_business.country}") }
+		              		it { should have_selector('div.detail', "Not shown") }    #i.e. no phone
+		              		it { should have_selector('div.detail', "#{changed_business.email}") }
+		              		it { should have_selector('div.detail', "#{changed_business.description}") }
 		              	end
 		            end
 
