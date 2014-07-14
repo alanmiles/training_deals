@@ -7,7 +7,7 @@
 	<div class="span8">
 		<ul class="lists"> 
 			<% @businesses.each do |business| %>
-				<li>
+				<%= content_tag_for :li, business do %>
 					<strong><%= business.name %></strong>,
 					<%= business.city %>,
 					<%= business.country %>
@@ -17,7 +17,16 @@
 											id: business.id }, 
 											{ method: :delete,
 											data: { confirm: "Are you sure?" } } %>
-				</li>
+					<span class="check-notice">
+						<% if business.inactive? %>
+						 	* Inactive business
+						<% elsif business.latitude.nil? %>
+						 	* Check details
+						<% elsif business.hide_address? %>
+							* Address hidden from users
+						<% end %>
+					</span>
+				<% end %>
 			<% end %>
 		</ul>
 		<div class="navigator">

@@ -41,12 +41,15 @@ FactoryGirl.define do
 
 	factory :business do
 		sequence(:name)					{ |n| "Business_#{n}" }
-		country		"United Kingdom"
-		postalcode	"M6 5GS"
-		city 		"Salford"
-		sequence(:street)				{ |n| "#{n} Pembroke Street" }
-		sequence(:email)				{ |n| "business_#{n}@example.com" }
 		description	"Simply the best"
+		street_address "23 Pembroke Street"
+		city "Salford"
+		state "Greater Manchester"
+		postal_code "M6 5GS"
+		country "United Kingdom"
+		latitude 53.482616
+		longitude -2.296699
+		sequence(:email)				{ |n| "business_#{n}@example.com" }
 		created_by 1		
 	end			
 end

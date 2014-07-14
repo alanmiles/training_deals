@@ -16,7 +16,7 @@ class MyBusinessesController < ApplicationController
   def create
   	@business = Business.new(business_params)
   	create_owner
-    capitals_city
+    #capitals_locality
     if @business.save
       flash[:success] = "Successfully added. Please check all the details carefully."
       redirect_to my_business_path(@business)
@@ -31,7 +31,7 @@ class MyBusinessesController < ApplicationController
 
   def update
   	@business = Business.find(params[:id])
-    capitals_city
+    #inactive_date if @business.inactive_changed?
     if @business.update_attributes(business_params)
       flash[:success] = "'#{@business.name}' updated"
       redirect_to my_business_path(@business)
@@ -49,20 +49,27 @@ class MyBusinessesController < ApplicationController
   private
 
   	def business_params
-			params.require(:business).permit(:name, :country, :postalcode, :region, :city, :street,
-											:phone, :alt_phone, :email, :description, :logo,
-											:image_1, :image_2, :hidden)
+			params.require(:business).permit(:name, :description, :street_address, 
+        :city, :state, :postal_code, :country, :latitude, :longitude, :hide_address, 
+        :phone, :alt_phone, :email, :website, :logo, :image_1, :image_2, :inactive, :inactive_from)
 	end
 
 	def create_owner
 		@business.created_by = current_user.id
 	end
 
-  def capitals_city
-    @names = @business.city.split
-    @names.map!(&:capitalize)
-    @valid_name = @names.join(" ")
-    @business.city = @valid_name
-  end
+  #def inactive_date
+  #  if @business.inactive?
+  #    @business.inactive_from = Date.today
+  #  else
+  #    @business.inactive_from = nil
+  #  end
+  #end
+  #def capitals_locality
+  #  @names = @business.locality.split
+  #  @names.map!(&:capitalize)
+  #  @valid_name = @names.join(" ")
+  #  @business.locality = @valid_name
+  #end
 
 end

@@ -18,19 +18,24 @@ ActiveRecord::Schema.define(version: 20140706111617) do
 
   create_table "businesses", force: true do |t|
     t.string   "name"
-    t.string   "country"
-    t.string   "postalcode"
-    t.string   "region"
+    t.string   "description"
+    t.text     "street_address"
     t.string   "city"
-    t.string   "street"
+    t.string   "state"
+    t.string   "postal_code"
+    t.string   "country"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.boolean  "hide_address",   default: false
     t.string   "phone"
     t.string   "alt_phone"
     t.string   "email"
-    t.string   "description"
+    t.string   "website"
     t.string   "logo"
     t.string   "image_1"
     t.string   "image_2"
-    t.boolean  "hidden",      default: false
+    t.boolean  "inactive",       default: false
+    t.datetime "inactive_from"
     t.integer  "created_by"
     t.datetime "created_at"
     t.datetime "updated_at"

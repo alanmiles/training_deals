@@ -1,15 +1,17 @@
 class Business < ActiveRecord::Base
 
-	before_save						:capitalize_city
+	#before_save						:capitalize_locality
+	geocoded_by :full_address 
+	after_validation :geocode, :if => :check_address?
+	after_validation :inactive_date
 
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }
-
-	validates :country, 			presence: true, length: { maximum: 50 }
-	validates :postalcode, 			length: { maximum: 15 }
-	validates :region, 				length: { maximum: 50 }
-	validates :city, 				presence: true, length: { maximum: 25 }
-	validates :street, 				presence: true, length: { maximum: 255 }
+	validates :street_address, 		presence: true
+	#validates :latitude,			presence: true
+	#validates :longitude,			presence: true
+	validates :country, 			presence: true
+	validates :city,				presence: true
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, 				presence: true, format: { with: VALID_EMAIL_REGEX }
 
@@ -21,9 +23,9 @@ class Business < ActiveRecord::Base
 													only_integer: true }
 
 	def full_address
-		address = [self.street, self.city]
-		address.push(self.region) unless self.region.blank?
-		address.push(self.postalcode) unless self.postalcode.blank?
+		address = [self.street_address, self.city]
+		address.push(self.state) unless self.state.blank?
+		address.push(self.postal_code) unless self.postal_code.blank?
 		address.push(self.country)
 		address.join(", ")
 	end
@@ -39,14 +41,27 @@ class Business < ActiveRecord::Base
 			return "#{self.phone} / #{self.alt_phone}"
 		end
 	end
+
+	private
+
+		def check_address?
+			[street_address_changed?, city_changed?, state_changed?, postal_code_changed?, country_changed?].any?
+		end
+
+		def inactive_date
+		if inactive_changed?
+			if inactive?
+				self.inactive_from = Time.now
+			else
+				self.inactive_from = nil
+			end
+		end
+	end
+
+		
+
 end
 
-private
 
-	def capitalize_city
-		@names = self.city.split
-		@names.map!(&:capitalize)
-		@valid_name = @names.join(" ")
-		self.city = @valid_name
-	end
+
 

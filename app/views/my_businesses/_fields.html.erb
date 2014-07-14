@@ -5,25 +5,39 @@
 		<div class="box-fill"><%= f.text_field :name %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :country %></div>
-		<div class="box-fill"><%= f.country_select :country, priority_countries, 
-			required: true %></div>
+		<div class="add-this"><%= f.label :description %><small><i>(Max 140 characters)</i></small></div>
+		<div class="box-fill"><%= f.text_area :description %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :postalcode, "Post/zip code" %></div>
-		<div class="box-fill"><%= f.text_field :postalcode %></div>
-	</div>
-	<div class="entry">
-		<div class="add-this"><%= f.label :region, "State/county" %></div>
-		<div class="box-fill"><%= f.text_field :region %></div>
+		<div class="add-this"><%= f.label :street_address %></div>
+		<div class="box-fill"><%= f.text_area :street_address %></div>
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :city, "Town/city" %></div>
 		<div class="box-fill"><%= f.text_field :city %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :street, "Street address" %></div>
-		<div class="box-fill"><%= f.text_field :street %></div>
+		<div class="add-this"><%= f.label :state, "County/state" %></div>
+		<div class="box-fill"><%= f.text_field :state %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :postal_code, "Post/zip code" %></div>
+		<div class="box-fill"><%= f.text_field :postal_code %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :country %></div>
+		<div class="box-fill"><%= country_select(:business, :country, priority_countries) %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :hide_address %></div>
+		<div class="cbox-fill"><%= f.check_box :hide_address %></div>
+		<div class="cbox-info">
+			<% if @business.hide_address? %>
+				<%= hide_address_checked %>
+			<% else %>
+				<%= hide_address_unchecked %>
+			<% end %>
+		</div>
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :phone %></div>
@@ -38,10 +52,6 @@
 		<div class="box-fill"><%= f.text_field :email %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :description %><small><i>(Max 140 characters)</i></small></div>
-		<div class="box-fill"><%= f.text_area :description %></div>
-	</div>
-	<div class="entry">
 		<div class="add-this"><%= f.label :logo %></div>
 		<div class="box-fill"><%= f.text_field :logo %></div>
 	</div>
@@ -54,10 +64,26 @@
 		<div class="box-fill"><%= f.text_field :image_2 %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :hidden, "De-activate" %></div>
-		<div class="box-fill"><%= f.check_box :hidden %></div>
+		<div class="add-this"><%= f.label :website %></div>
+		<div class="box-fill"><%= f.text_field :website %></div>
 	</div>
+	<% unless params[:action] == 'new' %>
+		<div class="entry">
+			<div class="add-this"><%= f.label :inactive, "De-activate" %></div>
+			<div class="cbox-fill"><%= f.check_box :inactive %></div>
+			<div class="cbox-info">
+				<% if @business.inactive? %>
+					<%= inactive_checked %>
+				<% else %>
+					<%= inactive_unchecked %>
+				<% end %>
+			</div>
+		</div>
+	<% end %>
 	<div class="entry">
+		<%= f.hidden_field :latitude %>
+		<%= f.hidden_field :longitude %>
 		<%= f.hidden_field :created_by %>
+		<%= f.hidden_field :inactive_from %>
 	</div>
 </div>

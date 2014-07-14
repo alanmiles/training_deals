@@ -211,6 +211,11 @@ input {
   }
 }
 
+.check-notice {
+  color: crimson;
+  font-weight: bold;
+}
+
 
 /* entry pages */
 
@@ -226,10 +231,22 @@ input {
     width: 25%;
     padding-top: 5px;
   }
-  .box-fill {
+  .box-fill { 
     float: right; 
     display: inline-block; 
-    width: 75%
+    width: 75%;
+  }
+  .cbox-fill {
+    float: left; 
+    display: inline-block; 
+    width: 10%;
+  }
+  .cbox-info {
+    float: right; 
+    display: inline-block; 
+    width: 65%;
+    font-size: 0.8em;
+    color: $grayLight;
   }
 }
 

@@ -5,13 +5,37 @@
 	<aside class="span3">
 	</aside>
 	<div class="present span8">
+		<% if @business.inactive? %>
+			<div class="check-notice">You deactivated this business on 
+				<%= @business.inactive_from.strftime('%b %d, %Y') %>, 
+				so it can't be seen by other users.  If it's still inactive after 
+				6 months, HROOMPH will ask if you want the business to be 
+				deleted completely.
+
+			</div>
+		<% elsif @business.latitude.nil? %>
+			<div class="check-notice">Please check this address, which is not recognized by
+				<i>Google Earth</i>.  This means that your business will not show up when users
+				include a location check in their search.
+			</div>
+		<% end %>
 		<div class="paragraph">
 			<div class="subject">Business name:</div>
 			<div class="detail"><%= @business.name %></div>
 		</div>
 		<div class="paragraph">
+			<div class="subject">About us:</div>
+			<div class="detail"><%= @business.description %></div>
+		</div>
+		<div class="paragraph">
 			<div class="subject"><em>Address:</em></div>
-			<div class="detail"> <%= @business.full_address %></div>
+			<div class="detail"> <%= @business.full_address %>
+				<% unless @business.inactive? %>
+					<% if @business.hide_address? %>
+						<span class="check-notice"> - Hidden to users</span>
+					<% end %>
+				<% end %>
+			</div>
 		</div>
 		<div class="paragraph">
 			<div class="subject">Phone:</div>
@@ -21,11 +45,6 @@
 			<div class="subject">Email:</div>
 			<div class="detail"><%= @business.email %></div>
 		</div>
-		<div class="paragraph">
-			<div class="subject">About us:</div>
-			<div class="detail"><%= @business.description %></div>
-		</div>
-
 	</div>
 </div>
 <div class="navigator">

@@ -2,30 +2,36 @@ require 'spec_helper'
 
 describe Business do
 
+  before(:each) do
+    Business.any_instance.stub(:geocode).and_return([1,1]) 
+  end
+
   before do
   	@business = FactoryGirl.build(:business)
-
-    #@business = Business.new(name: "Biz", country: "United Kingdom", postalcode: "M6 5GS",
-  	#						region: "Lancashire", city: "Salford", street: "23 Pembroke Street",
-  	#						email: "biz@example.com", description: "Just a biz")
   end
 
   subject { @business }
 
   it { should respond_to(:name) }
-  it { should respond_to(:country) }
-  it { should respond_to(:postalcode) }
-  it { should respond_to(:region) }
+  it { should respond_to(:description) }
+  it { should respond_to(:street_address) }
   it { should respond_to(:city) }
-  it { should respond_to(:street) }
+  it { should respond_to(:state) }
+  it { should respond_to(:postal_code) }
+  it { should respond_to(:country) }
+  it { should respond_to(:latitude) }
+  it { should respond_to(:longitude) }
+  it { should respond_to(:hide_address) }
   it { should respond_to(:phone) }
   it { should respond_to(:alt_phone) }
   it { should respond_to(:email) }
-  it { should respond_to(:description) }
+  it { should respond_to(:website) }
   it { should respond_to(:logo) }
   it { should respond_to(:image_1) }
   it { should respond_to(:image_2) }
-  it { should respond_to(:hidden) }
+  it { should respond_to(:inactive) }
+  it { should respond_to(:inactive_from) }
+  it { should respond_to(:created_by) }
   it { should be_valid }
 
   describe "when name is not present" do
@@ -38,44 +44,19 @@ describe Business do
   	it { should_not be_valid }
   end
 
-  describe "when country is not present" do
-  	before { @business.country = " " }
-  	it { should_not be_valid }
-  end
-
-  describe "when country is too long" do
-  	before { @business.country = "a" * 51 }
-  	it { should_not be_valid }
-  end
-
-  describe "when postalcode is not present" do
-  	before { @business.postalcode = nil }
-  	it { should be_valid }
-  end
-
-  describe "when postalcode is too long" do
-  	before { @business.postalcode = "a" * 16 }
-  	it { should_not be_valid }
+  describe "when street_address is not present" do
+    before { @business.street_address = " " }
+    it { should_not be_valid }
   end
 
   describe "when city is not present" do
-  	before { @business.city = " " }
-  	it { should_not be_valid }
+    before { @business.city = " " }
+    it { should_not be_valid }
   end
 
-  describe "when city is too long" do
-  	before { @business.city = "a" * 26 }
-  	it { should_not be_valid }
-  end
-
-  describe "when street is not present" do
-  	before { @business.street = " " }
-  	it { should_not be_valid }
-  end
-
-  describe "when street is too long" do
-  	before { @business.street = "a" * 256 }
-  	it { should_not be_valid }
+  describe "when country is not present" do
+   before { @business.country = " " }
+   it { should_not be_valid }
   end
 
   describe "when email is not present" do
@@ -117,7 +98,6 @@ describe Business do
   describe "when business is a duplicate" do
   	before do
   		business_with_same_location = @business.dup 
-  		business_with_same_location.city = @business.city.upcase
   		business_with_same_location.save
   	end
   	
