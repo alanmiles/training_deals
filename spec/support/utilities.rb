@@ -44,3 +44,26 @@ def not_administrator
     	expect(flash[:notice]).to eq("You are not an authorized administrator.")
     end
 end
+
+def inaccessible_without_signin
+	specify do
+		expect(response).to redirect_to(signin_url)
+		expect(flash[:notice]).to eq("Page not accessible. Please sign in or sign up.")
+	end
+end
+
+def forbidden_without_signin
+	specify do
+		expect(response).to redirect_to(root_url)
+    	expect(flash[:notice]).to eq("Action not permitted!")
+    end
+end
+
+def wrong_owner(user)
+	specify do
+		expect(response).to redirect_to user_path(user)
+    	expect(flash[:notice]).to eq("The page you requested doesn't belong to you!")
+    end
+end
+
+

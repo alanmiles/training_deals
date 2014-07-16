@@ -12,7 +12,7 @@ describe "BusinessPages" do
 	  	describe "signed in" do   
 	  
 	  		let(:user) { FactoryGirl.create(:user) }
-	  		before {sign_in user }
+	  		before { sign_in user }
 
 	    	describe "index" do
 
@@ -281,5 +281,282 @@ describe "BusinessPages" do
 		        end
 		    end
 	    end
+	end
+
+	describe "unauthorized access" do
+
+		let!(:user) { FactoryGirl.create(:user) }
+		let!(:second_user) { FactoryGirl.create(:user, name: "Second User", email: "seconduser@example.com") }
+		let!(:unauthorized_business) 	{ FactoryGirl.create(:business, created_by: user.id) }
+		let!(:second_user_business) 	{ FactoryGirl.create(:business, created_by: second_user.id) }
+
+		describe "not signed in" do
+
+			describe "Index" do
+				
+				describe "redirect to the signin page" do
+				
+					before { get my_businesses_path }
+					inaccessible_without_signin
+				end
+
+				describe "go to correct Index page after signing in" do
+
+					before do
+						visit my_businesses_path
+						valid_signin(second_user)
+					end
+					
+					specify do
+						expect(page).to have_title('My businesses')
+						expect(page).to have_selector('li', text: second_user_business.name)
+					end
+
+					describe "but don't go to this index page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in second_user
+						end	
+
+						specify { expect(page).not_to have_title('My businesses') }
+					end
+				end
+			end
+
+			describe "Show" do
+
+				before { get my_business_path(unauthorized_business) }
+				inaccessible_without_signin
+
+				describe "go to correct Show page after signing in" do
+
+					before do
+						visit my_business_path(unauthorized_business)
+						valid_signin(user)
+					end
+					
+					specify do
+						expect(page).to have_title("#{unauthorized_business.name}, #{unauthorized_business.city}")
+						expect(page).to have_content("#{unauthorized_business.full_address}")
+					end
+
+					describe "but don't go to this Show page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in user
+						end	
+
+						specify { expect(page).not_to have_title("#{unauthorized_business.name}, #{unauthorized_business.city}") }
+					end
+				end
+
+				describe "don't allow unauthorized users to view Show page" do
+
+					before do
+						visit my_business_path(unauthorized_business)
+						valid_signin(second_user)
+					end
+					
+					specify do
+						#expect(flash[:notice]).to eq("The page you requested doesn't belong to you.")
+						#NOTE: flash notice works perfectly in app but not in testing.
+						expect(page).to have_title("#{second_user.name}")
+					end
+
+				end
+			end
+
+			describe "Edit" do
+
+				before { get edit_my_business_path(unauthorized_business) }
+				inaccessible_without_signin
+
+				describe "go to correct Edit page after signing in" do
+
+					before do
+						visit edit_my_business_path(unauthorized_business)
+						valid_signin(user)
+					end
+					
+					specify { expect(page).to have_title("Edit business") }
+		
+
+					describe "but don't go to this Edit page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in user
+						end	
+
+						specify { expect(page).not_to have_title("Edit business") }
+					end
+				end
+
+				describe "don't allow unauthorized users to view Show page" do
+
+					before do
+						visit edit_my_business_path(unauthorized_business)
+						valid_signin(second_user)
+					end
+					
+					specify do
+						expect(page).to have_title("#{second_user.name}")
+						#flash[:error].should eq("The page you requested doesn't belong to you.")
+						#specific error message tested below.
+					end
+				end
+			end
+
+			describe "New" do
+
+				before { get new_my_business_path }
+				inaccessible_without_signin
+
+				describe "go to correct New page after signing in" do
+
+					before do
+						visit new_my_business_path
+						valid_signin(second_user)
+					end
+					
+					specify do
+						expect(page).to have_title('Add business')
+						expect(page).to have_selector("input#business_created_by[value=\"#{second_user.id}\"]")
+						# NOTE: Capybara set to handle hidden fields in spec_helper
+					end
+
+					describe "but don't go to this New page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in second_user
+						end	
+
+						specify { expect(page).not_to have_title('Add business') }
+					end
+				end
+			end
+
+			describe "attempting to manipulate the Business data" do
+	            
+            	describe "Create" do
+
+              		let(:params) do
+                		{ my_business: { name: "Newbiz",
+                						description: "Newbiz desc", 
+                						street_address: "23 Pembroke Street",
+                						city: "Salford",
+                						state: "Greater Manchester",
+                						country: "England",
+                						email: "newbiz@example.com" } }
+              		end
+              
+              		it "should not create a new Business" do
+                		expect do
+                  			post my_businesses_path(params)
+                		end.not_to change(Business, :count)
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { post my_businesses_path(params) }
+                		forbidden_without_signin
+              		end
+            	end
+
+            	describe "Update" do
+
+              		let(:new_business_name)  { "Changed business"}
+              		let(:params) do
+                		{ business: { name: new_business_name } }
+              		end
+              
+              		describe "should not modify the existing business" do
+                
+                		before { patch my_business_path(unauthorized_business), params } 
+                		specify { expect(unauthorized_business.reload.name).not_to eq new_business_name }
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { patch my_business_path(unauthorized_business), params }
+                		forbidden_without_signin
+              		end
+            	end
+
+            	describe "Destroy" do
+
+              		it "should not delete the existing Business" do
+                		expect do
+                  			delete my_business_path(unauthorized_business)
+                		end.not_to change(Business, :count)
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { delete my_business_path(unauthorized_business) }
+                		forbidden_without_signin
+                	end
+              	end
+          	end
+		end
+
+		describe "signed in but not as the owner of the specified business" do
+
+			before do
+				sign_in second_user, no_capybara: true
+			end
+
+			describe "Show page" do
+				
+				before { get my_business_path(unauthorized_business) }
+				specify do
+					expect(response).to redirect_to(user_path(second_user))
+			    	expect(flash[:error]).to eq("The page you requested doesn't belong to you!")
+			    end
+			end
+
+			describe "Edit page" do
+
+				before { get edit_my_business_path(unauthorized_business) }
+				specify do
+					expect(response).to redirect_to(user_path(second_user))
+			    	expect(flash[:error]).to eq("The page you requested doesn't belong to you!")
+			    end
+			end
+
+			describe "attempting to modify Business data" do
+
+				describe "Update" do
+
+					let(:params) do
+                		{ unauthorized_business: { name: "NewName" } }
+              		end
+              		before { patch my_business_path(unauthorized_business), params } 
+
+              		specify do
+						expect(response).to redirect_to(user_path(second_user))
+			    		expect(flash[:error]).to eq("Action not permitted!")
+			    	end
+				end
+
+				describe "Destroy" do
+
+					before { delete my_business_path(unauthorized_business) }
+
+					specify do
+						expect(response).to redirect_to(user_path(second_user))
+			    		expect(flash[:error]).to eq("Action not permitted!")
+			    	end
+				end
+
+			end
+		end
+	end
+
+	describe "authorized access as joint business administrator" do
+
 	end
 end
