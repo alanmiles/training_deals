@@ -29,7 +29,7 @@ describe "TopicSetups" do
 	            it { should_not have_selector('li', text: genre_3.description) }
 	            it { should have_link('1 category ->', genre_categories_path(genre_1)) }
 	            it { should have_link('edit', href: edit_genre_path(genre_1)) }
-	            it { should have_link('delete', href: genre_path(genre_1)) }
+	            it { should have_button('delete') }
 	            it { should have_link('Add a genre', href: new_genre_path) }
 		        
 		        pending "No test for sortable list yet."
@@ -38,7 +38,7 @@ describe "TopicSetups" do
 
 		        it "should be able to delete a genre" do
 		            expect do
-		              click_link('delete', href: genre_path(genre_1))
+		              click_button('delete')
 		            end.to change(Genre, :count).by(-1)
 		            expect(page).to have_title('Genres')
 		            expect(page).not_to have_selector('li', text: genre_1.description)
@@ -163,7 +163,7 @@ describe "TopicSetups" do
 		        pending "No delete link when the category has been used by providers."
 		        pending "Include link to Categories awaiting approval."
 
-		        it "should be able to delete a category" do
+		        it "can delete a category" do
 		            expect do
 		              click_link('delete', href: category_path(approved_category))
 		            end.to change(genre_1.categories, :count).by(-1)

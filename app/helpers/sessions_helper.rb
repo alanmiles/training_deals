@@ -39,4 +39,9 @@ module SessionsHelper
 	def store_location
 		session[:return_to] = request.url if request.get?
 	end
+
+	def valid_team_member?(business)
+		record = business.ownerships.find_by(user_id: current_user.id)
+		!record.nil?
+	end
 end

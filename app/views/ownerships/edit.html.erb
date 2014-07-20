@@ -1,0 +1,32 @@
+<% provide(:title, "Team member update") %> 
+<span class="two-line-header"><h1>Team member update</h1></span>
+<h2><%= "#{@business.name}, #{@business.city}" %></h2>
+
+<div class="row">
+	<div class="span8 offset3">
+		<%= form_for @ownership do |f| %>
+
+			<%= render 'shared/error_messages', object: f.object %>
+
+			<div class="paragraph">
+				<div class="subject">Name:</div>
+				<div class="detail"><%= @ownership.user.name %></div>
+			</div>
+			<div class="paragraph">
+				<div class="subject">Email:</div>
+				<div class="detail"><%= @ownership.user.email %></div>
+				<div class="explain">
+					Name and email change only if team members change them in their 
+					own HROOMPH settings.
+				</div>
+			</div>
+		 	
+		 	<%= render 'fields', f: f %>
+
+			<%= f.submit "Confirm", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Cancel", my_business_ownerships_path(@business) %>
+</div>

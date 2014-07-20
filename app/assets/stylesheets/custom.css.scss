@@ -3,6 +3,7 @@
 /* mixins, variables, etc */
 
 $grayMediumLight: #eaeaea;
+$grayMediumText: #757575;
 
 @mixin box_sizing {
   -mox-box-sizing: border-box;
@@ -114,7 +115,7 @@ footer {
 }
 
 
-/* sidebar */
+/* aside */
 
 aside {
   section {
@@ -140,23 +141,61 @@ aside {
       font-size: 1.2em;
       text-align: left;
       color: #000;
-    /*  font-weight: bold;
-      letter-spacing: -1px;
-      margin-bottom: 3px;
-      margin-top: 0px; */
     } 
   }
-  .explain {
-    font-size: 0.8em;
-    color: $grayLight;
-    background-color: ivory;
-    padding: 10px;
-    border: 1px dotted $grayLight;
-  }
+  
 }
 
 
+/* sidebar */
+
+.sidebar {
+  .explain {
+    font-size: 0.8em;
+    /* text-align: left; */
+    color: $grayMediumText;
+    background-color: ivory;
+    padding: 10px;
+    border: 1px dotted $grayLight;
+    p {
+      line-height: 1.5;
+      span {
+        display: block;
+        /* margin-bottom: 3px; */
+        line-height: 1.5;
+        color: grayMediumText;
+        word-spacing: -7.5px;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
 /* forms */
+
+form.button_to {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  div { display: inline; }
+  input[type=submit] {
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: caret;
+    background: none;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    /* text-decoration: underline; */
+    color: #0088cc;
+    vertical-align: top;
+    &:hover {
+      color: #005580;
+      text-decoration: underline;
+    }
+  }
+}
 
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
@@ -189,11 +228,12 @@ input {
   border-style: solid;
   border-width: thin;
   border-color: #3399FF #fff;
-  color: #3399FF;
+  color: #3399FF; 
 }
 
-
-/* Show page */
+.add-top-space {
+  margin-top: 15px;
+}
 
 .paragraph {
   clear: both;
@@ -207,9 +247,17 @@ input {
   .detail {
     float: right; 
     display: inline-block; 
-    width: 75%
+    width: 75%;
+  }
+  .explain {
+    padding: 25px 0;
+    /* display: inline-block; */
+    font-size: 0.8em;
+    color: $grayMediumText;
   }
 }
+
+
 
 .check-notice {
   color: crimson;
@@ -246,7 +294,7 @@ input {
     display: inline-block; 
     width: 65%;
     font-size: 0.8em;
-    color: $grayLight;
+    color: $grayMediumText;
   }
 }
 

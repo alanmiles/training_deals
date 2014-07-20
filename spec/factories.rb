@@ -51,5 +51,12 @@ FactoryGirl.define do
 		longitude -2.296699
 		sequence(:email)				{ |n| "business_#{n}@example.com" }
 		created_by 1		
+	end
+
+	factory :ownership do
+		business
+		user
+		email_address "person_1@example.com"		
+		created_by 1
 	end			
 end

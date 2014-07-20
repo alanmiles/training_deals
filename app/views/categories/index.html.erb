@@ -10,7 +10,7 @@
 		<ul class="lists"> 
 			<% @categories.each do |category| %>
 				<li>
-					<%= category.description %>
+					<%= category.description %> 
 					| <%= link_to "  #{pluralize(category.topics.count, 'topic')} -> ", category_topics_url(category.id) %>
 					| <%= link_to "edit", edit_category_path(category) %>
 					| <%= link_to "delete", category, method: :delete,

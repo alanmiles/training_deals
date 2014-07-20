@@ -1,0 +1,41 @@
+<% provide(:title, "Frontline team") %>
+<span class="two-line-header"><h1>Frontline team</h1></span>
+<h2><%= "for #{@business.name}, #{@business.city}" %></h2>
+
+<div class="row">
+	<div class="sidebar span3">
+		<%= render 'index_notes' %>
+	</div>
+
+	<div class="span8">
+		<ul id="ownerships" class="lists" 
+				data-update-url="<%= sort_my_business_ownerships_url(@business) %>"> 
+			<% @ownerships.each do |ownership| %>
+				<%= content_tag_for :li, ownership do %>
+					<% if @business.ownerships.count > 1 %>
+						<span class="jsonly glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+					<% end %>
+					<% if ownership.contactable? %>
+						<span class="contact glyphicon glyphicon-headphones"></span>&nbsp;&nbsp;
+					<% end %>
+					<%= ownership.user.name %> <i> <%= "<#{ownership.user.email}>" %></i>
+					<% if ownership.contactable %>
+						<% unless ownership.phone.blank? %>
+							<span class="mobile glyphicon glyphicon-phone"></span>
+							<%= ownership.phone %>
+						<% end %>
+					<% end %>
+					| <%= link_to "edit", edit_ownership_path(ownership) %>
+					<% if @business.ownerships.count > 1 %>
+						| <%= button_to "remove", ownership, method: :delete,
+							data: { confirm: "Are you sure?" } %>
+					<% end %>
+				<% end %>
+			<% end %>
+		</ul>
+		<div class="add-top-space navigator">
+		    <%= link_to "<- Business details", my_business_path(@business) %> 
+			| <%= link_to "Add someone else ->", new_my_business_ownership_path(@business) %>
+		</div>
+	</div>
+</div>

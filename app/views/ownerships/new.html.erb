@@ -1,0 +1,18 @@
+<% provide(:title, "New team member") %>
+<span class="two-line-header"><h1>New team member</h1></span>
+<h2><%= "for #{@business.name}, #{@business.city}" %></h2>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for([@business, @ownership], 
+				url: my_business_ownerships_path(@business)) do |f| %>
+
+		 	<%= render 'new_fields', f: f %>
+
+			<%= f.submit "Create", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Team list", my_business_ownerships_path(@business) %>
+</div>

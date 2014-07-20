@@ -1,0 +1,15 @@
+<div class="add-top-space">
+	Can potential clients contact this person?
+	<div class="control-group">
+		<%= f.label :contactable, 'Yes', :value => true, :class => "radio inline" %>
+		<%= f.radio_button :contactable, true %>
+		<%= f.label :contactable, 'No', :value => false, :class => "radio inline" %>
+		<%= f.radio_button :contactable, false %>
+	</div>
+</div>
+
+<div class="add-top-space">
+	<%= f.label :phone, 
+		"If yes, is there a direct phone number for this person? Write it below." %>
+	<%= f.text_field :phone %>
+</div>

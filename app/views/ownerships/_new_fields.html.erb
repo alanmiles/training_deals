@@ -1,0 +1,8 @@
+<%= render 'shared/error_messages', object: f.object %>
+			
+<%= f.label :email_address, "The team member's email address" %>
+<%= f.text_field :email_address %>
+
+<%= render 'fields', f: f %>
+
+<%= f.hidden_field :created_by %>

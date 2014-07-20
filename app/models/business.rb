@@ -2,8 +2,14 @@ class Business < ActiveRecord::Base
 
 	#before_save						:capitalize_locality
 	geocoded_by :full_address 
+	#accepts_nested_attributes_for :ownerships
+
 	after_validation :geocode, :if => :check_address?
 	after_validation :inactive_date
+	after_create :new_ownership
+
+	has_many :ownerships, dependent: :destroy
+	has_many :users, through: :ownerships
 
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }
@@ -42,6 +48,15 @@ class Business < ActiveRecord::Base
 		end
 	end
 
+	def owners_list
+		ownerlist = []
+		@owners = self.users.order("position")
+		@owners.each do |owner|
+			ownerlist.push("#{owner.name} <#{owner.email}>")
+		end
+		ownerlist.join(", ")
+	end
+
 	private
 
 		def check_address?
@@ -55,6 +70,12 @@ class Business < ActiveRecord::Base
 			else
 				self.inactive_from = nil
 			end
+		end
+
+		def new_ownership
+			@user = User.find(self.created_by)
+			Ownership.create(business_id: self.id, user_id: self.created_by, 
+				email_address: @user.email, created_by: self.created_by)
 		end
 	end
 end

@@ -7,17 +7,18 @@ describe "BusinessPages" do
  		Business.any_instance.stub(:geocode).and_return([1,1]) 
 	end
   	
-  	describe "dealing with the user's own businesses" do
+  	describe "dealing with the user's own businesses (My Businesses)" do
 
 	  	describe "signed in" do   
 	  
 	  		let(:user) { FactoryGirl.create(:user) }
+	  		let(:other_user) { FactoryGirl.create(:user) }
 	  		before { sign_in user }
 
 	    	describe "index" do
 
 	          	let!(:business_1) 	{ FactoryGirl.create(:business, created_by: user.id) }
-	          	let!(:other_user_business) {FactoryGirl.create(:business, created_by: (user.id + 1).to_s) }
+	          	let!(:other_user_business) {FactoryGirl.create(:business, created_by: other_user.id) }
 
 	          	before { visit my_businesses_path }
 
@@ -40,6 +41,18 @@ describe "BusinessPages" do
 		            end.to change(Business, :count).by(-1)
 		            expect(page).to have_title('My businesses')
 		            expect(page).not_to have_selector('li', text: business_1.name)
+		        end
+
+		        it "should delete the associated Ownership record" do
+		        	expect do
+		              click_link('delete', href: my_business_path(business_1))
+		            end.to change(Ownership, :count).by(-1)
+		        end
+
+		        it "should not delete associated Users" do
+		        	expect do
+		              click_link('delete', href: my_business_path(business_1))
+		            end.not_to change(User, :count)
 		        end
 
 		        pending "should not be able to delete if user history associated"
@@ -73,11 +86,15 @@ describe "BusinessPages" do
 		              	expect { click_button "Create" }.to change(Business, :count).by(1) 
 		            end
 
+		            it "should create a new Ownership record" do
+		            	expect { click_button "Create" }.to change(Ownership, :count).by(1) 
+		            end
+
 		            describe "and redirect to the Show page" do
 		              	before { click_button 'Create' }
 
 		              	it { should have_title('Business X, London') }
-
+		              	it { should have_link('( details )', href: my_business_ownerships_path(Business.last))}
 		              	it { should have_link('Update', href: edit_my_business_path(Business.last)) } 
 		              	it { should have_selector('div.alert.alert-success', 
 		              		text: "Successfully added. Please check all the details carefully.") }
@@ -127,6 +144,10 @@ describe "BusinessPages" do
 		              	expect { click_button 'Create' }.not_to change(Business, :count)
 		            end
 
+		            it "should not create a new Ownership record" do
+		            	expect { click_button 'Create' }.not_to change(Ownership, :count)
+		            end
+
 		            describe "continue to show the New page with an error message" do
 
 		             	before do
@@ -174,6 +195,7 @@ describe "BusinessPages" do
 		              	it { should have_selector('div.alert.alert-success', text: "'New Name' updated") }
 		              	specify { expect(changed_business.reload.name).to eq new_name }
 
+
 		              	describe "revealing contents of the Show page" do
 		              		it { should have_selector('h1', text: "Business details") }
 		              		it { should have_selector('div.present', text: "#{new_name}") }
@@ -183,7 +205,7 @@ describe "BusinessPages" do
 		              		it { should have_selector('div.detail', "Not shown") }    #i.e. no phone
 		              		it { should have_selector('div.detail', "#{changed_business.email}") }
 		              		it { should have_selector('div.detail', "#{changed_business.description}") }
-		              		it { should_not have_selector("span.check-notice", "- Hidden to users") }
+		              		it { should_not have_selector("span.check-notice", "- Hidden from users") }
 		              	end
 		            end
 
@@ -234,7 +256,7 @@ describe "BusinessPages" do
 			        	before { click_link "<- Cancel" }
 
 			        	it { should have_title("#{hidden_address_business.name}, #{hidden_address_business.city}") }
-			        	it { should have_selector("span.check-notice", "- Hidden to users") }
+			        	it { should have_selector("span.check-notice", "- Hidden from users") }
 			        	it { should_not have_selector("div.check-notice", "You deactivated this business on") }
 
 			        	describe "as well as 'Hidden address' alert on Index page" do
@@ -264,7 +286,7 @@ describe "BusinessPages" do
 
 			        	it { should have_title("#{inactive_business.name}, #{inactive_business.city}") }
 			        	it { should have_selector("div.check-notice", "You deactivated this business on") }
-			        	it { should_not have_selector("span.check-notice", "- Hidden to users") }
+			        	it { should_not have_selector("span.check-notice", "- Hidden from users") }
 
 			        	describe "as well as 'Inactive' alert on Index page" do
 

@@ -32,7 +32,7 @@
 			<div class="detail"> <%= @business.full_address %>
 				<% unless @business.inactive? %>
 					<% if @business.hide_address? %>
-						<span class="check-notice"> - Hidden to users</span>
+						<span class="check-notice"> - Hidden from users</span>
 					<% end %>
 				<% end %>
 			</div>
@@ -45,9 +45,14 @@
 			<div class="subject">Email:</div>
 			<div class="detail"><%= @business.email %></div>
 		</div>
+		<div class="paragraph">
+			<div class="subject">
+				Team: <%= link_to "( details )", my_business_ownerships_path(@business) %>
+			</div>
+			<div class="detail"><%= @business.owners_list %></div>
+		</div>
 	</div>
 </div>
-<div class="navigator">
-	<%= link_to "<- My business list", my_businesses_path %>
+<div class="navigator add-top-space">	<%= link_to "<- My business list", my_businesses_path %>
 	| <%= link_to "Update ->", edit_my_business_path(@business) %>
 </div>

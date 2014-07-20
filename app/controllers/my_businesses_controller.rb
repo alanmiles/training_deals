@@ -11,6 +11,7 @@ class MyBusinessesController < ApplicationController
 
   def show
   	#@business = Business.find(params[:id])
+    @owners = @business.users
   end
 
   def new
