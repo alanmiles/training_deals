@@ -13,7 +13,7 @@ describe "OwnershipPages" do
 	let!(:founder_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}
 	let!(:ownership_1) 		{ founder_biz.ownerships.find_by(user_id: founder.id) }
 
-	describe "for authorized business owners" do
+	describe "for business creator" do
 
 		before { sign_in founder }
 
@@ -169,6 +169,178 @@ describe "OwnershipPages" do
 	        end
 
 	 	end
+	end
+
+	describe "for other signed-in team members" do
+
+		let!(:member)	{ FactoryGirl.create(:ownership, 
+								business: founder_biz, user: administrator,
+								email_address: administrator.email, created_by: founder.id) }
+		let!(:other_biz)	{ FactoryGirl.create(:business, created_by: founder.id) }
+		let(:ownership_other) { other_biz.ownerships.find_by(user_id: founder.id) }
+		let(:team_player)	{ FactoryGirl.create(:user) }
+
+		before { sign_in administrator }
+
+		describe "has access to the member business pages and actions" do
+
+			describe "Index" do
+
+				before { visit my_business_ownerships_path(founder_biz) }
+
+				it { should have_title("Frontline team") }
+	           	it { should have_selector('h2', text: "for #{founder_biz.name}, #{founder_biz.city}")}
+	            it { should have_selector('li', text: founder.name) }
+	            it { should have_selector('li', text: administrator.name) }
+	            it { should have_button('remove') }
+			
+	            it "can delete a team member" do
+	            	sign_in administrator, no_capybara: true
+	            	expect do
+ 	          			delete ownership_path(ownership_1)
+ 	          			flash[:success].should eq "Removed #{ownership_1.user.name} from the team." 
+ 	        		end.to change(Ownership, :count).by(-1)
+	            end
+			end
+
+			describe "Go to the New page" do
+
+				before { visit new_my_business_ownership_path(founder_biz) }
+
+				it { should have_title("New team member") }
+	         	it { should have_selector('h2', text: "for #{founder_biz.name}, #{founder_biz.city}") }
+
+	         	describe "and create a new team member" do
+
+	         		before do
+		                fill_in "The team member's email address",  with: team_player.email
+		            end
+
+		            it "creates a new Ownership record" do
+		               	expect do
+		               	 click_button "Create"
+		               	end.to change(founder_biz.ownerships, :count).by(1)
+
+		               	@ownership = Ownership.last
+		               	@ownership.created_by.should eq administrator.id
+		            end
+	         	end
+	        end
+
+	        describe "Go to the Edit page" do
+
+	        	before { visit edit_ownership_path(ownership_1) }
+
+	        	it { should have_title('Team member update') }
+	        	it { should have_selector('h2', text: "#{founder_biz.name}, #{founder_biz.city}") }
+	        
+	        	describe "successfully edit the member details" do
+	        	
+	        		let(:ext_phone) { "1234-567 ext 215" }
+	        		before do
+		         		choose "Yes"
+		                fill_in "direct phone number", with: ext_phone
+		                click_button "Confirm"
+		            end
+
+		            it { should have_title("Frontline team") }
+		            it { should have_selector('h2', text: "for #{founder_biz.name}, #{founder_biz.city}") }
+		            specify { expect(ownership_1.reload.phone).to eq ext_phone }
+	        	end
+	        end
+		end
+
+		describe "does not have access to non-member business pages and actions" do
+
+			describe "attempt to visit Index" do
+				
+				before { visit my_business_ownerships_path(other_biz) }
+
+	           	it { should_not have_selector('h2', text: "for #{founder_biz.name}, #{founder_biz.city}")}
+	            it { should have_title(administrator.name) }
+	            it { should have_content("The page you requested doesn't belong to you!") }
+			
+	            it "cannot delete an Ownership" do
+	            	sign_in administrator, no_capybara: true
+	            	expect do
+ 	          			delete ownership_path(ownership_other)
+ 	          			flash[:error].should eq "Action not permitted!" 
+ 	        		end.not_to change(Ownership, :count)
+	            end
+			end
+
+			describe "Attempt to visit New page" do
+
+				before { visit new_my_business_ownership_path(other_biz) }
+
+				it { should_not have_title("New team member") }
+	         	it { should have_title(administrator.name) }
+	            it { should have_content("The page you requested doesn't belong to you!") }
+	        end
+
+	        describe "Attempt to visit Edit page" do
+
+	        	before { visit edit_ownership_path(ownership_other) }
+
+				it { should_not have_title("Team member update") }
+	         	it { should have_title(administrator.name) }
+	            it { should have_content("The page you requested doesn't belong to you!") }
+	        end
+
+	        describe "attempting to change Ownership data directly" do
+
+	        	before { sign_in administrator, no_capybara: true }
+	        	
+	        	describe "Create" do
+
+	        		let(:params) do
+                 		{ ownership: { email_address: team_player.email,
+                						created_by: administrator.id } }
+               		end
+              
+               		it "should not create a new team member" do
+                 		expect do
+                   			post my_business_ownerships_path(other_biz, params)
+                		end.not_to change(Ownership, :count)
+               		end
+
+               		describe "should redirect to User Home" do
+
+                 		before { post my_business_ownerships_path(other_biz, params) }
+                 		
+                 		specify do
+							expect(response).to redirect_to(user_path(administrator))
+			    			expect(flash[:error]).to eq("Action not permitted!")
+			    		end
+               		end
+             	end
+
+             	describe "Update" do
+
+               		let(:new_phone)  { "909090"}
+               		let(:params) do
+                		{ ownership: { phone: new_phone } }
+               		end
+              
+               		describe "should not modify the existing team member" do
+                
+                 		before { patch ownership_path(ownership_other, params) } 
+                 		specify { expect(ownership_other.reload.phone).not_to eq new_phone }
+               		end
+
+               		describe "should redirect to User Home" do
+
+                 		before { patch ownership_path(ownership_other, params) }
+                 		
+                 		specify do
+							expect(response).to redirect_to(user_path(administrator))
+			    			expect(flash[:error]).to eq("Action not permitted!")
+			    		end
+               		end
+             	end
+	        end
+		end
+
 	end
 
 	describe "for non-authorized business owners" do
@@ -434,9 +606,7 @@ describe "OwnershipPages" do
   		end
   	end
 
-  	describe "for signed-in frontline team-members"
-
   	describe "for HROOMPH admins" do
-
+  		pending "dealt with in a separate controller"
   	end
 end

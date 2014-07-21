@@ -381,12 +381,8 @@ describe "BusinessPages" do
 						valid_signin(second_user)
 					end
 					
-					specify do
-						#expect(flash[:notice]).to eq("The page you requested doesn't belong to you.")
-						#NOTE: flash notice works perfectly in app but not in testing.
-						expect(page).to have_title("#{second_user.name}")
-					end
-
+					it { should have_content("The page you requested doesn't belong to you") }
+					it { should have_title("#{second_user.name}") }
 				end
 			end
 
@@ -423,11 +419,8 @@ describe "BusinessPages" do
 						valid_signin(second_user)
 					end
 					
-					specify do
-						expect(page).to have_title("#{second_user.name}")
-						#flash[:error].should eq("The page you requested doesn't belong to you.")
-						#specific error message tested below.
-					end
+					it { should have_title("#{second_user.name}") }
+					it { should have_content("The page you requested doesn't belong to you") }
 				end
 			end
 
@@ -525,7 +518,7 @@ describe "BusinessPages" do
           	end
 		end
 
-		describe "signed in but not as the owner of the specified business" do
+		describe "signed in but not as an owner of the specified business" do
 
 			before do
 				sign_in second_user, no_capybara: true
@@ -578,7 +571,63 @@ describe "BusinessPages" do
 		end
 	end
 
-	describe "authorized access as joint business administrator" do
+	describe "Listed as joint business administrator" do
 
+		let!(:founder) 		{ FactoryGirl.create(:user) }
+		let!(:team_member)	{ FactoryGirl.create(:user) }
+		let!(:founder_biz)	{ FactoryGirl.create(:business, created_by: founder.id) }
+		let!(:second_biz)	{ FactoryGirl.create(:business, created_by: founder.id) }
+		let!(:second_owner)	{ FactoryGirl.create(:ownership, 
+						business: founder_biz,
+						user: team_member,
+						email_address: team_member.email,
+						created_by: founder.id) }
+
+		before { sign_in team_member }
+
+		describe "can see all businesses where a team member in My Businesses index" do
+			before { visit my_businesses_path }
+
+			it { should have_title("My businesses") }
+			it { should have_selector('li', text: founder_biz.name) }
+			it { should_not have_selector('li', text: second_biz.name) }
+
+	     	it "should be able to delete a business" do   #provided no user activity yet
+	            expect do
+	              click_link('delete', href: my_business_path(founder_biz))
+	            end.to change(Business, :count).by(-1)
+	            expect(page).to have_title('My businesses')
+	            expect(page).not_to have_selector('li', text: founder_biz.name)
+	        end
+		end
+
+		describe "can view details of team-member business on the Show page" do
+
+			before { visit my_business_path(founder_biz) }
+
+			it { should have_selector('h1', text: "Business details") }
+      		it { should have_selector('div.detail', text: founder_biz.name) }
+		end
+
+		describe "can access the Edit page of team-member businesses" do
+
+			before { visit edit_my_business_path(founder_biz) }
+
+			it { should have_title("Edit business") }
+			it { should have_selector('input#business_name') }
+
+			describe "and update successfully" do
+
+				let(:new_name) { "New Name" }
+
+				before do
+					fill_in "Name",		with: new_name
+					click_button "Confirm"
+		        end
+
+              	it { should have_title("#{new_name}, #{founder_biz.city}") }
+              	it { should have_selector('div.alert.alert-success', text: "'#{new_name}' updated") }
+			end
+		end
 	end
 end

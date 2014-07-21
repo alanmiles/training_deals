@@ -6,11 +6,10 @@ class MyBusinessesController < ApplicationController
   before_action :wrong_owner_action,  only: [:update, :destroy]
 
   def index
-  	@businesses = Business.where("created_by = ?", current_user.id).order('name') 
+    @businesses = current_user.businesses.order('name')
   end
 
   def show
-  	#@business = Business.find(params[:id])
     @owners = @business.users
   end
 
@@ -22,7 +21,6 @@ class MyBusinessesController < ApplicationController
   def create
   	@business = Business.new(business_params)
   	create_owner
-    #capitals_locality
     if @business.save
       flash[:success] = "Successfully added. Please check all the details carefully."
       redirect_to my_business_path(@business)
@@ -32,12 +30,9 @@ class MyBusinessesController < ApplicationController
   end
 
   def edit
-  	#@business = Business.find(params[:id])
   end
 
   def update
-  	#@business = Business.find(params[:id])
-    #inactive_date if @business.inactive_changed?
     if @business.update_attributes(business_params)
       flash[:success] = "'#{@business.name}' updated"
       redirect_to my_business_path(@business)
@@ -47,7 +42,6 @@ class MyBusinessesController < ApplicationController
   end
 
   def destroy
-  	#@business = Business.find(params[:id]).destroy
     @business.destroy
     flash[:success] = "'#{@business.name}' in '#{@business.city} deleted"
     redirect_to my_businesses_path
@@ -76,7 +70,7 @@ class MyBusinessesController < ApplicationController
     def check_ownership
       @business = Business.find(params[:id])
       if signed_in?
-        unless @business.created_by == current_user.id
+        unless valid_team_member?(@business)
           flash[:error] = "The page you requested doesn't belong to you!"
           redirect_to current_user
         end
@@ -93,26 +87,10 @@ class MyBusinessesController < ApplicationController
     def wrong_owner_action
       @business = Business.find(params[:id])
       if signed_in?
-        unless @business.created_by == current_user.id
+        unless valid_team_member?(@business)
           flash[:error] = "Action not permitted!"
           redirect_to current_user
         end
       end
     end
-
-
-  #def inactive_date
-  #  if @business.inactive?
-  #    @business.inactive_from = Date.today
-  #  else
-  #    @business.inactive_from = nil
-  #  end
-  #end
-  #def capitals_locality
-  #  @names = @business.locality.split
-  #  @names.map!(&:capitalize)
-  #  @valid_name = @names.join(" ")
-  #  @business.locality = @valid_name
-  #end
-
 end
