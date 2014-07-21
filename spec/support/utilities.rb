@@ -59,11 +59,3 @@ def forbidden_without_signin
     end
 end
 
-def wrong_owner(user)
-	specify do
-		expect(response).to redirect_to user_path(user)
-    	expect(flash[:notice]).to eq("The page you requested doesn't belong to you!")
-    end
-end
-
-

@@ -527,19 +527,21 @@ describe "BusinessPages" do
 			describe "Show page" do
 				
 				before { get my_business_path(unauthorized_business) }
+			
 				specify do
-					expect(response).to redirect_to(user_path(second_user))
-			    	expect(flash[:error]).to eq("The page you requested doesn't belong to you!")
-			    end
+					expect(response).to redirect_to user_path(second_user)
+    				expect(flash[:error]).to eq("The page you requested doesn't belong to you!")
+    			end
 			end
 
 			describe "Edit page" do
 
 				before { get edit_my_business_path(unauthorized_business) }
+		
 				specify do
-					expect(response).to redirect_to(user_path(second_user))
-			    	expect(flash[:error]).to eq("The page you requested doesn't belong to you!")
-			    end
+					expect(response).to redirect_to user_path(second_user)
+    				expect(flash[:error]).to eq("The page you requested doesn't belong to you!")
+    			end
 			end
 
 			describe "attempting to modify Business data" do
@@ -549,7 +551,10 @@ describe "BusinessPages" do
 					let(:params) do
                 		{ unauthorized_business: { name: "NewName" } }
               		end
-              		before { patch my_business_path(unauthorized_business), params } 
+              		
+              		before do
+              			patch my_business_path(unauthorized_business), params
+              		end 
 
               		specify do
 						expect(response).to redirect_to(user_path(second_user))
@@ -566,7 +571,6 @@ describe "BusinessPages" do
 			    		expect(flash[:error]).to eq("Action not permitted!")
 			    	end
 				end
-
 			end
 		end
 	end
