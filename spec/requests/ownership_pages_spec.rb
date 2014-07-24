@@ -91,12 +91,12 @@ describe "OwnershipPages" do
 	               		     text: "#{administrator.name} added to the team.") } 
 	               	it { should have_button('remove') }  #because now >1 owner
 
-	               	it "can delete team members when there are multiple members (including self)" do
+	               	it "can delete team members when there are multiple members" do
 	 					click_link "Sign out"
 	 					sign_in founder, no_capybara: true
 	 					expect do
-	 	          			delete ownership_path(ownership_1)
-	 	          			flash[:success].should eq "Removed #{ownership_1.user.name} from the team." 
+	 	          			delete ownership_path(@ownership)
+	 	          			flash[:success].should eq "Removed #{@ownership.user.name} from the team." 
 	 	        		end.to change(Ownership, :count).by(-1)
 	 	        	end
 
@@ -106,6 +106,15 @@ describe "OwnershipPages" do
 	 					expect do
 	 	          			delete ownership_path(ownership_1)
 	 	        		end.not_to change(User, :count)
+	 	        	end
+
+	 	        	it "can delete self and successfuly redirect when there are other team-members" do
+	 	        		click_link "Sign out"
+	 					sign_in founder, no_capybara: true
+	 					expect do
+	 	          			delete ownership_path(ownership_1)
+	 	          			flash[:success].should eq "You've taken yourself out of the team at #{founder_biz.name}, #{founder_biz.city}." 
+	 	        		end.to change(Ownership, :count).by(-1)
 	 	        	end
 	             end
 	         end

@@ -1,0 +1,15 @@
+<li><%= link_to "Your location", "#" %></li>
+<li><%= link_to "Instant search", "#" %></li>
+<li><%= link_to "Saved search set-up", "#" %></li>
+<li><%= link_to "Saved search results", "#" %></li>
+
+<li><%= link_to "Training history", "#" %></li>
+<li><%= link_to "Your reviews", "#" %></li>
+<li><%= link_to "Favourites", "#" %></li>
+<li><%= link_to "Find trainers", "#" %></li>
+<li class="divider"></li>
+<% if @user.has_businesses? %>
+	<li><%= link_to "Business home page", my_businesses_path %></li>
+<% else %>
+	<li><%= link_to "Add a business", my_businesses_path %></li>
+<% end %>

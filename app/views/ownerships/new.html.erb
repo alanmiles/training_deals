@@ -3,7 +3,12 @@
 <h2><%= "for #{@business.name}, #{@business.city}" %></h2>
 
 <div class="row">
-	<div class="span6 offset3">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span6">
 		<%= form_for([@business, @ownership], 
 				url: my_business_ownerships_path(@business)) do |f| %>
 

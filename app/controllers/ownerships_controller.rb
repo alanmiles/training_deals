@@ -47,11 +47,17 @@ class OwnershipsController < ApplicationController
   def destroy
     if @business.ownerships.count > 1
       @ownership.destroy
-      flash[:success] = "Removed #{@ownership.user.name} from the team."
+      if @ownership.user_id == current_user.id
+        flash[:success] = "You've taken yourself out of the team at #{@business.name}, #{@business.city}."
+        redirect_to my_businesses_path
+      else
+        flash[:success] = "Removed #{@ownership.user.name} from the team."
+        redirect_to my_business_ownerships_path(@business)
+      end
     else
       flash[:notice] = "Not removed! There has to be at least one team member."
+      redirect_to my_business_ownerships_path(@business)
     end
-    redirect_to my_business_ownerships_path(@business)
   end
 
   def sort

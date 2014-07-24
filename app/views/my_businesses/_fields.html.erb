@@ -1,19 +1,32 @@
 <%= render 'shared/error_messages', object: f.object %>
+<div class="guidance">
+	<span class="label">Labels like this</span>  show must-fill boxes - but we 
+	recommend filling all you can.
+</div>
 <div class="entry-page">
 	<div class="entry">
-		<div class="add-this"><%= f.label :name %></div>
+		<div class="add-this">
+			<span class="label"><%= f.label :name, "Business name" %></span>
+		</div>
 		<div class="box-fill"><%= f.text_field :name %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :description %><small><i>(Max 140 characters)</i></small></div>
+		<div class="add-this">
+			<span class="label"><%= f.label :description %></span><br/>
+			<small><i>(Max 140 characters)</i></small>
+		</div>
 		<div class="box-fill"><%= f.text_area :description %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :street_address %></div>
+		<div class="add-this">
+			<span class="label"><%= f.label :street_address %></span>
+		</div>
 		<div class="box-fill"><%= f.text_area :street_address %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :city, "Town/city" %></div>
+		<div class="add-this">
+			<span class="label"><%= f.label :city, "Town/city" %></span>
+		</div>
 		<div class="box-fill"><%= f.text_field :city %></div>
 	</div>
 	<div class="entry">
@@ -25,7 +38,9 @@
 		<div class="box-fill"><%= f.text_field :postal_code %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :country %></div>
+		<div class="add-this">
+			<span class="label"><%= f.label :country %></span>
+		</div>
 		<div class="box-fill"><%= country_select(:business, :country, priority_countries) %></div>
 	</div>
 	<div class="entry">
@@ -48,7 +63,9 @@
 		<div class="box-fill"><%= f.text_field :alt_phone %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :email %></div>
+		<div class="add-this">
+			<span class="label"><%= f.label :email %></span>
+		</div>
 		<div class="box-fill"><%= f.text_field :email %></div>
 	</div>
 	<div class="entry">

@@ -1,36 +1,49 @@
-<% provide(:title, "My businesses") %>
-<h1>My businesses</h1>
+<% if current_user.has_businesses? %>
+	<% provide(:title, "My businesses") %>
+	<h1>My businesses</h1>
+<% else %>
+	<% provide(:title, "Your business: getting started") %>
+	<h1>Your business: getting started</h1>
+<% end %>
 <div class="row">
 	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
 	</aside>
 
 	<div class="span8">
-		<ul class="lists"> 
-			<% @businesses.each do |business| %>
-				<%= content_tag_for :li, business do %>
-					<strong><%= business.name %></strong>,
-					<%= business.city %>,
-					<%= business.country %>
-					| <%= link_to "details", my_business_path(business) %>
-					| <%= link_to "delete", { controller: 'my_businesses',
-											action: 'destroy', 
-											id: business.id }, 
-											{ method: :delete,
-											data: { confirm: "Are you sure?" } } %>
-					<span class="check-notice">
-						<% if business.inactive? %>
-						 	* Inactive business
-						<% elsif business.latitude.nil? %>
-						 	* Check details
-						<% elsif business.hide_address? %>
-							* Address hidden from users
-						<% end %>
-					</span>
+		<% if current_user.has_businesses? %>
+			<ul class="lists"> 
+				<% @businesses.each do |business| %>
+					<%= content_tag_for :li, business do %>
+						<strong><%= business.name %></strong>,
+						<%= business.city %>,
+						<%= business.country %>
+						| <%= link_to "details", my_business_path(business) %>
+						| <%= link_to "delete", { controller: 'my_businesses',
+												action: 'destroy', 
+												id: business.id }, 
+												{ method: :delete,
+												data: { confirm: "Are you sure?" } } %>
+						<span class="check-notice">
+							<% if business.inactive? %>
+							 	* Inactive business
+							<% elsif business.latitude.nil? %>
+							 	* Check details
+							<% elsif business.hide_address? %>
+								* Address hidden from users
+							<% end %>
+						</span>
+					<% end %>
 				<% end %>
-			<% end %>
-		</ul>
-		<div class="navigator">
-			<%= link_to "Add a business ->", new_my_business_path %>
-		</div>
+			</ul>
+			<div class="navigator">
+				<%= link_to "Add a business ->", new_my_business_path %>
+			</div>
+		<% else %>
+			<%= render 'explanation' %>
+			<%= link_to "Add your training business now!", new_my_business_path, class: "btn btn-large btn-primary" %>
+		<% end %>
 	</div>
 </div>

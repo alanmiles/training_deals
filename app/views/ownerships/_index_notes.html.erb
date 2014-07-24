@@ -1,23 +1,12 @@
-<div class="explain">
-	<p>
-		Those listed have the same access rights to the business interface as you. 
-		They can add and remove products and services, schedule a course or event, add a
-		special deal, and so on.
-	</p>	
-	<p>
-		You can choose to show that these team-members are listed as public contacts
-		for the business - or not.
-	</p>
-	<p>
-		<span class = "glyphicon glyphicon-headphones"</span> = Included in your public contacts list.
-	</p>
-	<p>
-		<span class = "glyphicon glyphicon-phone"</span> = Direct phone number (shown 
-			only if contactable).
-	</p>
-	<% if @business.ownerships.count > 1 %>
-		<p>
-			<span class = "glyphicon glyphicon-sort"</span> = Click and drag up or down to resort the list.
-		</p>
-	<% end %>
+<div class="well sidebar-nav">  
+	<div class="js-guidance"> 
+		<span class="toggler column-wide"><span class="label label-info">Page info</span><b class="caret"></b></span>
+		<div class="explanation">
+		 	<%= render 'index_notes_detail' %>
+		</div>
+	</div>
+	<div class="html-guidance">
+		<span class="column-wide"><span class="label label-info">Page info</span></span>
+		<%= render 'index_notes_detail' %>
+	</div>
 </div>

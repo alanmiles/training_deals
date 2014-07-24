@@ -8,26 +8,7 @@
 			</h1>
 		</section>
 		<section>
-			<div class="well sidebar-nav">
-				<ul class="nav nav-list">
-					<li class="nav-header">Looking for training</li>
-					<li><%= link_to "Your location", "#" %></li>
-					<li><%= link_to "Instant search", "#" %></li>
-					<li><%= link_to "Saved search set-up", "#" %></li>
-					<li><%= link_to "Saved search results", "#" %></li>
-					
-					<li><%= link_to "Training history", "#" %></li>
-					<li><%= link_to "Your reviews", "#" %></li>
-					<li><%= link_to "Favourites", "#" %></li>
-					<li><%= link_to "Find trainers", "#" %></li>
-					<li class="nav-header">Offering training</li>
-					<li><%= link_to "Add a business", new_my_business_path %></li>
-					<li><%= link_to "Manage your business", my_businesses_path %></li>
-				</ul>
-
-			</div>
-
-
+			<%= render "/shared/user_menu" %>
 		</section>
 	</aside>
 	<% if @user.admin? %>

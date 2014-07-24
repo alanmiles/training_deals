@@ -22,6 +22,16 @@ class User < ActiveRecord::Base
 		Digest::SHA1.hexdigest(token.to_s)
 	end
 
+	def has_businesses?
+		business_count = self.businesses.count
+		business_count > 0
+	end
+
+	def has_one_business?
+		business_count = self.businesses.count
+		business_count == 1
+	end
+
 	private
 
 		def create_remember_token

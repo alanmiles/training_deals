@@ -15,7 +15,26 @@ describe "BusinessPages" do
 	  		let(:other_user) { FactoryGirl.create(:user) }
 	  		before { sign_in user }
 
-	    	describe "index" do
+	  		describe "index page with no existing businesses" do
+
+	  			before { visit my_businesses_path }
+
+	            it { should have_title('Your business: getting started') }
+	            it { should have_content('Your business: getting started') }
+	            it { should have_link('Add your training business now!', href: new_my_business_path) }
+
+	            describe "follow the 'Add new' link" do
+
+	            	before { click_link "Add your training business now!" }
+
+	            	it { should have_link('Business home page', href: my_businesses_path) }
+	            	it { should_not have_content("Is your business involved in improving people's skills") }
+	            	# Info sidebar not used until users have entered their first business because
+	            	# the content is same as the Getting Started page
+	            end
+	  		end
+
+	    	describe "index with existing business(es)" do
 
 	          	let!(:business_1) 	{ FactoryGirl.create(:business, created_by: user.id) }
 	          	let!(:other_user_business) {FactoryGirl.create(:business, created_by: other_user.id) }
@@ -32,14 +51,32 @@ describe "BusinessPages" do
 	            it { should have_link('delete', href: my_business_path(business_1)) }
 	            it { should have_link('Add a business', href: new_my_business_path) }
 		        
+		        describe "Business menu" do
+		        	it { should have_link('Business home page', href: my_businesses_path) }
+		        	it { should have_link('Products', href: "#") }
+		        	it { should have_link('HROOMPH Gold', href: "#") }
+		        	it { should have_link('Reviews', href: "#") }
+		        	it { should have_link('History', href: "#") }
+		        	it { should have_link('Account', href: "#") }
+		        	it { should have_link('User home page', href: user_path(user)) }
+		        end
+
 		        pending "No delete link when the business has a history"
 		        pending "Has a 'deactivated' field if the business has been de-activated by the user"
+
+		        describe "follow the 'Add new' link" do
+
+	            	before { click_link "Add a business" }
+
+	            	it { should have_link('Business home page', href: my_businesses_path) }
+	            	it { should have_content("Is your business involved in improving people's skills") }
+	            end
 
 		     	it "should be able to delete a business" do   #provided no user activity yet
 		            expect do
 		              click_link('delete', href: my_business_path(business_1))
 		            end.to change(Business, :count).by(-1)
-		            expect(page).to have_title('My businesses')
+		            expect(page).to have_title('Your business: getting started') #no other businesses
 		            expect(page).not_to have_selector('li', text: business_1.name)
 		        end
 
@@ -63,7 +100,7 @@ describe "BusinessPages" do
 		        before { visit new_my_business_path }
 
 		        it { should have_title("Add business") }
-		        it { should have_content("Add my business") }
+		        it { should have_content("Add a business") }
 		        it { should have_link("<- My business list", href: my_businesses_path) }
 		        it { should have_unchecked_field("business_hide_address") }
 		        it { should have_content("Check the box to hide your address from other users") }
@@ -72,7 +109,7 @@ describe "BusinessPages" do
 
 		        describe "then create a new Business successfully" do
 		            before do
-		               	fill_in "Name",    			with: "Business X"
+		               	fill_in "Business name",    			with: "Business X"
 		               	fill_in "Street address",	with: "1 Old Street"
 		               	fill_in "Town/city",		with: "London"
 		               	fill_in "Post/zip code", 	with: "EC1V 9HL"
@@ -106,7 +143,7 @@ describe "BusinessPages" do
 		        describe "then create a business successfully - but without geocoding" do
 
 		        	before do
-		               	fill_in "Name",    			with: "Non-geocoded business"
+		               	fill_in "Business name",    with: "Non-geocoded business"
 		               	fill_in "Street address",	with: "2 Old Street"
 		               	fill_in "Town/city",		with: "Moscow"
 		               	select "France",			from: "Country"
@@ -151,7 +188,7 @@ describe "BusinessPages" do
 		            describe "continue to show the New page with an error message" do
 
 		             	before do
-		                	fill_in "Name",    with: "   "
+		                	fill_in "Business name",    with: "   "
 		                	click_button "Create"
 		              	end
 		            
@@ -187,7 +224,7 @@ describe "BusinessPages" do
 
 		              	let(:new_name)   { "New Name" }
 		              	before do
-		                	fill_in "Name",    with: new_name
+		                	fill_in "Business name",    with: new_name
 		                	click_button "Confirm"
 		              	end
 
@@ -212,7 +249,7 @@ describe "BusinessPages" do
 		            describe "unsuccessfully" do
 
 		            	before do
-		                	fill_in "Name",    with: "  "
+		                	fill_in "Business name",    with: "  "
 		                	click_button "Confirm"
 		              	end
 
@@ -595,14 +632,36 @@ describe "BusinessPages" do
 			it { should have_title("My businesses") }
 			it { should have_selector('li', text: founder_biz.name) }
 			it { should_not have_selector('li', text: second_biz.name) }
-
-	     	it "should be able to delete a business" do   #provided no user activity yet
-	            expect do
-	              click_link('delete', href: my_business_path(founder_biz))
-	            end.to change(Business, :count).by(-1)
-	            expect(page).to have_title('My businesses')
-	            expect(page).not_to have_selector('li', text: founder_biz.name)
+	            
+	     	describe "when current_user has only businesses" do
+	     		
+	     		it "should be able to delete a business" do   #provided no user activity yet
+		            expect do
+		              click_link('delete', href: my_business_path(founder_biz))
+		            end.to change(Business, :count).by(-1)
+		            expect(page).to have_title('Your business: getting started')
+		            expect(page).not_to have_selector('li', text: founder_biz.name)
+		        end
 	        end
+
+	        describe "when current_user has more than one businesses" do
+	     		
+	        	let!(:second_owner_2)	{ FactoryGirl.create(:ownership, 
+						business: second_biz,
+						user: team_member,
+						email_address: team_member.email,
+						created_by: founder.id) }
+
+	     		it "should be able to delete a business" do   #provided no user activity yet
+		            expect do
+		              click_link('delete', href: my_business_path(founder_biz))
+		            end.to change(Business, :count).by(-1)
+		            expect(page).to have_title('My businesses')
+		            expect(page).not_to have_selector('li', text: founder_biz.name)
+		        end
+	        end
+
+
 		end
 
 		describe "can view details of team-member business on the Show page" do
@@ -625,7 +684,7 @@ describe "BusinessPages" do
 				let(:new_name) { "New Name" }
 
 				before do
-					fill_in "Name",		with: new_name
+					fill_in "Business name",		with: new_name
 					click_button "Confirm"
 		        end
 

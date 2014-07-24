@@ -63,7 +63,11 @@ describe "UserPages" do
 
   describe "user home page" do
   	let(:user) { FactoryGirl.create(:user) }
-  	before { visit user_path(user) }
+  	
+    before(:each) do
+      Business.any_instance.stub(:geocode).and_return([1,1]) 
+    end
+    before { visit user_path(user) }
 
   	it { should have_content(user.name) }
   	it { should have_title(user.name) }
@@ -77,14 +81,23 @@ describe "UserPages" do
     it { should have_link("Your reviews", href: "#") }
     it { should have_link("Favourites", href: "#") }
     it { should have_link("Find trainers", href: "#") }
-    it { should have_link("Add a business", href: new_my_business_path) }
-    it { should have_link("Manage your business", href: my_businesses_path) }
+    it { should have_link("Add a business", href: my_businesses_path) }
+    it { should_not have_link("Business home page", href: my_businesses_path) }
 
     describe "when user is a hrOOMPH admin" do
       let(:admin) { FactoryGirl.create(:admin) }
       before { visit user_path(admin) }
 
       it { should have_link("Switch to admin interface ->", href: admin_menu_path) }
+    end
+
+    describe "when team-member in one or more business" do
+      let!(:business_1)  { FactoryGirl.create(:business, created_by: user.id) }
+
+      before { visit user_path(user) }
+
+      it { should_not have_link("Add a business", href: new_my_business_path) } 
+      it { should have_link("Business home page", href: my_businesses_path) } 
     end
   end
 
