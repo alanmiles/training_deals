@@ -9,6 +9,7 @@ class CreateTopics < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :topics, [:category_id, :description]
+    add_index :topics, :category_id
+    add_index :topics, [:category_id, :description], unique: true
   end
 end

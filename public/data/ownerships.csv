@@ -1,0 +1,3 @@
+business_id;user_id;email_address;contactable;phone;position;created_by
+1;2;edwinthemiles@gmail.com;true;;2;1
+1;3;michael.stiff@hotmail.co.uk;false;;3;1

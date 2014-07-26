@@ -15,7 +15,7 @@ FactoryGirl.define do
 	end
 
 	factory :duration do
-		time_unit 	"minute"
+		time_unit 	"Minute"
 	end
 
 	factory :content_length do
@@ -58,5 +58,18 @@ FactoryGirl.define do
 		user
 		email_address "person_1@example.com"		
 		created_by 1
+	end
+
+	factory :product do
+		business
+		title "Cold calling"
+		ref_code "AAA/0001"
+		topic
+		training_method
+		content_quantify 1
+		content_type "Module"
+		standard_cost 100.00
+		content "Course content"
+		outcome "Course outcome"
 	end			
 end

@@ -7,6 +7,6 @@ class CreateContentLengths < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :content_lengths, :description
+    add_index :content_lengths, :description, unique: true
   end
 end

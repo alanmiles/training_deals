@@ -6,6 +6,6 @@ class CreateTrainingMethods < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :training_methods, :description
+    add_index :training_methods, :description, unique: true
   end
 end

@@ -10,6 +10,7 @@ class Business < ActiveRecord::Base
 
 	has_many :ownerships, dependent: :destroy
 	has_many :users, through: :ownerships
+	has_many :products, dependent: :destroy
 
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }
@@ -55,6 +56,16 @@ class Business < ActiveRecord::Base
 			ownerlist.push("#{owner.name} <#{owner.email}>")
 		end
 		ownerlist.join(", ")
+	end
+
+	def currency_code
+		@country = Country.find_country_by_name(country)
+		@code = @country.currency['code']
+	end
+
+	def currency_symbol
+		@country = Country.find_country_by_name(country)
+		@symbol = @country.currency['symbol']
 	end
 
 	private

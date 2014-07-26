@@ -22,7 +22,7 @@ describe Business do
   it { should respond_to(:country) }
   it { should respond_to(:latitude) }
   it { should respond_to(:longitude) }
-  it { should respond_to(:hide_address) }
+  it { should respond_to(:hide_address) } 
   it { should respond_to(:phone) }
   it { should respond_to(:alt_phone) }
   it { should respond_to(:email) }
@@ -103,7 +103,7 @@ describe Business do
   		business_with_same_location.save
   	end
   	
-  	it { should_not be_valid }
+  	it { should_not be_valid } 
   end
 
   describe "when business is a duplicate, though case of name is different" do

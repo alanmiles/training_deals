@@ -6,6 +6,6 @@ class CreateDurations < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :durations, :time_unit
+    add_index :durations, :time_unit, unique: true
   end
 end

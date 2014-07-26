@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716085514) do
+ActiveRecord::Schema.define(version: 20140724230151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,33 @@ ActiveRecord::Schema.define(version: 20140716085514) do
   end
 
   add_index "ownerships", ["business_id", "user_id"], name: "index_ownerships_on_business_id_and_user_id", using: :btree
+
+  create_table "products", force: true do |t|
+    t.integer  "business_id"
+    t.string   "title"
+    t.string   "ref_code"
+    t.integer  "topic_id"
+    t.string   "qualification"
+    t.integer  "training_method_id"
+    t.integer  "duration_id"
+    t.decimal  "duration_number"
+    t.integer  "content_length_id"
+    t.decimal  "content_number"
+    t.string   "currency"
+    t.decimal  "standard_cost"
+    t.text     "content"
+    t.text     "outcome"
+    t.boolean  "current",            default: true
+    t.string   "image"
+    t.string   "web_link"
+    t.integer  "created_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "products", ["business_id", "topic_id", "title"], name: "index_products_on_business_id_and_topic_id_and_title", unique: true, using: :btree
+  add_index "products", ["business_id"], name: "index_products_on_business_id", using: :btree
+  add_index "products", ["topic_id"], name: "index_products_on_topic_id", using: :btree
 
   create_table "topics", force: true do |t|
     t.string   "description"

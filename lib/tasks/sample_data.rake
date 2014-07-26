@@ -9,7 +9,8 @@ namespace :db do
 		make_genres
 		make_categories
 		make_topics
-
+		make_businesses
+		make_ownerships
 	end	
 end
 
@@ -90,6 +91,19 @@ def make_topics
 		Topic.create(@attr)
 	end
 end
+
+def make_businesses
+	@path = 'public/data/businesses.csv'
+	@model = Business
+	task_details(@path, @model)
+end
+
+def make_ownerships
+	@path = 'public/data/ownerships.csv'
+	@model = Ownership
+	task_details(@path, @model)
+end
+
 
 def task_details(path, model)
 	lines = File.new(path).readlines

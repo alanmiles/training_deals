@@ -1,6 +1,7 @@
 class Topic < ActiveRecord::Base
 
 	belongs_to :category
+	has_many :products   #don't allow deletion of topic if related products
 
 	validates :category,			presence: true
 

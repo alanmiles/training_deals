@@ -9,6 +9,6 @@ class CreateGenres < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :genres, :description
+    add_index :genres, :description, unique: true
   end
 end
