@@ -24,6 +24,6 @@ class CreateBusinesses < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :businesses, [:country, :city, :name], :unique: true
+    add_index :businesses, [:country, :city, :name], unique: true
   end
 end
