@@ -23,8 +23,8 @@ class Product < ActiveRecord::Base
 	validates :content_number,		presence: true, if: lambda {|s| !s.content_length_id.nil? }
 	#validates :currency,			presence: true
 	validates :standard_cost,		presence: { message: "must be entered, even if it is 0" }
-	validates :content,				presence: true, length: { maximum: 140 }
-	validates :outcome,				presence: true, length: { maximum: 140 }
+	validates :content,				presence: true, length: { maximum: 125 }
+	validates :outcome,				presence: true, length: { maximum: 125 }
 	validates :created_by,			presence: true,
 									numericality: { greater_than: 0, 
 													allow_nil: false,

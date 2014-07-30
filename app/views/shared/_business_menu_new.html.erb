@@ -6,11 +6,7 @@
 					<span class="column-wide"><span class="label label-info">MENU </span><b class="caret"></b></span>
 				</a>
 				<ul class="dropdown-menu" role="menu">
-					<% if current_user.has_businesses? && !@business.nil? %>
-						<%= render '/shared/business_menu_links' %>
-					<% else %>
-						<%= render '/shared/business_menu_minimized_links' %>
-					<% end %>
+					<%= render '/shared/business_menu_new_links' %>
 				</ul>
 			</li>
 		</div>
@@ -18,11 +14,7 @@
 		<div class="html-menu">
 			<span class="column-wide"><li class="label label-info">MENU</li></span>
 			<li class="divider"></li>
-			<% if current_user.has_businesses? && !@business.nil? %>
-				<%= render '/shared/business_menu_links' %>
-			<% else %>
-				<%= render '/shared/business_menu_minimized_links' %>
-			<% end %>
+			<%= render '/shared/business_menu_new_links' %>
 		</div>
 	</ul>
 </div>

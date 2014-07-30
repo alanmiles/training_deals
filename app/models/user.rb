@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
 		business_count == 1
 	end
 
+	def first_business
+		@business = self.businesses.first
+	end
+
 	private
 
 		def create_remember_token

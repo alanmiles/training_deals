@@ -1,0 +1,33 @@
+<% provide(:title, "Products & services") %>
+<span class="two-line-header"><h1>Products &amp; services</h1></span>
+<h2><%= "for #{@business.name}, #{@business.city}" %></h2>
+
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+
+	<div class="span8">
+		<% if @business.has_products? %>
+
+		<% else %>
+			<%= render 'intro' %>
+
+			<%= link_to "Add a product/service", 
+				new_my_business_product_path(@business), 
+				class: "btn btn-large btn-primary" 
+			%>
+
+		<% end %>
+		
+		<div class="add-top-space navigator">
+		    <%= link_to "<- Business details", my_business_path(@business) %> 
+		    <% if @business.has_products? %>
+		    	| <%= link_to "Add a product/service ->", new_my_business_product_path(@business) %>
+		    <% end %>
+		</div>
+	</div>
+</div>

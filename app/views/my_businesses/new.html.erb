@@ -4,7 +4,7 @@
 <div class="row">
 	<aside class="span3">
 		<section>
-			<%= render "/shared/business_menu" %>
+			<%= render "/shared/business_menu_new" %>
 		</section>
 		<% if current_user.has_businesses? %>
 			<section>		
@@ -20,5 +20,5 @@
 	</div>
 </div> 
 <div class="navigator">
-	<%= link_to "<- My business list", my_businesses_path %> 
+	<%= link_to "<- Cancel", my_businesses_path %> 
 </div>

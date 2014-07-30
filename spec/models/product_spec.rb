@@ -181,7 +181,7 @@ describe Product do
   end
 
   describe "when content is too long" do
-    before { @product.content = "a" * 141 }
+    before { @product.content = "a" * 126 }
     it { should_not be_valid }
   end
 
@@ -191,7 +191,7 @@ describe Product do
   end
 
   describe "when outcome is too long" do
-    before { @product.outcome = "a" * 141 }
+    before { @product.outcome = "a" * 126 }
     it { should_not be_valid }
   end
 

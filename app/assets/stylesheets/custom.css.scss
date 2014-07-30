@@ -4,6 +4,7 @@
 
 $grayMediumLight: #eaeaea;
 $grayMediumText: #757575;
+$blueLabel: #469bcd;
 
 @mixin box_sizing {
   -mox-box-sizing: border-box;
@@ -179,6 +180,7 @@ aside, .sidebar {
     .column-wide {
       .label-info {
         width: 90%;
+        background-color: $blueLabel;
       }
     } 
   }

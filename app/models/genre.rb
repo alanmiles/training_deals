@@ -3,6 +3,7 @@ class Genre < ActiveRecord::Base
 	acts_as_list
 	
 	has_many :categories,			dependent: :destroy
+	has_many :topics,				through: :categories
 
 	accepts_nested_attributes_for 	:categories
 

@@ -1,0 +1,21 @@
+<% provide(:title, "Add product/service") %>
+<span class="two-line-header"><h1>Add a product or service</h1></span>
+<h2><%= "for #{@business.name}, #{@business.city}" %></h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span6">
+		<%= form_for([@business, @product], 
+				url: my_business_products_path(@business)) do |f| %>
+				<%= render 'fields', f: f %>
+			<%= f.submit "Create", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- All products/services", my_business_products_path(@business) %>
+</div>

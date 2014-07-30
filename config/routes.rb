@@ -1,5 +1,8 @@
 TrainingDeals::Application.routes.draw do
   
+  get "products/index"
+  get "products/new"
+  get "products/edit"
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :training_methods do
@@ -22,6 +25,7 @@ TrainingDeals::Application.routes.draw do
     resources :ownerships, except: :show, shallow: true do
       collection { post :sort }
     end
+    resources :products, shallow: true
   end
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'

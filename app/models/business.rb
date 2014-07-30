@@ -68,6 +68,11 @@ class Business < ActiveRecord::Base
 		@symbol = @country.currency['symbol']
 	end
 
+	def has_products?
+		@count = self.products.count
+		@count > 0
+	end
+
 	private
 
 		def check_address?

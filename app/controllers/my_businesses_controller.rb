@@ -5,7 +5,12 @@ class MyBusinessesController < ApplicationController
   before_action :check_ownership,   only: [:show, :edit, :update, :destroy]
 
   def index
-    @businesses = current_user.businesses.order('name')
+    if current_user.has_one_business?
+      @business = current_user.first_business
+      redirect_to my_business_path(@business)
+    else
+      @businesses = current_user.businesses.order('name')
+    end
   end
 
   def show
@@ -41,9 +46,15 @@ class MyBusinessesController < ApplicationController
   end
 
   def destroy
-    @business.destroy
-    flash[:success] = "'#{@business.name}' in '#{@business.city} deleted"
-    redirect_to my_businesses_path
+    if current_user.businesses.count == 2
+      @business.destroy
+      flash[:success] = "#{@business.name}, #{@business.city} deleted. This is your only training business now."
+      redirect_to my_business_path(current_user.first_business)
+    else
+      @business.destroy
+      flash[:success] = "#{@business.name} in #{@business.city} deleted."
+      redirect_to my_businesses_path
+    end
   end
 
   private
