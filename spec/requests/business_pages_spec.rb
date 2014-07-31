@@ -53,6 +53,12 @@ describe "BusinessPages" do
 		  			#redirect to 'Show' page
 
 		  			it { should have_title("#{business_1.name}, #{business_1.city}") }
+		  			
+		  			#Note that 'have_title' checks on Show, Edit pages below also check
+		  			#that the 'mybiz' session has been correctly set up, exposing the
+		  			#current_business method.  The form-titles call 'current_business'
+		  			#rather than @business.
+
 		  			it { should have_link("Add another business ->", href: new_my_business_path) }
 		  			it { should_not have_link("<- My business list", my_businesses_path) }
 		  		
@@ -296,7 +302,7 @@ describe "BusinessPages" do
 
 		        before { visit edit_my_business_path(changed_business) }
 
-	          	it { should have_title('Edit business') }
+	          	it { should have_title("Edit #{changed_business.name}, #{changed_business.city}") }
 	          	it { should have_content('Edit business') }
 	          	it { should have_link('<- Cancel', href: my_business_path(changed_business)) }
 	          	it { should have_unchecked_field("business_hide_address") }
@@ -352,7 +358,7 @@ describe "BusinessPages" do
 		                	click_button "Confirm"
 		              	end
 
-		              	it { should have_title('Edit business')}
+		              	it { should have_title("Edit #{changed_business.name}, #{changed_business.city}")}
 		              	it { should have_content('error') }
 		              	specify { expect(changed_business.reload.name).to eq old_name }
 		            end
@@ -535,7 +541,7 @@ describe "BusinessPages" do
 						valid_signin(user)
 					end
 					
-					specify { expect(page).to have_title("Edit business") }
+					specify { expect(page).to have_title("Edit #{unauthorized_business.name}, #{unauthorized_business.city}") }
 		
 
 					describe "but don't go to this Edit page when signing in the next time" do
@@ -782,7 +788,7 @@ describe "BusinessPages" do
 
 			before { visit edit_my_business_path(founder_biz) }
 
-			it { should have_title("Edit business") }
+			it { should have_title("Edit #{founder_biz.name}, #{founder_biz.city}") }
 			it { should have_selector('input#business_name') }
 
 			describe "and update successfully" do

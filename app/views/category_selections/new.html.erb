@@ -1,0 +1,15 @@
+<% provide(:title, "Select category") %>
+<h1>Product: select category</h1>
+<h2>Genre selected: <%= @genre.description %></h2>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_tag category_selections_path do %>
+
+			<%= label_tag :category %>
+			<%= collection_select :category, :id, @categories, :id, :description %>
+
+			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
+		<% end %>
+	</div>
+</div>

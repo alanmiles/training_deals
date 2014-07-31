@@ -1,0 +1,31 @@
+<%= render 'shared/error_messages', object: f.object %>
+<div class="entry-page">
+	<div class="paragraph">
+		<div class="subject">Genre:</div>
+		<div class="detail"><%= @genre.description %></div>
+	</div>
+	<div class="paragraph">
+		<div class="subject">Category:</div>
+		<div class="detail"><%= @category.description %></div>
+	</div>
+
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= f.label :topic_id %></span>
+		</div>
+		<div class="box-fill">
+			<%= collection_select(:product, :topic_id, 
+					@topics, :id, :description) %>
+		</div>
+	</div>
+
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= f.label :title %></span>
+		</div>
+		<div class="box-fill"><%= f.text_field :title %></div>
+	</div>	
+	<div class="entry">
+		<%= f.hidden_field :created_by %>
+	</div>
+</div>

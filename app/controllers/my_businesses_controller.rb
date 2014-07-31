@@ -5,19 +5,22 @@ class MyBusinessesController < ApplicationController
   before_action :check_ownership,   only: [:show, :edit, :update, :destroy]
 
   def index
-    if current_user.has_one_business?
+    if current_user.has_one_business? 
       @business = current_user.first_business
       redirect_to my_business_path(@business)
     else
       @businesses = current_user.businesses.order('name')
+      release_mybiz
     end
   end
 
   def show
+    store_mybiz(@business.id)
     @owners = @business.users
   end
 
   def new
+    release_mybiz
   	@business = Business.new
     @business.created_by = current_user.id
   end

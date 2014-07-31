@@ -1,0 +1,14 @@
+<% provide(:title, "Select genre") %>
+<h1>Product: select genre</h1>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_tag genre_selections_path do %>
+
+			<%= label_tag :genre %>
+			<%= collection_select :genre, :id, @genres, :id, :description %>
+
+			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
+		<% end %>
+	</div>
+</div>

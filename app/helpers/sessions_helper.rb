@@ -40,6 +40,23 @@ module SessionsHelper
 		session[:return_to] = request.url if request.get?
 	end
 
+	def store_mybiz(business)
+		session[:mybiz] = business
+	end
+
+	def release_mybiz
+		session[:mybiz] = nil
+	end
+
+	def current_business?
+		session[:mybiz] != nil
+	end
+
+	def current_business
+		store_mybiz(@business.id) unless current_business?
+		@current_business = Business.find(session[:mybiz])
+	end
+
 	def valid_team_member?(business)
 		record = business.ownerships.find_by(user_id: current_user.id)
 		!record.nil?

@@ -26,8 +26,8 @@ describe "ProductPages" do
 				it { should have_selector('h1', "Products & services")}
 				it { should have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}") }
 				it { should have_content("You now need to list all the training resources and programmes offered by your business.") }
-				it { should have_link("<- Business details", my_business_path(founder_biz)) }
-				it { should have_link("Add a product/service", new_my_business_product_path(founder_biz)) }
+				it { should have_link("<- Business details", href: my_business_path(founder_biz)) }
+				it { should have_link("Add a product/service", href: new_my_business_product_path(founder_biz)) }
 			end
 		end
 

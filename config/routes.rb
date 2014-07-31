@@ -1,8 +1,7 @@
 TrainingDeals::Application.routes.draw do
   
-  get "products/index"
-  get "products/new"
-  get "products/edit"
+  get "topic_selections/new"
+  get "category_selections/new"
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :training_methods do
@@ -25,8 +24,16 @@ TrainingDeals::Application.routes.draw do
     resources :ownerships, except: :show, shallow: true do
       collection { post :sort }
     end
-    resources :products, shallow: true
+    resources :products, shallow: true do
+      get 'newprod', on: :new              #'new' route - html only
+    end
   end
+  resources :genre_selections, only: [:new, :create] do
+    resources :category_selections, only: [:new, :create]
+  end
+  resources :category_selections, only: [:new, :create] 
+  
+
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'
   match '/signin',          to: 'sessions#new',             via: 'get'

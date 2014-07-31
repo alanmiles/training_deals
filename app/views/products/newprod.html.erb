@@ -9,17 +9,11 @@
 		</section>
 	</aside>
 	<div class="span6">
-		<div class="js-content">
-
-			<%= form_for([@business, @product], 
-					url: my_business_products_path(@business)) do |f| %>
-				<%= render 'fields_js', f: f %>
-				<%= f.submit "Create", class: "btn btn-primary" %>
-			<% end %>
-		</div>
-		<div class="html-content">
-			<%= render 'newprod_redirect' %>
-		</div>
+		<%= form_for([@business, @product], 
+				url: my_business_products_path(@business)) do |f| %>
+				<%= render 'fields_ht', f: f %>
+			<%= f.submit "Create", class: "btn btn-primary" %>
+		<% end %>
 	</div>
 </div> 
 <div class="navigator">

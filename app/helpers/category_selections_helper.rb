@@ -1,0 +1,2 @@
+module CategorySelectionsHelper
+end
