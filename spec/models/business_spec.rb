@@ -151,4 +151,6 @@ describe Business do
       it { should be_valid }
     end
   end
+
+  pending "missing tests for website url validation"
 end

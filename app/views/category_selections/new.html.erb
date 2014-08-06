@@ -1,15 +1,30 @@
 <% provide(:title, "Select category") %>
 <h1>Product: select category</h1>
+<% unless session[:product].nil? %>
+	<h2><%= "Classification change for '#{@product.title}'" %></h2>
+<% end %>
 <h2>Genre selected: <%= @genre.description %></h2>
 
 <div class="row">
-	<div class="span6 offset3">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span8">
 		<%= form_tag category_selections_path do %>
 
 			<%= label_tag :category %>
-			<%= collection_select :category, :id, @categories, :id, :description %>
-
+			<% if @category.nil? %>
+				<%= collection_select :category, :id, @categories, :id, :description %>
+			<% else %>
+				<%= collection_select :category, :id, @categories, :id, :description,
+					{ selected: @category.id } %>
+			<% end %>
 			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
 		<% end %>
 	</div>
+</div>
+<div class="navigator">
+	<%= link_to "<- Back to genre selection", new_genre_selection_path %>
 </div>

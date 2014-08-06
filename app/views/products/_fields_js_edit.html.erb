@@ -1,0 +1,10 @@
+<div class="paragraph">
+		<div class="subject">Classification:</div>
+	<div class="detail add-bottom-space">
+		<%= @product.topic.classification %><span class="js-link">(change)</span>
+	</div>
+</div>	
+<div class="js-link-reveal">
+	<%= render 'classification', f: f %>
+</div>
+	

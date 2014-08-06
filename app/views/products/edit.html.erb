@@ -1,2 +1,29 @@
-<h1>Products#edit</h1>
-<p>Find me in app/views/products/edit.html.erb</p>
+<% provide(:title, "Edit '#{@product.title}'") %>
+<span class="two-line-header"><h1>Edit product details</h1></span>
+<h2><%= "for #{@business.name}, #{@business.city}" %></h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span8">
+		<%= form_for @product do |f| %>
+			<%= render 'shared/error_messages', object: f.object %>
+			<div class="entry-page">
+				<div class="js-content">
+					<%= render 'fields_js_edit', f: f %>
+				</div>
+				<div class="html-content">
+					<%= render 'fields_ht_edit', f: f %>
+				</div>
+				<%= render 'fields', f: f %>
+			</div>
+			<%= f.submit "Confirm", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div> 
+<div class="navigator">
+	<%= link_to "<- Cancel", product_path(@product) %>
+</div>

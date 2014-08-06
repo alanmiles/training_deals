@@ -198,6 +198,25 @@ aside, .sidebar {
   display: none;
 }
 
+.js-link {
+  padding-left: 20px;
+  color: #1378b1;
+  cursor: pointer;
+  cursor: hand;
+  &:hover {
+    color: #233d87;
+    text-decoration: underline;
+  } 
+}
+
+.js-link-reveal {
+  display: none;
+}
+
+.hidden-content {
+  display: none;
+}
+
 /* forms */
 
 form.button_to {
@@ -259,6 +278,10 @@ input {
 
 .add-top-space {
   margin-top: 15px;
+}
+
+.add-bottom-space {
+  margin-bottom: 15px;
 }
 
 .paragraph {
@@ -340,8 +363,24 @@ input {
     width: 65%;
     font-size: 0.9em;
     color: $grayMediumText;
-  } 
+  }
+  .half-line {
+    float: left;
+    display: inline-block;
+    width: 37%;
+    .rubric {
+      display: inline-block;
+      vertical-align: top;
+      padding-top: 5px;
+      width: 20%;
+    }
+    .filler {
+      display: inline-block;
+      width: 70%;
+    }
+  }
 }
+
 
 /* miscellaneous */
 
@@ -378,6 +417,13 @@ input {
   h1 {
     margin-bottom: 5px;
   }
+}
+
+.heading {
+  font-weight: bold;
+  font-size: 1.2em;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted crimson;
 }
 
 

@@ -12,7 +12,19 @@
 
 	<div class="span8">
 		<% if @business.has_products? %>
-
+ 			<ul class="lists">
+ 				<% @products.each do |product| %>
+					<%= content_tag_for :li, product do %>
+						<%= product.title %>
+						<% unless product.current? %>
+							<span class="check-notice"> - No longer listed - </span>
+						<% end %>
+						| <%= link_to "details", product_path(product), id: "sh_#{product.id}" %>
+						| <%= link_to "delete", product, method: :delete,
+								data: { confirm: "Are you sure?" } %>
+					<% end %>
+				<% end %>
+ 			</ul>
 		<% else %>
 			<%= render 'intro' %>
 

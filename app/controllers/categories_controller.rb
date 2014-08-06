@@ -20,6 +20,7 @@ class CategoriesController < ApplicationController
       flash[:success] = "'#{@category.description}' added to the '#{@genre.description}' genre"
       redirect_to genre_categories_url(@genre)
     else
+      @category.status = 1
       render 'new'
     end
   end

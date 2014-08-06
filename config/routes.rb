@@ -31,7 +31,10 @@ TrainingDeals::Application.routes.draw do
   resources :genre_selections, only: [:new, :create] do
     resources :category_selections, only: [:new, :create]
   end
-  resources :category_selections, only: [:new, :create] 
+  resources :category_selections, only: [:new, :create] do
+    resources :topic_selections, only: [:new, :create]
+  end
+  resources :topic_selections, only: [:new, :create]
   
 
   root  'static_pages#home'

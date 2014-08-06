@@ -1,0 +1,31 @@
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= label_tag :genre %></span>
+	</div>
+	<div class="box-fill">
+		<%= collection_select :genre, :genre_id, @genres, 
+			:id, :description, prompt: true %>
+	</div>
+</div>
+<div class="hidden-content">
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= label_tag :category %></span>
+		</div>
+		<div class="box-fill">
+			<%= grouped_collection_select :topic, :category_id, 
+				@genres, :categories, :description, :id, 
+				:description, include_blank: true %>
+		</div>
+	</div>
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= f.label :topic_id %></span>
+		</div>
+		<div class="box-fill">
+			<%= f.grouped_collection_select :topic_id, @categories, 
+				:topics, :description, :id, :description, include_blank: true %>
+		</div>
+	</div>
+</div>
+

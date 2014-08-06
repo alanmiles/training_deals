@@ -24,7 +24,7 @@
 		<% end %>
 		<div class="paragraph">
 			<div class="subject">Business name:</div>
-			<div class="detail"><%= @business.name %></div>
+			<div class="detail heading"><%= @business.name %></div>
 		</div>
 		<div class="paragraph">
 			<div class="subject">About us:</div>
@@ -54,6 +54,15 @@
 			</div>
 			<div class="detail"><%= @business.owners_list %></div>
 		</div>
+		<% if @business.website? %>
+			<div class="paragraph">
+				<div class="subject">Website:</div>
+				<div class="detail">
+					<%= link_to(@business.website, "#{@business.website}", target: "_blank") %>
+				</div>
+			</div>
+		<% end %>
+
 	</div>
 </div>
 <div class="navigator add-top-space">	

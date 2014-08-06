@@ -28,6 +28,17 @@ class Business < ActiveRecord::Base
 									numericality: { greater_than: 0, 
 													allow_nil: false,
 													only_integer: true }
+	validates :website, 			allow_blank: true, 
+		uri: { format: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix }
+
+	def website= url_str
+	  unless url_str.blank?
+	    unless url_str.split(':')[0] == 'http' || url_str.split(':')[0] == 'https'
+	        url_str = "http://" + url_str
+	    end
+	  end  
+	  write_attribute :website, url_str
+	end
 
 	def full_address
 		address = [self.street_address, self.city]
@@ -65,7 +76,13 @@ class Business < ActiveRecord::Base
 
 	def currency_symbol
 		@country = Country.find_country_by_name(country)
-		@symbol = @country.currency['symbol']
+		#@symbol = @country.currency['symbol']
+		if @country.currency['symbol'].nil?
+			@symbol = self.currency_code
+		else
+			@symbol = @country.currency['symbol']
+		end
+		return @symbol
 	end
 
 	def has_products?

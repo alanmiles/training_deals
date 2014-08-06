@@ -8,14 +8,22 @@
 			<%= render "/shared/business_menu" %>
 		</section>
 	</aside>
-	<div class="span6">
+	<div class="span8">
 		<%= form_for([@business, @product], 
 				url: my_business_products_path(@business)) do |f| %>
+			<%= render 'shared/error_messages', object: f.object %>
+			<div class="entry-page">
 				<%= render 'fields_ht', f: f %>
+				<%= render 'fields', f: f %>
+			</div>	
 			<%= f.submit "Create", class: "btn btn-primary" %>
 		<% end %>
 	</div>
 </div> 
 <div class="navigator">
-	<%= link_to "<- All products/services", my_business_products_path(@business) %>
+	<% if @business.has_products? %>
+		<%= link_to "<- All products/services", my_business_products_path(@business) %>
+	<% else %>
+		<%= link_to "<- Products/services intro", my_business_products_path(@business) %>
+	<% end %>
 </div>

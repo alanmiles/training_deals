@@ -105,14 +105,14 @@ ActiveRecord::Schema.define(version: 20140724230151) do
     t.string   "qualification"
     t.integer  "training_method_id"
     t.integer  "duration_id"
-    t.decimal  "duration_number"
+    t.decimal  "duration_number",    precision: 6, scale: 2
     t.integer  "content_length_id"
-    t.decimal  "content_number"
+    t.decimal  "content_number",     precision: 6, scale: 2
     t.string   "currency"
-    t.decimal  "standard_cost"
+    t.decimal  "standard_cost",      precision: 8, scale: 2
     t.text     "content"
     t.text     "outcome"
-    t.boolean  "current",            default: true
+    t.boolean  "current",                                    default: true
     t.string   "image"
     t.string   "web_link"
     t.integer  "created_by"

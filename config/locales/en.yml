@@ -20,4 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      product:
+        content: "Description"
+        outcome: "Benefits/results"
+        training_method: "Format"
+        standard_cost: "Standard price"

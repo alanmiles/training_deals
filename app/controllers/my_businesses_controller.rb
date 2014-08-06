@@ -32,6 +32,7 @@ class MyBusinessesController < ApplicationController
       flash[:success] = "Successfully added. Please check all the details carefully."
       redirect_to my_business_path(@business)
     else
+      @business.created_by = current_user.id
       render 'new'
     end
   end

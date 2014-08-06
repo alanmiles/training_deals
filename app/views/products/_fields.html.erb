@@ -1,0 +1,95 @@
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :title %></span>
+	</div>
+	<div class="box-fill"><%= f.text_field :title %></div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :ref_code, "Our reference code" %>
+	</div>
+	<div class="box-fill half-line"><%= f.text_field :ref_code %></div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= label_tag :training_method_id, "Format" %></span>
+	</div>
+	<div class="box-fill half-line">
+		<%= f.collection_select :training_method_id, @methods, 
+			:id, :description, prompt: true %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :content %></span>
+	</div>
+	<div class="box-fill"><%= f.text_area :content %></div>
+</div>	
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :outcome, "Benefits/results" %></span>
+	</div>
+	<div class="box-fill"><%= f.text_area :outcome %></div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :qualification %>
+	</div>
+	<div class="box-fill"><%= f.text_field :qualification %></div>
+</div>
+<div class="entry">
+	<div class="add-this"><%= f.label :duration_id, "Duration (time)" %></div>
+	<div class="half-line">
+		<span class="rubric">Unit</span>
+		<span class="filler"><%= f.collection_select :duration_id, @durations, 
+			:id, :time_unit, include_blank: "Not specified" %></span>
+	</div>
+	<div class="half-line">
+		<span class="rubric">Qty</span>
+		<span class="filler"><%= f.text_field number_with_precision(:duration_number, strip_insignificant_zeros: true) %></span>
+	</div>
+</div>	
+<div class="entry">
+	<div class="add-this"><%= f.label :content_length_id, "Length (content)" %></div>
+	<div class="half-line">
+		<span class="rubric">Unit</span>
+		<span class="filler"><%= f.collection_select :content_length_id, @lengths, 
+			:id, :description, include_blank: "Not specified" %></span>
+	</div>
+	<div class="half-line">
+		<span class="rubric">Qty</span>
+		<span class="filler"><%= f.text_field :content_number %></span>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :standard_cost, 
+			"Standard price (#{@business.currency_symbol})" %></span>
+	</div>
+	<div class="box-fill half-line"><%= f.text_field :standard_cost %></div>
+</div>
+<% unless params[:action] == 'new' || params[:action] == 'newprod' %>
+	<div class="entry">
+		<div class="add-this"><%= f.label :current %></div>
+		<div class="cbox-fill"><%= f.check_box :current %></div>
+		<div class="cbox-info">
+			<% if @product.current? %>
+				<%= current_checked %>
+			<% else %>
+				<%= current_unchecked %>
+			<% end %>
+		</div>
+	</div>
+<% end %>
+<div class="entry">
+	<div class="add-this"><%= f.label :web_link %></div>
+	<div class="box-fill"><%= f.text_field :web_link %></div>
+</div>
+<div class="entry">
+	<div class="add-this"><%= f.label :image %></div>
+	<div class="box-fill"><%= f.text_field :image %></div>
+</div>	
+<div class="entry">
+	<%= f.hidden_field :created_by %>
+	<%= f.hidden_field :currency %>
+</div>

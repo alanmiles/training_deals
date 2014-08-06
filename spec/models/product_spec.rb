@@ -258,4 +258,6 @@ describe Product do
     
     it { should be_valid }
   end
+
+  pending "missing tests for web_link url validation"
 end

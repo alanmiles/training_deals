@@ -20,6 +20,7 @@ class OwnershipsController < ApplicationController
     if @member.nil?
       flash.now[:error] = "Sorry, we can't find this person in the HROOMPH listings.  
           Please check that he/she has signed up to HROOMPH with this email address."
+      @ownership.created_by = current_user.id
       render 'new'
     else 
       @ownership.user_id = @member.id
@@ -27,6 +28,7 @@ class OwnershipsController < ApplicationController
         flash[:success] = "#{@ownership.user.name} added to the team."
         redirect_to my_business_ownerships_url(@business)
       else
+        @ownership.created_by = current_user.id
         render 'new'
       end
     end

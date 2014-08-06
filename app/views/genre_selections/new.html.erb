@@ -1,14 +1,34 @@
 <% provide(:title, "Select genre") %>
 <h1>Product: select genre</h1>
-
+<% unless session[:product].nil? %>
+	<h2><%= "Classification change for '#{@product.title}'" %></h2>
+<% end %>
 <div class="row">
-	<div class="span6 offset3">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span8">
+		
 		<%= form_tag genre_selections_path do %>
 
 			<%= label_tag :genre %>
-			<%= collection_select :genre, :id, @genres, :id, :description %>
+			<% if @genre.nil? %>
+				<%= collection_select(:genre, :id, @genres, :id, :description) %>
+			<% else %>
+				<%= collection_select :genre, :id, @genres, :id, :description,
+					{ selected: @genre.id } %>
+			<% end %>
 
 			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
 		<% end %>
 	</div>
+</div>
+<div class="navigator">
+	<% if session[:product].nil? %>
+		<%= link_to "<- Back", new_my_business_product_path(current_business) %>
+	<% else %>
+		<%= link_to "<- Back to product edit", edit_product_path(session[:product]) %>
+	<% end %>
 </div>

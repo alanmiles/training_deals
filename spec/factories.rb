@@ -62,14 +62,16 @@ FactoryGirl.define do
 
 	factory :product do
 		business
-		title "Cold calling"
-		ref_code "AAA/0001"
+		sequence(:title)				{ |n| "Product_#{n}" }
+		#ref_code "AAA/0001"
 		topic
 		training_method
-		content_quantify 1
-		content_type "Module"
+		content_number 5
+		content_length
+		currency "GBP"
 		standard_cost 100.00
 		content "Course content"
 		outcome "Course outcome"
+		created_by 1
 	end			
 end

@@ -1,0 +1,26 @@
+<% provide(:title, "Select topic") %>
+<h1>Product: select topic</h1>
+<% unless session[:product].nil? %>
+	<h2><%= "Classification change for '#{@product.title}'" %></h2>
+<% end %>
+<h2>Genre: <%= @genre.description %> >> Category: <%= @category.description %></h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span8">
+		<%= form_tag topic_selections_path do %>
+
+			<%= label_tag :topic %>
+			<%= collection_select :topic, :id, @topics, :id, :description %>
+
+			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
+		<% end %>
+	</div>
+</div>
+<div class="navigator">
+	<%= link_to "<- Back to category selection", new_category_selection_path %>
+</div>

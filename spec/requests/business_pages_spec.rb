@@ -61,8 +61,9 @@ describe "BusinessPages" do
 
 		  			it { should have_link("Add another business ->", href: new_my_business_path) }
 		  			it { should_not have_link("<- My business list", my_businesses_path) }
-		  		
+
 		  			describe "Business menu" do  #full on 'Show' page
+
 			        	it { should have_link('Business home page', href: my_businesses_path) }
 			        	it { should have_link('Products', href: my_business_products_path(business_1)) }
 			        	it { should have_link('User home page', href: user_path(user)) }

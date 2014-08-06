@@ -1,10 +1,13 @@
 class Product < ActiveRecord::Base
 
+	#attr_accessor :genre_id
+	#attr_accessor :category_id
+	
 	belongs_to :business
 	belongs_to :topic
 	belongs_to :training_method
 	belongs_to :duration
-	belongs_to :contact_length
+	belongs_to :content_length
 
 	before_create	:add_currency
 
@@ -29,7 +32,29 @@ class Product < ActiveRecord::Base
 									numericality: { greater_than: 0, 
 													allow_nil: false,
 													only_integer: true }
+	validates :web_link, 			allow_blank: true, 
+		uri: { format: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix }
 
+	def web_link= url_str
+	  unless url_str.blank?
+	    unless url_str.split(':')[0] == 'http' || url_str.split(':')[0] == 'https'
+	        url_str = "http://" + url_str
+	    end
+	  end  
+	  write_attribute :web_link, url_str
+	end
+
+	def ref_code_formatted
+		if ref_code?
+			ref_code
+		else
+			"No reference code entered"
+		end
+	end
+
+	def formatted_duration_number
+		sprintf("%g", duration_number)
+	end
 
 	private
 

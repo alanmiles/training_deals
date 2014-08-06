@@ -16,4 +16,10 @@ class Topic < ActiveRecord::Base
 	validates :status,				presence: true,
 									numericality: { range: 1..3,
 													only_integer: true }
+
+	def classification
+		category_name = self.category.description
+		genre_name = self.category.genre.description
+		return genre_name + " >> " + category_name + " >> " + self.description
+	end
 end

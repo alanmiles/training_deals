@@ -1,0 +1,78 @@
+<% provide(:title, "#{@product.title}") %>
+<span class="two-line-header"><h1>Product details</h1></span>
+<h2><%= "#{@business.name}, #{@business.city}" %></h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="present span8">
+		<div class="paragraph">
+			<div class="subject">Title:</div>
+			<div class="detail heading">
+				<%= @product.title %>
+				<% unless @product.current? %>
+					<span class="check-notice">(de-listed)</span>
+				<% end %>
+			</div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Classification:</div>
+			<div class="detail"><%= @product.topic.classification %></div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Reference code:</div>
+			<div class="detail"><%= @product.ref_code_formatted %></div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Format:</div>
+			<div class="detail">
+				<%= @product.training_method.description %>
+				<% if @product.content_length_id? %>
+					- <%= pluralize(sprintf("%g", @product.content_number), 
+					@product.content_length.description.downcase) %>
+				<% end %>
+				<% if @product.duration_id? %>
+					- <%= pluralize(sprintf("%g", @product.duration_number), 
+					@product.duration.time_unit.downcase) %>
+				<% end %>
+			</div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Description:</div>
+			<div class="detail"><%= @product.content %></div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Benefits/results:</div>
+			<div class="detail"><%= @product.outcome %></div>
+		</div>
+		<% if @product.qualification? %>
+			<div class="paragraph">
+				<div class="subject">Qualification:</div>
+				<div class="detail" id="qualification"><%= @product.qualification %></div>
+			</div>
+		<% end %>
+		<div class="paragraph">
+			<div class="subject">Standard price:</div>
+			<div class="detail">
+				<%= @business.currency_symbol %> 
+				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+			</div>
+		</div>
+		<% if @product.web_link? %>
+			<div class="paragraph">
+				<div class="subject">Web-link:</div>
+				<div class="detail">
+					<%= link_to(@product.web_link, "#{@product.web_link}", target: "_blank") %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
+<div class="navigator add-top-space">	
+	<%= link_to "<- All products/services", my_business_products_path(@business) %>
+	| <%= link_to "Update ->", edit_product_path(@product) %>
+</div>
+

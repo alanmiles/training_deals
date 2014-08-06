@@ -17,6 +17,7 @@ class GenresController < ApplicationController
       flash[:success] = "'#{@genre.description}' added"
       redirect_to genres_path
     else
+      @genre.status = 1
       render 'new'
     end
   end

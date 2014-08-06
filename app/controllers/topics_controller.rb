@@ -24,6 +24,7 @@ class TopicsController < ApplicationController
       	added to the '#{@category.description}' category"
       redirect_to category_topics_url(@category)
     else
+      @topic.status = 1
       render 'new'
     end
   end
