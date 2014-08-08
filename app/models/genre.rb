@@ -18,4 +18,15 @@ class Genre < ActiveRecord::Base
 	validates :status,				presence: true,
 									numericality: { range: 1..3,
 													only_integer: true }
+
+	
+	def self.with_topics
+		self.where('genres.status = 1')
+			.joins(:topics)
+			.merge(Topic.approved)
+			.having('topics.count >0')
+			.group('genres.id')
+			.order('position')
+	end
+
 end

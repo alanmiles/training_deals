@@ -1,0 +1,26 @@
+<%= link_to image_tag("hroomph_logo.png", 
+					alt: "HROOMPH"), root_path, id: "logo" %>
+<nav>
+	<ul class="nav pull-right">
+		<li id="home-1"><%= link_to "Home",	root_path	%></li>
+		<% if signed_in? %>
+			<li id="fat-menu" class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<span id="user-id"><%= current_user.name %></span>
+					<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><%= link_to "Profile", current_user %></li>
+					<li><%= link_to "Settings", edit_user_path(current_user) %></li>
+					<li class="divider"></li>
+					<li>
+						<%= link_to "Sign out", signout_path, method: "delete" %>
+					</li>
+				</ul>
+			</li>
+			<li class="padtop10"><%= gravatar_for current_user, size: 25 %></li>
+		<% else %>
+			<li><%= link_to "Sign in", signin_path %></li>
+		<% end %>
+	</ul>
+</nav>

@@ -13,8 +13,10 @@ class ProductsController < ApplicationController
   	@product = @business.products.new
     @product.created_by = current_user.id
     @product.currency = @business.currency_code
-    @genres = Genre.where("status =?", 1).order('position')
-    @categories = Category.where("status =?", 1).order('description')
+    #@genres = Genre.where("status =?", 1).order('position')
+    @genres = Genre.with_topics
+    #@categories = Category.where("status =?", 1).order('description')
+    @categories = Category.with_topics
     @topics = Topic.where("status =?", 1).order('description')
     @methods = TrainingMethod.all.order('position')
     @durations = Duration.all.order('position')
@@ -48,8 +50,10 @@ class ProductsController < ApplicationController
       if session[:category_select] == nil
         @product.created_by = current_user.id
         @product.currency = @business.currency_code
-        @genres = Genre.where("status =?", 1).order('position')
-        @categories = Category.where("status =?", 1).order('description')
+        #@genres = Genre.where("status =?", 1).order('position')
+        #@categories = Category.where("status =?", 1).order('description')
+        @genres = Genre.with_topics
+        @categories = Category.with_topics
         @topics = Topic.where("status =?", 1).order('description')
       
         render 'new'
@@ -75,8 +79,10 @@ class ProductsController < ApplicationController
     session[:genre_select] = @product.topic.category.genre_id
     session[:product] = @product.id
     @business = Business.find(@product.business_id)
-    @genres = Genre.where("status =?", 1).order('position')
-    @categories = Category.where("status =?", 1).order('description')
+    #@genres = Genre.where("status =?", 1).order('position')
+    #@categories = Category.where("status =?", 1).order('description')
+    @genres = Genre.with_topics
+    @categories = Category.with_topics
     @topics = Topic.where("status =?", 1).order('description')
     @methods = TrainingMethod.all.order('position')
     @durations = Duration.all.order('position')
@@ -91,8 +97,10 @@ class ProductsController < ApplicationController
       redirect_to product_path(@product)
     else
       @business = Business.find(@product.business_id)
-      @genres = Genre.where("status =?", 1).order('position')
-      @categories = Category.where("status =?", 1).order('description')
+      #@genres = Genre.where("status =?", 1).order('position')
+      #@categories = Category.where("status =?", 1).order('description')
+      @genres = Genre.with_topics
+      @categories = Category.with_topics
       @topics = Topic.where("status =?", 1).order('description')
       @methods = TrainingMethod.all.order('position')
       @durations = Duration.all.order('position')

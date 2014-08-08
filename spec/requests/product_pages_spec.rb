@@ -22,9 +22,11 @@ describe "ProductPages" do
 	let!(:genre_1)			{ FactoryGirl.create(:genre, status: 1) }
 	let!(:genre_2)			{ FactoryGirl.create(:genre, description: 'Work', status: 1) }
 	let!(:pending_genre)		{ FactoryGirl.create(:genre, description: 'Play', status: 3) }
+	let!(:no_topic_genre)		{ FactoryGirl.create(:genre, description: 'Leisure', status: 1) }
 	let!(:genre_1_cat_1)		{ FactoryGirl.create(:category, genre: genre_1, status: 1) }
 	let!(:genre_1_cat_2)		{ FactoryGirl.create(:category, genre: genre_1, status: 1) }
 	let!(:genre_1_pending_cat)	{ FactoryGirl.create(:category, genre: genre_1, status: 2) }
+	let!(:genre_1_no_topic_cat)	{ FactoryGirl.create(:category, genre: genre_1, status: 1) }
 	let!(:genre_2_cat_1)		{ FactoryGirl.create(:category, genre: genre_2, status: 1) }
 	let!(:genre_2_cat_2)		{ FactoryGirl.create(:category, genre: genre_2, status: 1) }
 	let!(:genre_1_cat_1_topic_1)	{ FactoryGirl.create(:topic, category: genre_1_cat_1, status: 1) }
@@ -146,6 +148,8 @@ describe "ProductPages" do
 			        	it { should have_link('User home page', href: user_path(administrator)) }
 						it { should have_select('genre_id', text: genre_1.description) }
 						it { should have_select('genre_id', text: genre_2.description) }
+						it { should_not have_select('genre_id', text: pending_genre.description) }
+						it { should_not have_select('genre_id', text: no_topic_genre.description) }
 			        	
 						describe "'Back' link redirects to New page" do
 
@@ -170,6 +174,7 @@ describe "ProductPages" do
 				        	it { should have_link('User home page', href: user_path(administrator)) }
     						it { should have_select('category_id', text: genre_1_cat_1.description) }
  							it { should_not have_select('category_id', text: genre_2_cat_1.description) }
+ 							it { should_not have_select('category_id', text: genre_1_no_topic_cat.description) }
     					
  							describe "'Back' link redirects to Genre Selection page" do
 

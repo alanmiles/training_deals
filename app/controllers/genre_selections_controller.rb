@@ -2,7 +2,8 @@ class GenreSelectionsController < ApplicationController
   def new
   	session[:category_select] = nil
   	@genre = Genre.find(session[:genre_select]) unless session[:genre_select].nil?
-  	@genres = Genre.where("status = ?", 1).order('position') 
+  	#@genres = Genre.where("status = ?", 1).order('position') 
+    @genres = Genre.with_topics
   	@product = Product.find(session[:product]) unless session[:product].nil?
     @business = current_business
   end

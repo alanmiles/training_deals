@@ -1,6 +1,8 @@
 class Topic < ActiveRecord::Base
 
 	belongs_to :category
+	scope :approved, -> { where(status: 1) }
+
 	has_many :products   #don't allow deletion of topic if related products
 
 	validates :category,			presence: true
@@ -22,4 +24,5 @@ class Topic < ActiveRecord::Base
 		genre_name = self.category.genre.description
 		return genre_name + " >> " + category_name + " >> " + self.description
 	end
+
 end

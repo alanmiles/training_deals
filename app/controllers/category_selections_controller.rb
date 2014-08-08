@@ -7,8 +7,9 @@ class CategorySelectionsController < ApplicationController
       @genre = Genre.find(session[:genre_select])
     end
     @category = Category.find(session[:category_select]) unless session[:category_select].nil?
-  	@categories = @genre.categories.where("categories.status = ?", 1).order('categories.description')
-  	@product = Product.find(session[:product]) unless session[:product].nil?
+  	#@categories = @genre.categories.where("categories.status = ?", 1).order('categories.description')
+  	@categories = @genre.categories.with_topics
+    @product = Product.find(session[:product]) unless session[:product].nil?
     @business = current_business
   end
 

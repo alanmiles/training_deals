@@ -101,6 +101,21 @@ p {
   padding-top: 8px;
 }
 
+.sign-out {
+  input {
+    color: $grayLight;
+    background: none;
+    padding: 5px;
+    margin: 8px;
+    line-height: 1;
+    border: none;
+    float: left;
+    &:hover {
+      color: $grayMediumLight;
+    }
+  }
+}
+
 /* footer */
 
 footer {
