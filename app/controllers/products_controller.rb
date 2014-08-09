@@ -1,6 +1,12 @@
 class ProductsController < ApplicationController
+  
+  before_action :not_signed_in,               only: [:index, :show, :new, :edit]
+  before_action :illegal_action,              only: [:create, :update, :destroy]
+  before_action :product_team_member_illegal, only: [:show, :edit, :update, :destroy]
+  before_action :team_member,                 only: [:index, :new, :create]
+
   def index
-  	@business = Business.find(params[:my_business_id])
+  	#@business = Business.find(params[:my_business_id])
   	@products = @business.products.order("title")
     session[:genre_select] = nil
     session[:category_select] = nil
@@ -9,13 +15,11 @@ class ProductsController < ApplicationController
 
   def new
     session[:product] = nil
-  	@business = Business.find(params[:my_business_id])
+  	#@business = Business.find(params[:my_business_id])
   	@product = @business.products.new
     @product.created_by = current_user.id
     @product.currency = @business.currency_code
-    #@genres = Genre.where("status =?", 1).order('position')
     @genres = Genre.with_topics
-    #@categories = Category.where("status =?", 1).order('description')
     @categories = Category.with_topics
     @topics = Topic.where("status =?", 1).order('description')
     @methods = TrainingMethod.all.order('position')
@@ -37,7 +41,7 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @business = Business.find(params[:my_business_id])
+    #@business = Business.find(params[:my_business_id])
     @product = @business.products.build(product_params)
     if @product.save
       session[:category_select] = nil
@@ -70,17 +74,15 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
-    @business = Business.find(@product.business_id)
+    #@product = Product.find(params[:id])
+    #@business = Business.find(@product.business_id)
   end
 
   def edit
-    @product = Product.find(params[:id])
+    #@product = Product.find(params[:id])
     session[:genre_select] = @product.topic.category.genre_id
     session[:product] = @product.id
-    @business = Business.find(@product.business_id)
-    #@genres = Genre.where("status =?", 1).order('position')
-    #@categories = Category.where("status =?", 1).order('description')
+    #@business = Business.find(@product.business_id)
     @genres = Genre.with_topics
     @categories = Category.with_topics
     @topics = Topic.where("status =?", 1).order('description')
@@ -90,15 +92,13 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product = Product.find(params[:id])
+    #@product = Product.find(params[:id])
     if @product.update_attributes(product_params)
       session[:product] = nil
       flash[:success] = "Details updated."
       redirect_to product_path(@product)
     else
-      @business = Business.find(@product.business_id)
-      #@genres = Genre.where("status =?", 1).order('position')
-      #@categories = Category.where("status =?", 1).order('description')
+      #@business = Business.find(@product.business_id)
       @genres = Genre.with_topics
       @categories = Category.with_topics
       @topics = Topic.where("status =?", 1).order('description')
@@ -110,8 +110,8 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    @product = Product.find(params[:id])
-    @business = Business.find(@product.business_id)
+    #@product = Product.find(params[:id])
+    #@business = Business.find(@product.business_id)
     @product.destroy
     flash[:success] = "'#{@product.title}' deleted"
     redirect_to my_business_products_path(@business)

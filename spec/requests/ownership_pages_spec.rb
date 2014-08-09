@@ -460,11 +460,13 @@ describe "OwnershipPages" do
                  		{ ownership: { email_address: administrator.email,
                 						created_by: founder.id } }
                		end
-              
-               		it "should not create a new team member" do
-                 		expect do
+
+               		describe "not creating a new team member" do
+                 		specify do
+                 		  expect do
                    			post my_business_ownerships_path(founder_biz, params)
-                		end.not_to change(Ownership, :count)
+                		  end.not_to change(Ownership, :count)
+                		end
                		end
 
                		describe "should redirect to root" do
@@ -549,18 +551,18 @@ describe "OwnershipPages" do
 
     				let(:params) do
                  		{ ownership: { email_address: non_team_member.email,
-                 						created_by: non_team_member.id } }
+                 						created_by: founder.id } }
                		end
               
                		it "should not create a new team member" do
                  		expect do
-                   			post my_business_ownerships_path(founder_biz), params
+                   			post my_business_ownerships_path(founder_biz, params)
                 		end.not_to change(Ownership, :count)
                		end
 
                		describe "redirects to user home page" do
 
-                 		before { post my_business_ownerships_path(founder_biz), params }
+                 		before { post my_business_ownerships_path(founder_biz, params) }
                  		
                  		specify do
 							expect(response).to redirect_to(user_path(non_team_member))

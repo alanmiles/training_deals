@@ -556,7 +556,7 @@ describe "BusinessPages" do
 					end
 				end
 
-				describe "don't allow unauthorized users to view Show page" do
+				describe "don't allow unauthorized users to view Edit page" do
 
 					before do
 						visit edit_my_business_path(unauthorized_business)

@@ -10,7 +10,7 @@ describe "ProductPages" do
 
 	let!(:founder) 			{ FactoryGirl.create(:user) }
 	let!(:administrator)	{ FactoryGirl.create(:user) }
-	let!(:founder_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}
+	let!(:founder_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}  #founder is automatically an owner
 	let!(:other_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}
 	let!(:ownership_1)		{ FactoryGirl.create(:ownership, business: founder_biz, user: administrator,
 								 email_address: administrator.email) }
@@ -529,6 +529,326 @@ describe "ProductPages" do
 		        it { should have_title("Add product/service") }
 			    it { should have_link("<- All products/services", href: my_business_products_path(founder_biz))} 
 			end
-		end 
+		end
+
+		describe "when not signed in" do
+
+			describe "Index" do
+				
+				describe "redirect to the signin page" do
+				
+					before { get my_business_products_path(other_biz) }
+					inaccessible_without_signin
+				end
+
+				describe "go to correct Index page after signing in" do
+
+					before do
+						visit my_business_products_path(other_biz)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title('Products & services')
+						expect(page).to have_selector('h2', "for #{other_biz.name}, #{other_biz.city}")
+						expect(page).to have_selector("li#product_#{other_biz_product.id}", text: other_biz_product.title)
+					end
+
+					describe "but don't go to this index page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title('Products & services') }
+					end
+				end
+			end
+
+			describe "Show" do
+
+				before { get product_path(product_2) }
+				inaccessible_without_signin
+
+				describe "go to correct Show page after signing in" do
+
+					before do
+						visit product_path(product_2)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title("#{product_2.title}")
+						expect(page).to have_selector('div.detail', 
+						    "#{genre_1.description} >> #{genre_1_cat_1.description} >> #{genre_1_cat_1_topic_2.description}")
+					end
+
+					describe "but don't go to this Show page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title("#{product_2.title}") }
+					end
+				end
+			end
+
+			describe "Edit" do
+
+				before { get edit_product_path(other_biz_product) }
+				inaccessible_without_signin
+
+				describe "go to correct Edit page after signing in" do
+
+					before do
+						visit edit_product_path(other_biz_product)
+						valid_signin(administrator)
+					end
+					
+					specify { expect(page).to have_title("Edit '#{other_biz_product.title}'") }
+		
+
+					describe "but don't go to this Edit page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in administrator
+						end	
+
+						specify { expect(page).not_to have_title("Edit '#{other_biz_product.title}'") }
+					end
+				end
+			end
+
+			describe "New" do
+
+				before { get new_my_business_product_path(founder_biz) }
+				inaccessible_without_signin
+
+				describe "go to correct New page after signing in" do
+
+					before do
+						visit new_my_business_product_path(founder_biz)
+						valid_signin(administrator)
+					end
+					
+					specify do
+						expect(page).to have_title("Add product/service")
+			    		expect(page).to have_link("<- All products/services", href: my_business_products_path(founder_biz))
+						expect(page).to have_selector("input#product_created_by[value=\"#{administrator.id}\"]")
+						# NOTE: Capybara set to handle hidden fields in spec_helper
+					end
+
+					describe "but don't go to this New page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in administrator
+						end	
+
+						specify { expect(page).not_to have_title('Add business') }
+					end
+				end
+			end
+
+			describe "attempting to manipulate data" do
+
+				describe "Create" do
+
+              		let(:params) do
+                		{ product: { 	business_id: founder_biz.id,
+                						title: "Illegal",
+                						topic_id: genre_1_cat_1_topic_1, 
+                						training_method_id: method.id,
+                						content_number: 5,
+                						content_length_id: length.id,
+                						currency: "GBP",
+                						standard_cost: 100.00,
+                						content: "Course content",
+                						outcome: "Course outcome",
+                						created_by: 1  } }
+              		end
+              
+              		it "should not create a new Product" do
+                		expect do
+                  			post my_business_products_path(founder_biz, params)
+                		end.not_to change(Product, :count)
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { post my_business_products_path(founder_biz, params) }
+                		forbidden_without_signin
+              		end
+            	end
+
+            	describe "Update" do
+
+              		let(:new_product_title)  { "Changed title"}
+              		let(:params) do
+                		{ product: { title: new_product_title } }
+              		end
+              
+              		describe "should not modify the existing product" do
+                
+                		before { patch product_path(product_1), params } 
+                		specify { expect(product_1.reload.title).not_to eq new_product_title }
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { patch product_path(product_1, params) }
+                		forbidden_without_signin
+              		end
+            	end
+
+            	describe "Destroy" do
+
+              		it "should not delete the existing Product" do
+                		expect do
+                  			delete product_path(product_1)
+                		end.not_to change(Product, :count)
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { delete product_path(product_1) }
+                		forbidden_without_signin
+                	end
+              	end
+			end
+		end
+
+		describe "when user is not a business owner" do
+
+			let!(:non_authorized_user)	{ FactoryGirl.create(:user) }
+			let!(:non_authorized_biz)	{ FactoryGirl.create(:business, created_by: non_authorized_user.id)} 
+
+			describe "displaying forms" do
+				before do
+					sign_in non_authorized_user
+					visit my_business_path(non_authorized_biz)
+				end
+
+				describe "Index page" do
+
+					before { visit my_business_products_path(other_biz) }
+					
+					it { should have_content("The page you requested doesn't belong to you") }
+					it { should have_title("#{non_authorized_user.name}") }
+				end
+
+				describe "Show page" do
+
+					before { visit product_path(product_2) }
+					
+					it { should have_content("The page you requested doesn't belong to you") }
+					it { should have_title("#{non_authorized_user.name}") }
+				end
+
+				describe "Edit page" do
+
+					before { visit edit_product_path(other_biz_product) }
+					
+					it { should have_title("#{non_authorized_user.name}") }
+					it { should have_content("The page you requested doesn't belong to you") }
+				end
+
+				describe "New page" do
+
+					before { visit new_my_business_product_path(founder_biz) }
+					
+					it { should have_title("#{non_authorized_user.name}") }
+					it { should have_content("The page you requested doesn't belong to you") }
+				end
+			end
+
+			describe "attempting to modify Product data" do
+
+				before do
+					sign_in non_authorized_user, no_capybara: true
+					visit my_business_path(non_authorized_biz)
+				end
+
+  				describe "Create" do
+
+    				let(:params) do
+                 		{ product: { 	business_id: founder_biz.id,
+                						title: "Illegal",
+                						topic_id: genre_1_cat_1_topic_1.id, 
+                						training_method_id: method.id,
+                						content_number: 5,
+                						content_length_id: length.id,
+                						currency: "GBP",
+                						standard_cost: 100.00,
+                						content: "Course content",
+                						outcome: "Course outcome",
+                						created_by: 1  } }
+               		end
+              
+               		it "should not create a new product" do
+                 		expect do
+                   			post my_business_products_path(founder_biz, params)
+                		end.not_to change(Product, :count)
+               		end
+
+               		describe "redirects to user home page" do
+
+                 		before { post my_business_products_path(founder_biz, params) }
+                 		
+                 		specify do
+							expect(response).to redirect_to(user_path(non_authorized_user))
+			    			expect(flash[:error]).to eq("Action not permitted!")
+			    		end
+               		end
+             	end
+
+             	describe "Update" do
+
+	           		let(:new_title)  { "New Title"}
+               		let(:params) do
+                		{ product: { title: new_title } }
+               		end
+              
+               		describe "should not modify the existing Product" do
+                
+                 		before { patch product_path(product_1, params) } 
+                 		specify { expect(product_1.reload.title).not_to eq new_title }
+               		end
+
+               		describe "should redirect to root" do
+
+                 		before { patch product_path(product_1, params) }
+                 		
+                		specify do
+                 			expect(response).to redirect_to(user_path(non_authorized_user))
+			    			expect(flash[:error]).to eq("Action not permitted!")
+			    		end
+               		end             		
+             	end
+
+             	describe "Destroy" do
+
+             		it "should not delete the existing Product" do
+                		expect do
+                  			delete product_path(product_1)
+                		end.not_to change(Product, :count)
+              		end
+
+              		describe "redirects to User home" do
+
+                		before { delete product_path(product_1) }
+                		
+                		specify do
+                 			expect(response).to redirect_to(user_path(non_authorized_user))
+			    			expect(flash[:error]).to eq("Action not permitted!")
+			    		end
+                	end
+             	end
+  			end
+		end
 	end
 end

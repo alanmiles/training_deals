@@ -32,6 +32,8 @@ class ApplicationController < ActionController::Base
       @business = Business.find(params[:id])
       if signed_in?
         team_member_valid(@business)
+      else
+        not_signed_in
       end
     end
 
@@ -50,6 +52,8 @@ class ApplicationController < ActionController::Base
       if signed_in?
         @business = Business.find(params[:my_business_id])
         team_member_valid(@business)
+      else
+        not_signed_in
       end
     end
 
@@ -58,6 +62,18 @@ class ApplicationController < ActionController::Base
         @ownership = Ownership.find(params[:id])
         @business = Business.find(@ownership.business_id)
         team_member_valid(@business)
+      else
+        not_signed_in
+      end
+    end
+
+    def product_team_member_illegal
+      if signed_in?
+        @product = Product.find(params[:id])
+        @business = Business.find(@product.business_id)
+        team_member_valid(@business)
+      else
+        not_signed_in
       end
     end
 end

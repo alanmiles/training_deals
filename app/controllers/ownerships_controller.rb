@@ -1,4 +1,4 @@
-class OwnershipsController < ApplicationController 
+class OwnershipsController < ApplicationController
   
   before_action :not_signed_in,         only: [:index, :new, :edit]
   before_action :illegal_action,        only: [:create, :update, :destroy]
