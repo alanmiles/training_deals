@@ -22,8 +22,17 @@
 				include a location check in their search.
 			</div>
 		<% end %>
+		<% if @business.image? %>
+			<%= render 'show_navigation_mybiz' %>
+		<% end %>
 		<div class="paragraph">
-			<div class="subject">Business name:</div>
+			<div class="subject">
+				<% if @business.logo? %>
+					<%= image_tag @business.logo_url %>
+				<% else %>
+					Business name:
+				<% end %>
+			</div>
 			<div class="detail heading"><%= @business.name %></div>
 		</div>
 		<div class="paragraph">
@@ -50,7 +59,7 @@
 		</div>
 		<div class="paragraph">
 			<div class="subject">
-				Team: <%= link_to "( details )", my_business_ownerships_path(@business) %>
+				Team: <%= link_to "( update )", my_business_ownerships_path(@business) %>
 			</div>
 			<div class="detail"><%= @business.owners_list %></div>
 		</div>
@@ -62,19 +71,16 @@
 				</div>
 			</div>
 		<% end %>
+		<% if @business.image? %>
+			<div class="paragraph">
+				<div class="subject">Image:</div>
+				<div class="detail">
+					<%= image_tag @business.image_url %>
+				</div>
+			</div>
+		<% end %>
+
 
 	</div>
 </div>
-<div class="navigator add-top-space">	
-	<% if current_user.has_one_business? %>
-		<%= link_to "Add another business ->", new_my_business_path %>
-		| <%= link_to "Delete the business ->", { controller: 'my_businesses',
-												action: 'destroy', 
-												id: @business.id }, 
-												{ method: :delete,
-												data: { confirm: "Are you sure?" } } %>
-	<% else %>
-		<%= link_to "<- My business list", my_businesses_path %>
-	<% end %>
-	| <%= link_to "Update ->", edit_my_business_path(@business) %>
-</div>
+<%= render 'show_navigation_mybiz' %>

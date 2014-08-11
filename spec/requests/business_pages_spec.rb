@@ -219,7 +219,7 @@ describe "BusinessPages" do
 		              	before { click_button 'Create' }
 
 		              	it { should have_title('Business X, London') }
-		              	it { should have_link('( details )', href: my_business_ownerships_path(Business.last))}
+		              	it { should have_link('( update )', href: my_business_ownerships_path(Business.last))}
 		              	it { should have_link('Update', href: edit_my_business_path(Business.last)) } 
 		              	it { should have_selector('div.alert.alert-success', 
 		              		text: "Successfully added. Please check all the details carefully.") }

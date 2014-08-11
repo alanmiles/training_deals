@@ -85,9 +85,25 @@
 	<div class="add-this"><%= f.label :web_link %></div>
 	<div class="box-fill"><%= f.text_field :web_link %></div>
 </div>
-<div class="entry">
+<div class="entry"> 
 	<div class="add-this"><%= f.label :image %></div>
-	<div class="box-fill"><%= f.text_field :image %></div>
+	<div class="image-fill">
+		<div class="image-labels">
+			Upload a file from your device:
+			<%= f.file_field :image %>
+			<em> OR  - </em> Enter the image URL below <%= f.text_field :remote_image_url %>
+			<% if @product.image? %>
+				<label>
+					<em> OR - </em> <%= f.check_box :remove_image %>
+					Check to remove completely
+				</label>
+			<% end %>
+			<%= f.hidden_field :image_cache %>
+		</div>
+		<div class="image-display">
+			<%= image_tag(@product.image_url(:thumb)) if @product.image %>
+		</div>
+	</div>
 </div>	
 <div class="entry">
 	<%= f.hidden_field :created_by %>

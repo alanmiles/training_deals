@@ -32,8 +32,7 @@ ActiveRecord::Schema.define(version: 20140724230151) do
     t.string   "email"
     t.string   "website"
     t.string   "logo"
-    t.string   "image_1"
-    t.string   "image_2"
+    t.string   "image"
     t.boolean  "inactive",       default: false
     t.datetime "inactive_from"
     t.integer  "created_by"
@@ -41,7 +40,7 @@ ActiveRecord::Schema.define(version: 20140724230151) do
     t.datetime "updated_at"
   end
 
-  add_index "businesses", ["country", "city", "name"], name: "index_businesses_on_country_and_city_and_name", using: :btree
+  add_index "businesses", ["country", "city", "name"], name: "index_businesses_on_country_and_city_and_name", unique: true, using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "description"
@@ -95,7 +94,7 @@ ActiveRecord::Schema.define(version: 20140724230151) do
     t.datetime "updated_at"
   end
 
-  add_index "ownerships", ["business_id", "user_id"], name: "index_ownerships_on_business_id_and_user_id", using: :btree
+  add_index "ownerships", ["business_id", "user_id"], name: "index_ownerships_on_business_id_and_user_id", unique: true, using: :btree
 
   create_table "products", force: true do |t|
     t.integer  "business_id"

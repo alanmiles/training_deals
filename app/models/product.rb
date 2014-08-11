@@ -2,7 +2,8 @@ class Product < ActiveRecord::Base
 
 	#attr_accessor :genre_id
 	#attr_accessor :category_id
-	
+	mount_uploader :image, ImageUploader
+
 	belongs_to :business
 	belongs_to :topic
 	belongs_to :training_method

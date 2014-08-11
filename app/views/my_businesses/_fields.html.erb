@@ -69,20 +69,48 @@
 		<div class="box-fill"><%= f.text_field :email %></div>
 	</div>
 	<div class="entry">
-		<div class="add-this"><%= f.label :logo %></div>
-		<div class="box-fill"><%= f.text_field :logo %></div>
-	</div>
-	<div class="entry">
-		<div class="add-this"><%= f.label :image_1 %></div>
-		<div class="box-fill"><%= f.text_field :image_1 %></div>
-	</div>
-	<div class="entry">
-		<div class="add-this"><%= f.label :image_2 %></div>
-		<div class="box-fill"><%= f.text_field :image_2 %></div>
-	</div>
-	<div class="entry">
 		<div class="add-this"><%= f.label :website %></div>
 		<div class="box-fill"><%= f.text_field :website %></div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :logo %></div>
+		<div class="image-fill">
+			<div class="image-labels">
+				Upload a file from your device:
+				<%= f.file_field :logo %>
+				<em> OR  - </em> Enter the image URL below: <%= f.text_field :remote_logo_url %>
+				<% if @business.logo? %>
+					<label>
+						<em> OR - </em> <%= f.check_box :remove_logo %>
+						Check to remove completely
+					</label>
+				<% end %>
+				<%= f.hidden_field :logo_cache %>
+			</div>
+			<div class="image-display">
+				<%= image_tag(@business.logo_url) if @business.logo? %>
+			</div>
+		</div>
+	</div>
+	<div class="entry">
+		<div class="add-this add-top-space"><%= f.label :image %></div>
+		<div class="image-fill add-top-space add-bottom-space">
+			<div class="image-labels">
+				Upload a file from your device:
+				<%= f.file_field :image %>
+				<em> OR  - </em> Enter the image URL below <%= f.text_field :remote_image_url %>
+				<% if @business.image? %>
+					<label>
+						<em> OR - </em> <%= f.check_box :remove_image %>
+						Check to remove completely
+					</label>
+				<% end %>
+				<%= f.hidden_field :image_cache %>
+			</div>
+			<div class="image-display">
+				<%= image_tag(@business.image_url(:thumb)) if @business.image %>
+			</div>
+		</div>
 	</div>
 	<% unless params[:action] == 'new' %>
 		<div class="entry">

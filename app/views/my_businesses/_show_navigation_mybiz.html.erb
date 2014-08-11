@@ -1,0 +1,13 @@
+ <div class="navigator add-top-space add-bottom-space">	
+	<% if current_user.has_one_business? %>
+		<%= link_to "Add another business ->", new_my_business_path %>
+		| <%= link_to "Delete the business ->", { controller: 'my_businesses',
+												action: 'destroy', 
+												id: @business.id }, 
+												{ method: :delete,
+												data: { confirm: "Are you sure?" } } %>
+	<% else %>
+		<%= link_to "<- My business list", my_businesses_path %>
+	<% end %>
+	| <%= link_to "Update ->", edit_my_business_path(@business) %>
+</div>

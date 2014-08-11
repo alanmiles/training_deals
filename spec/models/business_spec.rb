@@ -28,8 +28,7 @@ describe Business do
   it { should respond_to(:email) }
   it { should respond_to(:website) }
   it { should respond_to(:logo) }
-  it { should respond_to(:image_1) }
-  it { should respond_to(:image_2) }
+  it { should respond_to(:image) }
   it { should respond_to(:inactive) }
   it { should respond_to(:inactive_from) }
   it { should respond_to(:created_by) }

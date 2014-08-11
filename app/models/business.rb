@@ -4,6 +4,9 @@ class Business < ActiveRecord::Base
 	geocoded_by :full_address 
 	#accepts_nested_attributes_for :ownerships
 
+	mount_uploader :logo, LogoUploader
+	mount_uploader :image, ImageUploader
+	
 	after_validation :geocode, :if => :check_address?
 	after_validation :inactive_date
 	after_create :new_ownership

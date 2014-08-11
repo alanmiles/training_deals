@@ -9,6 +9,9 @@
 		</section>
 	</aside>
 	<div class="present span8">
+		<% if @product.image? %>
+			<%= render 'show_navigation_product' %>
+		<% end %>
 		<div class="paragraph">
 			<div class="subject">Title:</div>
 			<div class="detail heading">
@@ -69,10 +72,15 @@
 				</div>
 			</div>
 		<% end %>
+		<% if @product.image? %>
+			<div class="paragraph">
+				<div class="subject">Image:</div>
+				<div class="detail">
+					<%= image_tag @product.image_url %>
+				</div>
+			</div>
+		<% end %>
 	</div>
 </div>
-<div class="navigator add-top-space">	
-	<%= link_to "<- All products/services", my_business_products_path(@business) %>
-	| <%= link_to "Update ->", edit_product_path(@product) %>
-</div>
+<%= render 'show_navigation_product' %>
 

@@ -9,9 +9,11 @@ gem 'bcrypt-ruby', '3.1.2'
 gem 'faker', '1.1.2'
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
-gem 'countries'
-gem 'country_select'
+gem 'countries', '0.9.3'
+gem 'country_select', '1.3.1'
 gem 'geocoder', '1.2.3'
+gem 'carrierwave', '0.10.0'
+gem 'mini_magick', '3.8.0'
 
 
 group :development, :test do

@@ -123,7 +123,8 @@ class ProductsController < ApplicationController
       params.require(:product).permit(:title, :ref_code, :qualification,
                       :training_method_id, :duration_id, :duration_number,
                       :content_length_id, :content_number, :standard_cost,
-                      :content, :outcome, :current, :image, :web_link,
+                      :content, :outcome, :current, :image, :remote_image_url, 
+                      :image_cache, :remove_image, :web_link,
                       :topic_id, :created_by)
     end
 end

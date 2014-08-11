@@ -16,8 +16,7 @@ class CreateBusinesses < ActiveRecord::Migration
       t.string :email
       t.string :website
       t.string :logo
-      t.string :image_1
-      t.string :image_2
+      t.string :image
       t.boolean :inactive, default: false
       t.datetime :inactive_from
       t.integer :created_by

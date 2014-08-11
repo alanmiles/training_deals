@@ -66,7 +66,9 @@ class MyBusinessesController < ApplicationController
   	def business_params
 			params.require(:business).permit(:name, :description, :street_address, 
         :city, :state, :postal_code, :country, :latitude, :longitude, :hide_address, 
-        :phone, :alt_phone, :email, :website, :logo, :image_1, :image_2, :inactive, :inactive_from)
+        :phone, :alt_phone, :email, :website, :logo, :logo_cache, :remote_logo_url, 
+        :remove_logo, :image, :remote_image_url, :image_cache, :remove_image, 
+        :inactive, :inactive_from)
 	  end
 
 	  def create_owner

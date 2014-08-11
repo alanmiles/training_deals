@@ -12,7 +12,8 @@
 		<div class="js-content">
 
 			<%= form_for([@business, @product], 
-					url: my_business_products_path(@business)) do |f| %>
+					url: my_business_products_path(@business),
+					html: { multipart: true }) do |f| %>
 				<%= render 'fields_js', f: f %>
 				<%= f.submit "Create", class: "btn btn-primary" %>
 			<% end %>

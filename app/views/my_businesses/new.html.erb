@@ -13,7 +13,7 @@
 		<% end %>
 	</aside>
 	<div class="span8">
-		<%= form_for(@business, url: my_businesses_path) do |f| %>
+		<%= form_for(@business, url: my_businesses_path, html: { multipart: true }) do |f| %>
 			<%= render 'fields', f: f %>
 			<%= f.submit "Create", class: "btn btn-primary" %>
 		<% end %>

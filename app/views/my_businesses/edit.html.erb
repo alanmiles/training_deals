@@ -8,7 +8,8 @@
 		</section>
 	</aside>
 	<div class="span8">
-		<%= form_for @business, url: { controller: 'my_businesses', action: 'update' } do |f| %>
+		<%= form_for @business, url: { controller: 'my_businesses', 
+				action: 'update', html: { multipart: true } } do |f| %>
 
 		 	<%= render 'fields', f: f %>
 
