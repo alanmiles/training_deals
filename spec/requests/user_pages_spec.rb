@@ -72,7 +72,6 @@ describe "UserPages" do
   	it { should have_content(user.name) }
   	it { should have_title(user.name) }
     it { should_not have_link("Switch to admin interface ->", admin_menu_path) }
-    it { should have_link("Your location", href: "#") }
     it { should have_link("Instant search", href: "#") }
     it { should have_link("Saved search set-up", href: "#") }
     it { should have_link("Saved search results", href: "#") }

@@ -88,7 +88,7 @@
 				<%= f.hidden_field :logo_cache %>
 			</div>
 			<div class="image-display">
-				<%= image_tag(@business.logo_url) if @business.logo? %>
+				<%= image_tag(@business.logo_url, class: "img-rounded") if @business.logo? %>
 			</div>
 		</div>
 	</div>
@@ -108,13 +108,13 @@
 				<%= f.hidden_field :image_cache %>
 			</div>
 			<div class="image-display">
-				<%= image_tag(@business.image_url(:thumb)) if @business.image %>
+				<%= image_tag(@business.image_url(:thumb), class: "img-rounded") if @business.image %>
 			</div>
 		</div>
 	</div>
 	<% unless params[:action] == 'new' %>
 		<div class="entry">
-			<div class="add-this"><%= f.label :inactive, "De-activate" %></div>
+			<div class="add-this"><%= f.label :inactive, "De-activate" %></div> 
 			<div class="cbox-fill"><%= f.check_box :inactive %></div>
 			<div class="cbox-info">
 				<% if @business.inactive? %>

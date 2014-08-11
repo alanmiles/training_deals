@@ -33,6 +33,13 @@ Rspec::Matchers.define :have_error_message do |message|
 	end
 end
 
+def check_admin_menu
+	specify do
+		expect(page).to have_link('Admin home page', href: admin_menu_path)
+		expect(page).to have_link('Framework', href: framework_path)
+	end
+end
+
 def non_admin_illegal_get(title)
 	specify { expect(response.body).not_to match(full_title(title)) }
 	specify { expect(response).to redirect_to(root_url) }

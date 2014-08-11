@@ -28,7 +28,7 @@
 		<div class="paragraph">
 			<div class="subject">
 				<% if @business.logo? %>
-					<%= image_tag @business.logo_url %>
+					<%= image_tag @business.logo_url, class: "img-rounded" %>
 				<% else %>
 					Business name:
 				<% end %>
@@ -75,7 +75,7 @@
 			<div class="paragraph">
 				<div class="subject">Image:</div>
 				<div class="detail">
-					<%= image_tag @business.image_url %>
+					<%= image_tag @business.image_url, class: "img-rounded" %>
 				</div>
 			</div>
 		<% end %>

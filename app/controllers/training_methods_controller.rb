@@ -51,7 +51,7 @@ class TrainingMethodsController < ApplicationController
   private
 
 		def training_method_params
-			params.require(:training_method).permit(:description)
+			params.require(:training_method).permit(:description, :event)
 		end
 
 end

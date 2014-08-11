@@ -1,4 +1,24 @@
-<%= render 'shared/error_messages', object: f.object %>
-			
-<%= f.label :description %>
-<%= f.text_field :description %>
+<%= render 'shared/error_messages', object: f.object %>	
+<div class="entry-page">
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= f.label :description %></span>
+		</div>
+		<div class="box-fill">
+			<%= f.text_field :description %>
+		</div>
+	</div>
+	<div class="entry">
+		<div class="add-this"><%= f.label :event, "Event?" %></div>
+		<div class="cbox-fill"><%= f.check_box :event %></div>
+		<div class="cbox-info">
+			<% if @method.event? %>
+				<%= event_checked %>
+			<% else %>
+				<%= event_unchecked %>
+			<% end %>
+		</div>
+	</div>
+	<div class="entry"></div>
+</div>
+

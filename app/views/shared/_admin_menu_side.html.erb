@@ -1,0 +1,22 @@
+<% if current_user.admin? %>
+	<div class="well sidebar-nav">
+		<ul class="nav nav-list">
+			<div class="html-menu">
+				<span class="column-wide"><li class="label label-info">MENU</li></span>
+				<li class="divider"></li>
+				<%= render '/shared/admin_menu_links' %>
+
+			</div>
+			<div class="js-menu">
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> 
+						<span class="column-wide"><span class="label label-info">MENU </span><b class="caret"></b></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<%= render '/shared/admin_menu_links' %>
+					</ul>
+				</li>
+			</div>
+		</ul>
+	</div>
+<% end %>

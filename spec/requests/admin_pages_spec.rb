@@ -11,7 +11,7 @@ describe "AdminPages" do
 
   		describe "accessing the Framework menu" do
 
-  			before { click_link "Framework" }
+  			before { visit framework_path }
 
 	  		it { should have_selector('h1', text: "Framework menu") }
 	    	it { should have_title(full_title("Framework menu")) }
@@ -20,6 +20,7 @@ describe "AdminPages" do
         it { should have_link('Content lengths', href: content_lengths_path) }
         it { should have_link('Genres / categories / topics', href: genres_path) }
         it { should have_link('Return to main admin menu', href: root_path) }
+        check_admin_menu
   		end
 
       describe "working with TrainingMethods" do
@@ -38,6 +39,7 @@ describe "AdminPages" do
           it { should have_link('edit', href: edit_training_method_path(method_1)) }
           it { should have_link('delete', href: training_method_path(method_1)) }
           it { should have_link('Add a method', href: new_training_method_path) }
+          check_admin_menu
         
           pending "No test for sortable list yet."
           pending "No delete link when the Method is in use."
@@ -59,6 +61,7 @@ describe "AdminPages" do
           it { should have_title("New training method") }
           it { should have_content("New training method") }
           it { should have_link("<- All methods", href: training_methods_path) }
+          check_admin_menu
 
           describe "then create a new Method successfully" do
             before do
@@ -107,6 +110,7 @@ describe "AdminPages" do
           it { should have_title('Edit training method') }
           it { should have_content('Edit training method') }
           it { should have_link('<- Cancel', href: training_methods_path) }
+          check_admin_menu
 
           describe "and update the Training Method" do
 
@@ -116,6 +120,7 @@ describe "AdminPages" do
               let(:new_description)   { "Updated description" }
               before do
                 fill_in "Description",    with: new_description
+                check 'training_method_event'
                 click_button "Confirm"
               end
 
@@ -143,6 +148,7 @@ describe "AdminPages" do
           it { should have_link('edit', href: edit_content_length_path(length_1)) }
           it { should have_link('delete', href: content_length_path(length_1)) }
           it { should have_link('Add a content length', href: new_content_length_path) }
+          check_admin_menu
         
           pending "No test for sortable list yet."
           pending "No delete link when the Description is in use."
@@ -164,6 +170,7 @@ describe "AdminPages" do
           it { should have_title("New content length") }
           it { should have_content("New content length") }
           it { should have_link("<- All content lengths", href: content_lengths_path) }
+          check_admin_menu
 
           describe "then create a new Length successfully" do
             before do
@@ -212,6 +219,7 @@ describe "AdminPages" do
           it { should have_title('Edit content length') }
           it { should have_content('Edit content length') }
           it { should have_link('<- Cancel', href: content_lengths_path) }
+          check_admin_menu
 
           describe "and update the Content Length" do
 
@@ -248,6 +256,7 @@ describe "AdminPages" do
           it { should have_link('edit', href: edit_duration_path(unit_1)) }
           it { should have_link('delete', href: duration_path(unit_1)) }
           it { should have_link('Add a time period', href: new_duration_path) }
+          check_admin_menu
         
           pending "No test for sortable list yet."
           pending "No delete link when the Duration Unit is in use."
@@ -269,6 +278,7 @@ describe "AdminPages" do
           it { should have_title("New time period") }
           it { should have_content("New time period") }
           it { should have_link("<- All time periods", href: durations_path) }
+          check_admin_menu
 
           describe "then create a new Unit successfully" do
             before do
@@ -317,6 +327,7 @@ describe "AdminPages" do
           it { should have_title('Edit time period') }
           it { should have_content('Edit time period') }
           it { should have_link('<- Cancel change', href: durations_path) }
+          check_admin_menu
 
           describe "and update the Duration Time_Unit" do
 

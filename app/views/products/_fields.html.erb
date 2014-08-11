@@ -101,7 +101,7 @@
 			<%= f.hidden_field :image_cache %>
 		</div>
 		<div class="image-display">
-			<%= image_tag(@product.image_url(:thumb)) if @product.image %>
+			<%= image_tag(@product.image_url(:thumb), class: "img-rounded") if @product.image %>
 		</div>
 	</div>
 </div>	

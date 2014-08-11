@@ -31,6 +31,7 @@ describe "TopicSetups" do
 	            it { should have_link('edit', href: edit_genre_path(genre_1)) }
 	            it { should have_button('delete') }
 	            it { should have_link('Add a genre', href: new_genre_path) }
+	            check_admin_menu
 		        
 		        pending "No test for sortable list yet."
 		        pending "No delete link when the genre has categories."
@@ -53,6 +54,7 @@ describe "TopicSetups" do
 		        it { should have_content("New genre") }
 		        it { should_not have_field("Status") }
 		        it { should have_link("<- All genres", href: genres_path) }
+		        check_admin_menu
 
 		        describe "then create a new approved Genre successfully" do
 		            before do
@@ -103,6 +105,7 @@ describe "TopicSetups" do
 	          	it { should have_content('Edit genre') }
 	          	it { should_not have_field('Approved') }
 	          	it { should have_link('<- Cancel', href: genres_path) }
+	          	check_admin_menu
 
 		        describe "and update the Genre" do
 
@@ -159,6 +162,7 @@ describe "TopicSetups" do
 	            it { should have_link('edit', href: edit_category_path(approved_category)) }
 	            it { should have_link('delete', href: category_path(approved_category)) }
 	            it { should have_link('Add a category', href: new_genre_category_path(genre_1)) }
+	            check_admin_menu
 		        
 		        pending "No delete link when the category has been used by providers."
 		        pending "Include link to Categories awaiting approval."
@@ -182,6 +186,7 @@ describe "TopicSetups" do
 		        it { should_not have_field("Status") }
 		        it { should have_link("<- All categories for '#{genre_1.description}'", 
 		        							href: genre_categories_path(genre_1)) }
+		        check_admin_menu
 
 		        describe "then create a new approved Category successfully" do
 		            before do
@@ -234,6 +239,7 @@ describe "TopicSetups" do
 	          	it { should have_selector('h2', text: "for the '#{genre_1.description}' genre")}
 	          	it { should_not have_field('Approved') }
 	          	it { should have_link('<- Cancel', href: genre_categories_path(genre_1)) }
+	          	check_admin_menu
 
 		        describe "and update the Category" do
 
@@ -290,6 +296,7 @@ describe "TopicSetups" do
 	            it { should have_link('edit', href: edit_topic_path(approved_topic)) }
 	            it { should have_link('delete', href: topic_path(approved_topic)) }
 	            it { should have_link('Add a topic', href: new_category_topic_path(category_1)) }
+	            check_admin_menu
 		        
 		        pending "No delete link when the topic has been used by providers."
 		        pending "Include link to Topics awaiting approval."
@@ -314,6 +321,7 @@ describe "TopicSetups" do
 		        it { should_not have_field("Status") }
 		        it { should have_link("<- All topics for '#{category_1.description}'", 
 		        							href: category_topics_path(category_1)) }
+		        check_admin_menu
 
 		        describe "then create a new approved Topic successfully" do
 		            before do
@@ -372,6 +380,7 @@ describe "TopicSetups" do
 	          		text: "for the '#{category_1.description}' category (#{genre_1.description} genre)")}
 	          	it { should_not have_field('Approved') }
 	          	it { should have_link('<- Cancel', href: category_topics_path(category_1)) }
+	          	check_admin_menu
 
 		        describe "and update the Topic" do
 

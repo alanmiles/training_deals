@@ -1,23 +1,28 @@
 <% provide(:title, 'Training methods') %>
 <h1>Training methods</h1>
 
-<aside class="span3">
-</aside> 
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/admin_menu_side" %>
+		</section>
+	</aside>
 
-<div class="span8">
-	<ul id="methods" class="lists" data-update-url="<%= sort_training_methods_url %>">
-		<% @methods.each do |method| %>
-			<%= content_tag_for :li, method do %>
-				<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
-				<%= method.description %>
-				| <%= link_to "edit", edit_training_method_path(method) %>
-				| <%= link_to "delete", method, method: :delete,
-						data: { confirm: "Are you sure?" } %>
+	<div class="span8">
+		<ul id="methods" class="lists" data-update-url="<%= sort_training_methods_url %>">
+			<% @methods.each do |method| %>
+				<%= content_tag_for :li, method do %>
+					<span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;
+					<%= method.description %>
+					| <%= link_to "edit", edit_training_method_path(method) %>
+					| <%= link_to "delete", method, method: :delete,
+							data: { confirm: "Are you sure?" } %>
+				<% end %>
 			<% end %>
-		<% end %>
-	</ul>
-	<div class="navigator">
-	    <%= link_to "<- Framework menu", framework_path %> 
-		| <%= link_to "Add a method ->", new_training_method_path %>
+		</ul>
+		<div class="navigator">
+		    <%= link_to "<- Framework menu", framework_path %> 
+			| <%= link_to "Add a method ->", new_training_method_path %>
+		</div>
 	</div>
 </div>

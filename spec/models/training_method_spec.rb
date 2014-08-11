@@ -9,6 +9,7 @@ describe TrainingMethod do
   subject { @training_method }
 
   it { should respond_to(:description) }
+  it { should respond_to(:event) }
   it { should be_valid }
 
   describe "when description is not present" do

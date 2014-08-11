@@ -1,15 +1,22 @@
 <% provide(:title, "Framework menu") %>
 <h1>Framework menu</h1>
 
-<div id="menus"
-	<ul>
-		<li><%= link_to "Training methods", training_methods_path %></li>
-		<li><%= link_to "Time periods", durations_path %></li>
-		<li><%= link_to "Content lengths", content_lengths_path %></li>
-		<li><%= link_to "Genres / categories / topics", genres_path %></li>
-	</ul>
-	<div class="navigator">
-	    <%= link_to "<- Return to main admin menu", root_path %> 
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/admin_menu_side" %>
+		</section>
+	</aside>
+	<div class="span8">
+		<ul id="menus">
+			<li><%= link_to "Training methods", training_methods_path %></li>
+			<li><%= link_to "Time periods", durations_path %></li>
+			<li><%= link_to "Content lengths", content_lengths_path %></li>
+			<li><%= link_to "Genres / categories / topics", genres_path %></li>
+		</ul>
+		<div class="navigator">
+		    <%= link_to "<- Return to main admin menu", root_path %> 
+		</div>
 	</div>
 </div>
 
