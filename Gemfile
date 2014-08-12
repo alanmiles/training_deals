@@ -14,7 +14,7 @@ gem 'country_select', '1.3.1'
 gem 'geocoder', '1.2.3'
 gem 'carrierwave', '0.10.0'
 gem 'mini_magick', '3.8.0'
-
+gem 'tod', '1.4.0'
 
 group :development, :test do
 	gem 'rspec-rails', '2.13.1'

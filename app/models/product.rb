@@ -10,6 +10,8 @@ class Product < ActiveRecord::Base
 	belongs_to :duration
 	belongs_to :content_length
 
+	has_many	:events, dependent: :destroy
+
 	before_create	:add_currency
 
 	validates :business,			presence: true

@@ -14,6 +14,7 @@ class Business < ActiveRecord::Base
 	has_many :ownerships, dependent: :destroy
 	has_many :users, through: :ownerships
 	has_many :products, dependent: :destroy
+	has_many :events, through: :products
 
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }

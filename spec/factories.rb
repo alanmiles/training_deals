@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryGirl.define do 
 	factory :user do
 		sequence(:name)		{ |n| "person #{n}" }
 		sequence(:email)	{ |n| "person_#{n}@example.com" }
@@ -63,7 +63,6 @@ FactoryGirl.define do
 	factory :product do
 		business
 		sequence(:title)				{ |n| "Product_#{n}" }
-		#ref_code "AAA/0001"
 		topic
 		training_method
 		content_number 5

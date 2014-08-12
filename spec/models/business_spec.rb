@@ -33,6 +33,7 @@ describe Business do
   it { should respond_to(:inactive_from) }
   it { should respond_to(:created_by) }
   it { should respond_to(:users) }
+  it { should respond_to(:events) }
   it { should be_valid }
 
   describe "when name is not present" do

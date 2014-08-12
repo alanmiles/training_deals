@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140811115116) do
+ActiveRecord::Schema.define(version: 20140811232710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,23 @@ ActiveRecord::Schema.define(version: 20140811115116) do
   end
 
   add_index "durations", ["time_unit"], name: "index_durations_on_time_unit", using: :btree
+
+  create_table "events", force: true do |t|
+    t.integer  "product_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.time     "start_time"
+    t.time     "finish_time"
+    t.string   "attendance_days"
+    t.string   "time_of_day"
+    t.string   "location"
+    t.string   "note"
+    t.integer  "created_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["product_id", "start_date"], name: "index_events_on_product_id_and_start_date", unique: true, using: :btree
 
   create_table "genres", force: true do |t|
     t.string   "description"
