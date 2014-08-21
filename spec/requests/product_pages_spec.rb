@@ -69,7 +69,8 @@ describe "ProductPages" do
 
 				    describe "Business menu" do  
 			        	it { should have_link('Business home page', href: my_businesses_path) }
-			        	it { should have_link('Schedules') }
+			        	it { should_not have_link('Schedules') }
+			        		#'Schedules' excluded because no event-oriented products yet.
 			        	it { should have_link('User home page', href: user_path(administrator)) }
 			        end
 
@@ -197,7 +198,8 @@ describe "ProductPages" do
 								it { should have_content(founder_biz.currency_symbol) }	
 								it { should have_link("<- Products/services intro", href: my_business_products_path(founder_biz))}    
 					        	it { should have_link('Business home page', href: my_businesses_path) }
-					        	it { should have_link('Schedules') }
+					        	it { should_not have_link('Schedules') }
+					        		#'Schedules' excluded because no event-oriented products yet.
 					        	it { should have_link('User home page', href: user_path(administrator)) }
 					        	it { should have_selector('div.detail', text: genre_1.description) }
 					        	it { should have_selector('div.detail', text: genre_1_cat_1.description) }
@@ -254,7 +256,7 @@ describe "ProductPages" do
 						        			it { should have_selector('h2', text: "for #{founder_biz.name}, #{founder_biz.city}") }
 											it { should have_link("<- Products/services intro", href: my_business_products_path(founder_biz))}    
 								        	it { should have_link('Business home page', href: my_businesses_path) }
-								        	it { should have_link('Schedules') }
+								        	it { should_not have_link('Schedules') }
 								        	it { should have_link('User home page', href: user_path(administrator)) }
 								        	it { should have_selector('div.detail', text: genre_1.description) }
 								        	it { should have_selector('div.detail', text: genre_1_cat_1.description) }

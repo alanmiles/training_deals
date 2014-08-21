@@ -213,7 +213,8 @@ aside, .sidebar {
   display: none;
 }
 
-.js-link {
+.js-link, .js-toggle-detail, .js-toggle-detail-2 {
+  display: none;
   padding-left: 20px;
   color: #1378b1;
   cursor: pointer;
@@ -224,13 +225,28 @@ aside, .sidebar {
   } 
 }
 
-.js-link-reveal {
+/*.js-toggle-detail {
+  padding-left: 20px;
+  color: #1378b1;
+  cursor: pointer;
+  cursor: hand;
+  &:hover {
+    color: #233d87;
+    text-decoration: underline;
+  } 
+} */
+
+.js-link-reveal, .js-more-detail, .js-more-detail-2, .hidden-content {
+  display: none;
+}
+
+/* .js-more-detail {
   display: none;
 }
 
 .hidden-content {
-  display: none;
-}
+  display: none; 
+} */
 
 /* forms */
 
@@ -308,10 +324,16 @@ input {
     font-style: italic;
     color: $grayLight;
   }
+  .clearer {
+    clear: both;
+  }
   .detail {
     float: right; 
     display: inline-block; 
     width: 75%;
+  }
+  .strong {
+    font-weight: bold;
   }
   .explain {
     padding: 25px 0;
@@ -337,7 +359,7 @@ input {
 
 
 .check-notice {
-  color: crimson;
+  color: #8A0808;
   font-weight: bold;
 }
 
@@ -351,6 +373,12 @@ input {
 .entry { 
   clear: both;
   padding-top: 5px;
+  .sub-header {
+    color: #8A0808;
+    font-size: 0.8em;
+    text-decoration: underline;
+    font-weight: bold;
+  }
   .add-this {
     float:left; 
     width: 25%;
@@ -412,6 +440,23 @@ input {
   }
 }
 
+/* tables */
+
+.table th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.table th .asc {
+  background-image: image-url("chevron_up.png");
+  font-size: 12px;
+}
+
+.table th .desc {
+  background-image: image-url("chevron_down.png");
+  font-size: 12px;
+}
 
 /* miscellaneous */
 
@@ -454,7 +499,7 @@ input {
   font-weight: bold;
   font-size: 1.2em;
   padding-bottom: 5px;
-  border-bottom: 1px dotted crimson;
+  border-bottom: 1px dotted #8A0808;
 }
 
 

@@ -9,4 +9,19 @@ module ApplicationHelper
 			"#{base_title} | #{page_title}".html_safe
 		end
 	end
+
+	def sortable(column, title = nil)
+		title ||= column.titleize
+		css_class = (column == sort_column) ? "current #{sort_direction}" : nil
+		direction =  (column == sort_column && sort_direction == "asc") ? "desc" : "asc"
+		link_to title, { :sort => column, :direction => direction }, { class: css_class }
+	end
+
+	def formatted_daydate(field)
+		field.strftime('%a %d %b, %Y')
+	end
+
+	def formatted_time(field)
+		field.strftime('%l:%M %P')
+	end
 end

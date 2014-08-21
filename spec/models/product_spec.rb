@@ -75,7 +75,7 @@ describe Product do
   end
 
   describe "when title is too long" do
-    before { @product.title = "a" * 76 }
+    before { @product.title = "a" * 51 }
     it { should_not be_valid }
   end
 

@@ -1,0 +1,128 @@
+<% provide(:title, "Event details") %>
+<span class="two-line-header"><h1>Event details</h1></span>
+<h2>- as seen by other HROOMPH users</h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+		<section>		
+			<%= render 'guidance' %>
+		</section>
+	</aside>
+	<div class="present span8">
+		<h5>Business</h5>
+		<div class="paragraph">
+			<div class="subject">
+				<% if @business.logo? %>
+					<%= image_tag @business.logo_url, class: "img-rounded" %>
+				<% end %>
+			</div>
+			<div class="detail strong"><%= @business.name %></div>
+			<div class="detail">
+				<%= "#{@business.city}, #{@business.country}" %>
+				<span class="js-toggle-detail">(more..)</span>
+			</div>
+		</div>
+		<div class="js-more-detail">
+		 	<%= render 'shared/business_details' %>
+		</div>
+		
+		<div class="paragraph">
+			<h5>Product/Service</h5>
+			<div class="subject">
+				<% if @product.image? %>
+					<%= image_tag @product.image_url(:thumb), class: "img-rounded" %>
+				<% end %>
+			</div>
+			<div class="detail strong">
+				<%= @product.title %>
+				<% unless @product.current? %>
+					<span class="check-notice">(de-listed)</span>
+				<% end %>
+			</div>
+			<div class="detail">
+				<%= @product.training_method.description %>
+				<% if @product.content_length_id? %>
+					- <%= pluralize(sprintf("%g", @product.content_number), 
+					@product.content_length.description.downcase) %>
+				<% end %>
+				<% if @product.duration_id? %>
+					- <%= pluralize(sprintf("%g", @product.duration_number), 
+					@product.duration.time_unit.downcase) %>
+				<% end %>
+			</div>
+			<div class="detail">
+				<%= @business.currency_symbol %> 
+				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+				<span class="js-toggle-detail-2">(more..)</span>
+			</div>
+		</div>
+
+		<div class="js-more-detail-2">
+		 	<%= render 'shared/product_details' %>
+		</div>
+		
+		<div class="paragraph">
+			<h5>Dates/Timings</h5>
+			<div class="subject">
+				<%= image_tag 'calendar-icon.png', class: "img-rounded" %>
+			</div>
+			<% if @event.start_date == @event.end_date %>
+				<div class="subject"></div>
+				<div class="detail">
+					<%= formatted_daydate(@event.start_date) %>
+				</div>
+			<% else %>
+				<div class="subject"></div>
+				<div class="detail">
+					<%= formatted_daydate(@event.start_date) %> 
+						-> <%= formatted_daydate(@event.end_date) %>
+				</div>
+			<% end %>
+		
+			<% if @event.time_of_day? || (@event.start_time? && @event.finish_time?) %>
+			
+				<div class="subject"></div>
+				<div class="detail">
+					<%= @event.time_of_day %>
+					<% if @event.time_of_day? %>
+						<%= ": #{formatted_time(@event.start_time)} -> 
+							#{formatted_time(@event.finish_time)}" if @event.start_time? %>
+					<% else %>
+						<%= "#{formatted_time(@event.start_time)} -> 
+							#{formatted_time(@event.finish_time)}" %>
+					<% end %>
+				</div>
+			
+			<% end %>
+
+			<% if @event.attendance_days? %>
+			
+				<div class="subject"></div>
+				<div class="detail">
+					<%= @event.attendance_days.split.join(" ") %>
+				</div>
+		
+			<% end %>
+		</div>
+
+		<% if @event.location? %>
+			<div class="paragraph">
+				<div class="subject">Location:</div>
+				<div class="detail"><%= @event.location %></div>
+			</div>
+		<% end %>	
+		<div class="paragraph">
+			<% if @event.note? %>
+				<div class="subject">Notes:</div>
+				<div class="detail"><%= @event.note %></div>
+			<% end %>
+		</div>
+	</div>
+	<div class="navigator add-top-space">	
+		<%= link_to "<- All scheduled events", my_business_events_path(@business) %>
+		| <%= link_to "Update event details ->", edit_event_path(@event) %>
+	</div>
+</div>

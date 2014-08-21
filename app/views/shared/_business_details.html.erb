@@ -1,0 +1,42 @@
+<div class="paragraph">
+	<div class="subject">About us:</div>
+	<div class="detail"><%= @business.description %></div>
+</div>
+<div class="paragraph">
+	<% unless @business.hide_address? %>
+		<div>
+			<div class="subject"><em>Address:</em></div>
+			<div class="detail"> <%= @business.full_address %></div>
+		</div>
+	<% end %>
+	<div class="clearer">
+		<div class="subject">Phone:</div>
+		<div class="detail"><%= @business.all_phones_vendor %></div>
+	</div>
+	<div class="clearer">
+		<div class="subject">Email:</div>
+		<div class="detail"><%= @business.email %></div>
+	</div>
+	<% if @business.has_contactable_users? %>
+	  	<div class="clearer">
+			<div class="subject">Team:</div>
+			<div class="detail"><%= @business.contactable_owners_list %></div>
+	  	</div>
+	<% end %>
+</div>
+<% if @business.website? %>
+	<div class="paragraph">
+		<div class="subject">Website:</div>
+		<div class="detail">
+			<%= link_to(@business.website, "#{@business.website}", target: "_blank") %>
+		</div>
+	</div>
+<% end %>
+<% if @business.image? %>
+	<div class="paragraph">
+		<div class="subject">Image:</div>
+		<div class="detail">
+			<%= image_tag @business.image_url, class: "img-rounded" %>
+		</div>
+	</div>
+<% end %>

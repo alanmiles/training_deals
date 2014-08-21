@@ -73,6 +73,17 @@ class Business < ActiveRecord::Base
 		ownerlist.join(", ")
 	end
 
+	def contactable_owners_list
+		ownerlist = []
+		@owners = self.users.joins(:ownerships)
+			.where(ownerships: { contactable: true } )
+			.order("ownerships.position")
+		@owners.each do |owner|
+			ownerlist.push("#{owner.name} <#{owner.email}>")
+		end
+		ownerlist.join(", ")
+	end
+
 	def currency_code
 		@country = Country.find_country_by_name(country)
 		@code = @country.currency['code']
@@ -93,6 +104,25 @@ class Business < ActiveRecord::Base
 		@count = self.products.count
 		@count > 0
 	end
+
+	def has_schedulable_products?
+		@count = self.products.schedulable.count
+		@count > 0
+	end
+
+	def has_events?
+		@count = self.events.count
+		@count > 0
+	end
+
+	def contactable_users
+		self.users.joins(:ownerships).where(ownerships: { contactable: true } ).order("position")
+	end
+
+	def has_contactable_users?
+		self.contactable_users.count > 0
+	end
+
 
 	private
 

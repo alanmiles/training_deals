@@ -72,5 +72,12 @@ FactoryGirl.define do
 		content "Course content"
 		outcome "Course outcome"
 		created_by 1
-	end			
+	end	
+
+	factory :event do
+		product
+		sequence(:start_date)			{ |n| Date.today + n }
+		sequence(:end_date)				{ |n| Date.today + n + 7}
+		created_by 1
+	end
 end

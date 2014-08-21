@@ -1,0 +1,116 @@
+<% provide(:title, "Add event") %>
+<span class="two-line-header"><h1>Add a training event</h1></span>
+<h2><%= "for #{current_business.name}, #{current_business.city}" %></h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span8">
+		<%= form_for([@business, @event], 
+				url: my_business_events_path(@business)) do |f| %>
+			<%= render 'shared/error_messages', object: f.object %>
+			<div class="entry-page">
+				<div class="entry">
+					<div class="add-this">
+						<span class="label"><%= label_tag :product_id, "Relating to" %></span>
+					</div>
+					<div class="box-fill half-line">
+						<%= f.collection_select :product_id, @products, 
+							:id, :title, prompt: true %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<span class="label"><%= f.label :start_date %></span>
+					</div>
+					<div class="box-fill half-line">
+						<%= f.text_field :start_date, placeholder: "YYYY-MM-DD" %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<span class="label"><%= f.label :end_date  %></span>
+					</div>
+					<div class="box-fill half-line">
+						<%= f.text_field :end_date, placeholder: "YYYY-MM-DD"  %>
+					</div>
+				</div>
+				<div class ="entry">
+					<div class="sub-header">OPTIONALLY INCLUDE -></div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<%= f.label :attendance_days  %>
+					</div>
+					<div class="box-fill">
+						<% Date::ABBR_DAYNAMES.each do |day| %>
+							<% @select = false %>
+							<% unless @checked_days.nil? %>
+								<% @checked_days.each do |checked| %>
+									<% if day == checked %>
+										<% @select = true %>
+									<% end %>
+								<% end %>
+							<% end %>
+							<%= check_box_tag "weekdays[]", day, @select %>
+							<small><%= day %></small>
+							&nbsp;
+						<% end %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<%= f.label :time_of_day  %>
+					</div>
+					<div class="box-fill half-line">
+						<%= f.select :time_of_day, @periods, prompt: "Choose an option", 
+							selected: @selected_period %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<%= f.label :start_time  %>
+					</div>
+					<div class="box-fill half-line">
+						<%= f.text_field :start_time, placeholder: "HH:MM"  %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<%= f.label :finish_time  %>
+					</div>
+					<div class="box-fill half-line">
+						<%= f.text_field :finish_time, placeholder: "HH:MM"  %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<%= f.label :location  %>
+					</div>
+					<div class="box-fill">
+						<%= f.text_field :location, placeholder: "If not your normal location"  %>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="add-this">
+						<%= f.label :note, "Notes" %>
+					</div>
+					<div class="box-fill">
+						<%= f.text_area :note, 
+							placeholder: "Is there anything special about this event? 140 characters maximum"  %>
+					</div>
+				</div>
+				<div class="entry">
+					<%= f.hidden_field :created_by %>
+				</div>
+				<%= f.submit "Create", class: "btn btn-primary" %>
+			</div>
+		<% end %>
+	</div>
+	<div class="navigator">
+		<%= link_to "<- Back to event schedule", my_business_events_path(@business) %>
+	</div>
+</div>

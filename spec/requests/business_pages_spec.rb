@@ -103,7 +103,7 @@ describe "BusinessPages" do
 			        describe "minimized Business menu" do #no business selected
 			        	it { should_not have_link('Business home page', href: my_businesses_path) }
 			        	it { should_not have_link('Products') }
-			        	it { should_not have_link('Schedules', href: "#") }
+			        	it { should_not have_link('Schedules') }
 			        	it { should_not have_link('* Promotions *', href: "#") }
 			        	it { should_not have_link('Reviews', href: "#") }
 			        	it { should_not have_link('History', href: "#") }
@@ -315,7 +315,8 @@ describe "BusinessPages" do
 		        describe "Business menu" do
 		        	it { should have_link('Business home page', href: my_businesses_path) }
 		        	it { should have_link('Products', my_business_products_path(changed_business)) }
-		        	it { should have_link('Schedules', href: "#") }
+		        	it { should_not have_link('Schedules', href: my_business_events_path(changed_business)) }
+		        		#'Schedules' excluded because no event-oriented products yet.
 		        	it { should have_link('* Promotions *', href: "#") }
 		        	it { should have_link('Reviews', href: "#") }
 		        	it { should have_link('History', href: "#") }

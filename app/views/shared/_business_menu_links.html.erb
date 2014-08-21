@@ -1,6 +1,8 @@
 <li><%= link_to "Business home page", my_businesses_path %></li>
 <li><%= link_to "Products", my_business_products_path(@business) %></li>
-<li><%= link_to "Schedules", "#" %></li>
+<li>
+	<%= link_to "Schedules", my_business_events_path(@business) if @business.has_schedulable_products? %>
+</li>
 <li><%= link_to "* Promotions *", "#" %></li>
 <li><%= link_to "Reviews", "#" %></li>
 <li><%= link_to "History", "#" %></li>

@@ -17,7 +17,7 @@ class Product < ActiveRecord::Base
 	validates :business,			presence: true
 	validates :topic,				presence: true
 	validates :training_method,		presence: true
-	validates :title,				presence: true, length: { maximum: 75 },
+	validates :title,				presence: true, length: { maximum: 50 },
 									uniqueness: { scope: [:business_id, :topic_id], case_sensitive: false }
 	validates :ref_code,			length: { maximum: 20 }
 	validates :qualification,		length: { maximum: 50 }
@@ -57,6 +57,15 @@ class Product < ActiveRecord::Base
 
 	def formatted_duration_number
 		sprintf("%g", duration_number)
+	end
+
+	def schedulable?
+		@method = TrainingMethod.find(self.training_method_id)
+		@method.event?
+	end
+
+	def self.schedulable
+		Product.joins(:training_method).where({ "training_methods.event" => true }).order("products.title")
 	end
 
 	private

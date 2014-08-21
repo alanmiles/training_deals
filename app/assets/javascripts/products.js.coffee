@@ -2,6 +2,9 @@ jQuery ($) ->
 	$(".html-content").hide()
 	$(".js-content").show()
 
+jQuery ($) ->
+	$(".js-link").show()
+
 jQuery ->
 	categories = $('#topic_category_id').html()
 	topics = $('#product_topic_id').html()

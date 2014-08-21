@@ -1,0 +1,41 @@
+<div class="paragraph">
+	<div>
+		<div class="subject">Classification:</div>
+		<div class="detail"><%= @product.topic.classification %></div>
+	</div>
+	<div class="clearer">
+		<div class="subject">Reference code:</div>
+		<div class="detail"><%= @product.ref_code_formatted %></div>
+	</div>
+	<% if @product.qualification? %>
+		<div class="clearer">
+			<div class="subject">Qualification:</div>
+			<div class="detail" id="qualification"><%= @product.qualification %></div>
+		</div>
+	<% end %>
+</div>
+<div class="paragraph">
+	<div class="subject">Description:</div>
+	<div class="detail"><%= @product.content %></div>
+</div>
+<div class="paragraph">
+	<div class="subject">Benefits/results:</div>
+	<div class="detail"><%= @product.outcome %></div>
+</div>
+
+<% if @product.web_link? %>
+	<div class="paragraph">
+		<div class="subject">Web-link:</div>
+		<div class="detail">
+			<%= link_to(@product.web_link, "#{@product.web_link}", target: "_blank") %>
+		</div>
+	</div>
+<% end %>
+<% if @product.image? %>
+	<div class="paragraph">
+		<div class="subject"></div>
+		<div class="detail">
+			<%= image_tag @product.image_url, class: "img-rounded" %>
+		</div>
+	</div>
+<% end %>
