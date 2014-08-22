@@ -9,19 +9,22 @@
 			<div class="detail"> <%= @business.full_address %></div>
 		</div>
 	<% end %>
-	<div class="clearer">
-		<div class="subject">Phone:</div>
-		<div class="detail"><%= @business.all_phones_vendor %></div>
-	</div>
-	<div class="clearer">
-		<div class="subject">Email:</div>
-		<div class="detail"><%= @business.email %></div>
-	</div>
 	<% if @business.has_contactable_users? %>
 	  	<div class="clearer">
-			<div class="subject">Team:</div>
+			<div class="subject">Contact:</div>
 			<div class="detail"><%= @business.contactable_owners_list %></div>
 	  	</div>
+	<% else %>
+		<% unless @business.phone.blank? && @business.alt_phone.blank? %>
+			<div class="clearer">
+				<div class="subject">Phone:</div>
+				<div class="detail"><%= @business.all_phones_vendor %></div>
+			</div>
+		<% end %>
+		<div class="clearer">
+			<div class="subject">Email:</div>
+			<div class="detail"><%= @business.email %></div>
+		</div>
 	<% end %>
 </div>
 <% if @business.website? %>

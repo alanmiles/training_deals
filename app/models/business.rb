@@ -66,20 +66,32 @@ class Business < ActiveRecord::Base
 
 	def owners_list
 		ownerlist = []
-		@owners = self.users.order("position")
-		@owners.each do |owner|
-			ownerlist.push("#{owner.name} <#{owner.email}>")
+		@ownerships = self.ownerships.order("position")
+		@ownerships.each do |owner|
+			if owner.contactable?
+				if owner.phone?
+					ownerlist.push("#{owner.user.name} <#{owner.user.email} - #{owner.phone}>")
+				else
+					ownerlist.push("#{owner.user.name} <#{owner.user.email}>")
+				end
+			else
+				ownerlist.push("#{owner.user.name}")
+			end
 		end
 		ownerlist.join(", ")
 	end
 
 	def contactable_owners_list
 		ownerlist = []
-		@owners = self.users.joins(:ownerships)
-			.where(ownerships: { contactable: true } )
-			.order("ownerships.position")
-		@owners.each do |owner|
-			ownerlist.push("#{owner.name} <#{owner.email}>")
+		@ownerships = self.ownerships.order("position")
+		@ownerships.each do |owner|
+			if owner.contactable?
+				if owner.phone?
+					ownerlist.push("#{owner.user.name} <#{owner.user.email} - #{owner.phone}>")
+				else
+					ownerlist.push("#{owner.user.name} <#{owner.user.email}>")
+				end
+			end
 		end
 		ownerlist.join(", ")
 	end

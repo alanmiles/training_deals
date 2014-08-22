@@ -6,6 +6,9 @@
 		<section>
 			<%= render "/shared/business_menu" %>
 		</section>
+		<section>
+			<%= render 'show_notes' %>
+		</section>
 	</aside>
 	<div class="present span8">
 		<% if @business.inactive? %>
@@ -82,5 +85,5 @@
 
 
 	</div>
+	<%= render 'show_navigation_mybiz' %>
 </div>
-<%= render 'show_navigation_mybiz' %>

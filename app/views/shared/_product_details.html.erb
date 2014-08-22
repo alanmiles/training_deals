@@ -3,10 +3,12 @@
 		<div class="subject">Classification:</div>
 		<div class="detail"><%= @product.topic.classification %></div>
 	</div>
-	<div class="clearer">
-		<div class="subject">Reference code:</div>
-		<div class="detail"><%= @product.ref_code_formatted %></div>
-	</div>
+	<% if @product.ref_code? %>
+		<div class="clearer">
+			<div class="subject">Reference code:</div>
+			<div class="detail"><%= @product.ref_code_formatted %></div>
+		</div>
+	<% end %>
 	<% if @product.qualification? %>
 		<div class="clearer">
 			<div class="subject">Qualification:</div>

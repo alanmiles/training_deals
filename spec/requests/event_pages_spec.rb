@@ -129,7 +129,16 @@ describe "EventPages" do
 								it { should have_content("#{founder_biz.full_address}") }     
 								pending "test for exclusion of address if it's hidden" 
 								it { should_not have_content("#{founder.name} <#{founder.email}>") }  #no owner marked as contactable 
-
+								it { should_not have_content("Phone:") } #no phone number entered for founder_biz
+								it { should have_content("#{founder_biz.email}") }
+								it { should_not have_content("Reference code:") } #no ref code entered for product
+								it { should have_content("#{product_1.content}") }
+								it { should have_content("#{@event.start_date.strftime('%a %d %b, %Y')} -> #{@event.end_date.strftime('%a %d %b, %Y')}") }
+			            		it { should have_content("Evening : #{@event.start_time.strftime('%l:%M %P')} -> #{@event.finish_time.strftime('%l:%M %P')}") }
+			            		it { should have_content("Mon, Wed, Fri") }
+			            		it { should have_content("University campus") }
+			            		it { should have_content("Piffle")}
+			            		pending "image content not tested"
 			            	end
 						end
 
@@ -212,6 +221,79 @@ describe "EventPages" do
 
 					pending "Nothing built or tested for 'Cancel' yet"
 					pending "column sorting not tested"
+				end
+
+				describe "visit Show page with ref_code and business phone" do
+			
+					let!(:event_2) { FactoryGirl.create(:event, product: product_1, time_of_day: "Morning") }
+					
+					before do
+						founder_biz.phone = "0770-604022"
+						founder_biz.save
+						product_1.ref_code = "AAA-1111"
+						product_1.save
+						visit event_path(event_2)
+					end
+
+					it { should have_title("Event details") }
+					it { should have_content("Phone:") }
+					it { should have_content("#{founder_biz.phone}") }
+					it { should_not have_content("#{founder.name} <#{founder.email}>") }
+					it { should have_content("Reference code:") }
+					it { should have_content("#{event_2.start_date.strftime('%a %d %b, %Y')} -> #{event_2.end_date.strftime('%a %d %b, %Y')}") }
+            		it { should have_content("Morning") }
+            		it { should_not have_content("Morning : ") }
+            		it { should_not have_content("Mon, Wed, Fri") }
+            		it { should_not have_content("Location:") }
+            		it { should_not have_content("Notes:")}
+
+            		describe "when team member is contactable but no phone" do
+
+            			before do 
+            				ownership_1.contactable = true
+            				ownership_1.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should_not have_content("Phone:") }
+
+            			it { should have_content("Contact:") }
+            			it { should have_content("#{administrator.name} <#{administrator.email}>") }
+            			it { should_not have_content("#{administrator.name} <#{administrator.email} - ") }
+            			it { should_not have_content(founder_biz.phone) }
+
+            			describe "when team member name and email have changed" do
+
+            				let!(:old_name) { "#{administrator.name}" }
+            				let!(:old_email) { "#{administrator.email}" }
+            				let(:changed_name) { "Changed name" }
+            				let(:changed_email) { "changed_name@example.com"}
+            				
+            				before do
+            					administrator.name = changed_name
+            					administrator.email = changed_email
+            					administrator.password = "foobar"
+            					administrator.password_confirmation = "foobar"
+            					administrator.save
+            					visit event_path(event_2)
+            				end
+
+            				it { should have_content("#{changed_name} <#{changed_email}>") }
+            				it { should_not have_content("#{old_name} <#{old_email}>") }
+            			end
+
+            			describe "when team member phone is added" do
+
+            				before do
+            					ownership_1.phone = "0999 99999"
+            					ownership_1.save
+            					visit event_path(event_2)
+            				end
+
+            				it { should have_content("#{administrator.name} <#{administrator.email} - #{ownership_1.phone}>") }
+            				it { should_not have_content(founder_biz.phone) }
+            			end
+            		end
 				end
 			end
 		end
