@@ -86,13 +86,15 @@
 			
 				<div class="subject"></div>
 				<div class="detail">
-					<%= @event.time_of_day %>
-					<% if @event.time_of_day? %>
-						<%= ": #{formatted_time(@event.start_time)} -> 
-							#{formatted_time(@event.finish_time)}" if @event.start_time? %>
-					<% else %>
-						<%= "#{formatted_time(@event.start_time)} -> 
-							#{formatted_time(@event.finish_time)}" %>
+					<%= @event.time_of_day unless @event.time_of_day == "Not displayed" %>
+					<% if @event.start_time? %>
+						<% if @event.time_of_day? && @event.time_of_day != "Not displayed" %>
+							<%= ": #{formatted_time(@event.start_time)} -> 
+								#{formatted_time(@event.finish_time)}" if @event.start_time? %>
+						<% else %>
+							<%= "#{formatted_time(@event.start_time)} -> 
+								#{formatted_time(@event.finish_time)}" %>
+						<% end %>
 					<% end %>
 				</div>
 			

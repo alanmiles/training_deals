@@ -96,9 +96,9 @@ describe "EventPages" do
 								select "#{product_1.title}", from: 'event_product_id'
 								fill_in 'event_start_date', with: (Date.today + 14).strftime('%Y-%m-%d')
 								fill_in 'event_end_date', with: (Date.today + 21).strftime('%Y-%m-%d')
-								find(:css, "#weekdays_[value='Mon']").set(true)
-								find(:css, "#weekdays_[value='Wed']").set(true)
-								find(:css, "#weekdays_[value='Fri']").set(true)
+								find(:css, "#weekdays_Mon").set(true)
+								find(:css, "#weekdays_Wed").set(true)
+								find(:css, "#weekdays_Fri").set(true)
 								select "Evening", from: "Time of day"
 								fill_in 'Start time', with: "19:30"
 								fill_in 'Finish time', with: "22:00"
@@ -164,8 +164,8 @@ describe "EventPages" do
 								before do
 									select "#{product_1.title}", from: 'event_product_id'
 									fill_in 'event_start_date', with: (Date.today + 14).strftime('%Y-%m-%d')
-									find(:css, "#weekdays_[value='Mon']").set(true)
-									find(:css, "#weekdays_[value='Wed']").set(true)
+									find(:css, "#weekdays_Mon").set(true)
+									find(:css, "#weekdays_Wed").set(true)
 									select "Evening", from: "Time of day"
 								end
 
@@ -180,8 +180,8 @@ describe "EventPages" do
 									it { should have_title("Add event") }
 									it { should have_selector('li', text: "* End date can't be blank") }
 			              			it { should have_select('event_product_id', selected: "#{product_1.title}")}
-			              			it { should have_checked_field("weekdays_") }   #better test required to match day selected
-			              			it { should have_unchecked_field("weekdays_") }
+			              			it { should have_checked_field("weekdays_Mon") } 
+			              			it { should have_unchecked_field("weekdays_Sun") }
 			              			it { should have_select('event_time_of_day', selected: "Evening") }
 			              		end		
 
@@ -221,6 +221,20 @@ describe "EventPages" do
 
 					pending "Nothing built or tested for 'Cancel' yet"
 					pending "column sorting not tested"
+
+					it "should be able to delete the product and redirect correctly" do   #provided never scheduled
+		            
+			            expect do
+			              click_link('delete', href: event_path(event))
+			            end.to change(founder_biz.events, :count).by(-1)
+			            
+			            expect(page).to have_title('Event schedule')
+			            expect(page).not_to have_selector('td', text: product_1.title)
+
+						expect(page).not_to have_selector('td', text: event.start_date.strftime("%d-%b-%y"))
+						expect(page).not_to have_selector('td', text: event.end_date.strftime("%d-%b-%y"))
+			            expect(page).to have_content("Some training activities")
+			        end
 				end
 
 				describe "visit Show page with ref_code and business phone" do
@@ -294,6 +308,71 @@ describe "EventPages" do
             				it { should_not have_content(founder_biz.phone) }
             			end
             		end
+				end
+
+				describe "visit Edit page" do
+
+					before do
+						event.attendance_days = "Mon, Wed"
+						event.time_of_day = "Varies"
+						event.start_time = "10:00"
+						event.finish_time = "12:30"
+						event.save
+						visit edit_event_path(event)
+					end
+
+					it { should have_title('Edit event') }
+					it { should have_selector('h1', "Edit event")}
+					it { should have_selector('h2', "for '#{product_1.title}'") }
+					it { should have_link('<- Cancel', href: event_path(event)) }
+					it { should have_link('Products', href: my_business_products_path(founder_biz)) }
+					it { should have_selector("input#event_start_date[value='#{event.start_date}']") }
+					it { should have_selector("input#event_end_date[value='#{event.end_date}']") }
+					it { should have_checked_field("weekdays_Mon") }
+					it { should have_checked_field("weekdays_Wed") }
+					it { should have_unchecked_field("weekdays_Tue") }
+					it { should have_select('event_time_of_day', selected: "Varies") }
+					it { should have_selector("input#event_start_time[value='#{event.start_time.strftime('%H:%M')}']") }
+					it { should have_selector("input#event_finish_time[value='#{event.finish_time.strftime('%H:%M')}']") }
+				
+					describe "Update the event" do
+
+						describe "successfully" do
+
+							before do
+								find(:css, "#weekdays_Mon").set(false)
+								find(:css, "#weekdays_Tue").set(true)
+								select "Not displayed", from: "Time of day"
+								fill_in 'Finish time', with: "13:00"
+								click_button 'Update'
+							end
+
+							it { should have_title('Event details') }
+							it { should have_content("#{event.start_time.strftime('%l:%M %P')} -> 1:00 pm") }
+			            	it { should have_content("Tue, Wed") }
+			            	it { should_not have_content("Not displayed") }
+						end
+
+						describe "unsuccessfully" do
+
+							before do
+								find(:css, "#weekdays_Mon").set(false)
+								find(:css, "#weekdays_Tue").set(true)
+								select "Not displayed", from: "Time of day"
+								fill_in 'Finish time', with: "13:00"
+								fill_in 'Start date', with: nil
+								click_button 'Update'
+							end
+
+							it { should have_title('Edit event') }
+							it { should_not have_checked_field("weekdays_Mon") }
+							it { should have_checked_field("weekdays_Tue") }
+							it { should have_checked_field("weekdays_Wed") }
+							it { should have_select('event_time_of_day', selected: "Not displayed") }
+							it { should have_selector("input#event_start_time[value='#{event.start_time.strftime('%H:%M')}']") }
+							it { should have_selector("input#event_finish_time[value='13:00']") }
+						end
+					end
 				end
 			end
 		end

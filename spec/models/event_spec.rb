@@ -25,6 +25,8 @@ describe Event do
 	  	@event = product.events.build(
 	  					start_date: Date.today + 14,
 	  					end_date: Date.today + 34,
+	  					start_time: TimeOfDay.new(10, 00).strftime("%H:%M"),
+	  					finish_time: TimeOfDay.new(13, 00).strftime("%H:%M"),
 	  					created_by: user.id)
 	  end
 
@@ -100,6 +102,24 @@ describe Event do
 	  describe "when finish-time has 'AM' or 'PM' added" do
 	  	before { @event.finish_time = TimeOfDay.new(9, 40).strftime("%H:%M %p") }
 	  	it { should_not be_valid }
+	  end
+
+	  describe "when start-time is present but finish-time is not" do
+	  	before { @event.finish_time = nil }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when finish-time is present but start-time is not" do
+	  	before { @event.start_time = nil }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when neither start nor finish-time are present" do
+	  	before do
+	  		@event.start_time = nil
+	  		@event.finish_time = nil
+	  	end
+	  	it { should be_valid }
 	  end
 
 	  describe "when location is too long" do

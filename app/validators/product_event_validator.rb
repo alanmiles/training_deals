@@ -6,7 +6,7 @@ class ProductEventValidator < ActiveModel::EachValidator
 				record.errors[attribute] << "does not have an event-type format."
 			end
 		else
-			record.errors[attribute] << "blaaahh"
+			record.errors[attribute] << "has not been entered."
 		end
 	end
 end

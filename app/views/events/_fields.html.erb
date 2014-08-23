@@ -1,0 +1,92 @@
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :start_date %></span>
+	</div>
+	<div class="box-fill half-line">
+		<%= f.text_field :start_date, placeholder: "YYYY-MM-DD" %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :end_date  %></span>
+	</div>
+	<div class="box-fill half-line">
+		<%= f.text_field :end_date, placeholder: "YYYY-MM-DD"  %>
+	</div>
+</div>
+<div class ="entry">
+	<div class="sub-header">OPTIONALLY INCLUDE -></div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :attendance_days  %>
+	</div>
+	<div class="box-fill">
+		<% Date::ABBR_DAYNAMES.each do |day| %>
+			<% @select = false %>
+			<% unless @checked_days.nil? %>
+				<% @checked_days.each do |checked| %>
+					<% if day == checked %>
+						<% @select = true %>
+					<% end %>
+				<% end %>
+			<% end %>
+			<%= check_box_tag "weekdays[]", day, @select, id: "weekdays_#{day}" %>
+			<small><%= day %></small>
+			&nbsp;
+		<% end %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :time_of_day  %>
+	</div>
+	<div class="box-fill half-line">
+		<%= f.select :time_of_day, @periods, prompt: "Choose an option", 
+			selected: @selected_period %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :start_time  %>
+	</div>
+	<div class="box-fill half-line">
+		<% if @event.start_time? && @event.start_time.class != String %>
+			<%= f.text_field :start_time, placeholder: "HH:MM", 
+				value: @event.start_time.strftime('%H:%M')  %>
+		<% else %>
+			<%= f.text_field :start_time, placeholder: "HH:MM" %>
+		<% end %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :finish_time  %>
+	</div>
+	<div class="box-fill half-line">
+		<% if @event.finish_time? && @event.start_time.class != String %>
+			<%= f.text_field :finish_time, placeholder: "HH:MM",
+				value: @event.finish_time.strftime('%H:%M') %>
+		<% else %>
+			<%= f.text_field :finish_time, placeholder: "HH:MM" %>
+		<% end %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :location  %>
+	</div>
+	<div class="box-fill">
+		<%= f.text_field :location, placeholder: "If not your normal location"  %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<%= f.label :note, "Notes" %>
+	</div>
+	<div class="box-fill">
+		<%= f.text_area :note, 
+			placeholder: "Is there anything special about this event? 140 characters maximum"  %>
+	</div>
+</div>
+		

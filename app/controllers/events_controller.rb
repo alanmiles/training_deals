@@ -70,6 +70,56 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find(params[:id])
+    @product = Product.find(@event.product_id)
+    @business = Business.find(@product.business_id)
+    @checked_days = []
+    unless @event.attendance_days.nil?
+      @attdays = @event.attendance_days.split(', ')
+      @attdays.each do |day|
+          @checked_days << day
+      end
+    end
+    @selected_period = @event.time_of_day
+    if @selected_period.blank?
+      @periods = Event.day_periods
+    else
+      @periods = Event.day_periods_with_blank
+    end
+  end
+
+  def update
+    @event = Event.find(params[:id])
+    @product = Product.find(@event.product_id)
+    attended = []
+    unless params[:weekdays].nil?
+      params[:weekdays].each do |day|
+        attended << day if day.present?
+      end
+      @event.attendance_days = attended.split.join(", ")
+    end
+    if @event.update_attributes(event_params)
+      flash[:success] = "Updated event details"
+      redirect_to event_path(@event)
+    else
+      @periods = Event.day_periods_with_blank
+      @selected_period = @event.time_of_day
+      @checked_days = []
+      unless params[:weekdays].nil?
+        params[:weekdays].each do |day|
+          @checked_days << day
+        end
+      end
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @event = Event.find(params[:id])
+    @product = Product.find(@event.product_id)
+    @business = Business.find(@product.business_id)
+    @event.destroy
+    flash[:success] = "Event for '#{@product.title}' deleted"
+    redirect_to my_business_events_path(@business)
   end
 
   private

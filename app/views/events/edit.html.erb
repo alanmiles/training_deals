@@ -1,2 +1,24 @@
-<h1>Events#edit</h1>
-<p>Find me in app/views/events/edit.html.erb</p>
+<% provide(:title, "Edit event") %>
+<span class="two-line-header"><h1>Edit event</h1></span>
+<h2><%= "for '#{@product.title}'" %></h2>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/business_menu" %>
+		</section>
+	</aside>
+	<div class="span8">
+		<%= form_for @event do |f| %>
+			<%= render 'shared/error_messages', object: f.object %>
+			<%= render 'fields', f: f %>
+			<div class="entry">
+				<%= f.hidden_field :created_by %>
+			</div>
+			<%= f.submit "Update", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+	<div class="navigator">
+		<%= link_to "<- Cancel", event_path(@event) %>
+	</div>
+</div>

@@ -12,8 +12,10 @@ class Event < ActiveRecord::Base
 									message: "is a duplicate for this product"  }
 	validates :end_date,		presence: true, incorrect_end_date: true
 	VALID_TIME_REGEX = /([0-1]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?\z/
-	validates :start_time,		format: { with: VALID_TIME_REGEX, allow_blank: true }
-	validates :finish_time,		format: { with: VALID_TIME_REGEX, allow_blank: true }
+	validates :start_time,		presence: true, if: lambda {|s| !s.finish_time.blank?},
+								format: { with: VALID_TIME_REGEX, allow_blank: true }
+	validates :finish_time,		presence: true, if: lambda {|s| !s.start_time.blank?},
+								format: { with: VALID_TIME_REGEX, allow_blank: true }
 	validates :location,		length: { maximum: 75, allow_blank: true }
 	validates :note,			length: { maximum: 140, allow_blank: true }
 	validates :created_by,		presence: true,
