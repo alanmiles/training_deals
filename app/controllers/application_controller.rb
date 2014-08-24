@@ -76,4 +76,15 @@ class ApplicationController < ActionController::Base
         not_signed_in
       end
     end
+
+    def event_team_member_illegal
+      if signed_in?
+        @event = Event.find(params[:id])
+        @product = Product.find(@event.product_id)
+        @business = Business.find(@product.business_id)
+        team_member_valid(@business)
+      else
+        not_signed_in
+      end
+    end
 end

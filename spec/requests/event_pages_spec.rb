@@ -205,9 +205,9 @@ describe "EventPages" do
 					it { should_not have_content("Some training activities") }
 					it { should_not have_content("You need to add at least one event-type
 						training product before you can start scheduling.") }
-					it { should have_selector('td', text: product_1.title) }
-					it { should have_selector('td', text: event.start_date.strftime("%d-%b-%y")) }
-					it { should have_selector('td', text: event.end_date.strftime("%d-%b-%y")) }
+					it { should have_selector("tr#event_#{event.id}", text: product_1.title) }
+					it { should have_selector("tr#event_#{event.id}", text: event.start_date.strftime("%d-%b-%y")) }
+					it { should have_selector("tr#event_#{event.id}", text: event.end_date.strftime("%d-%b-%y")) }
 					it { should have_link('details', href: event_path(event))}
 					it { should have_link('delete', href: event_path(event)) }   #provided not a HROOMPH special
 																				#otherwise 'cancel'
@@ -229,7 +229,7 @@ describe "EventPages" do
 			            end.to change(founder_biz.events, :count).by(-1)
 			            
 			            expect(page).to have_title('Event schedule')
-			            expect(page).not_to have_selector('td', text: product_1.title)
+			            expect(page).not_to have_selector("tr#event_#{event.id}")
 
 						expect(page).not_to have_selector('td', text: event.start_date.strftime("%d-%b-%y"))
 						expect(page).not_to have_selector('td', text: event.end_date.strftime("%d-%b-%y"))
@@ -380,9 +380,413 @@ describe "EventPages" do
 
 	describe "when not signed in" do
 
+		describe "when product doesn't exist" do
+
+			describe "Index" do
+				
+				describe "redirect to the signin page" do
+				
+					before { get my_business_events_path(founder_biz) }
+					inaccessible_without_signin
+				end
+
+				describe "go to correct Index page after signing in" do
+
+					before do
+						visit my_business_events_path(founder_biz)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title('Event schedule')
+						expect(page).to have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}")
+						expect(page).to have_content("You need to add at least one event-type
+											training product before you can start scheduling.")
+					end
+
+					describe "but don't go to this index page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title('Event schedule') }
+					end
+				end
+			end
+		end
+
+		describe "when product exists but no events scheduled" do
+
+			let!(:product_1) 	{ FactoryGirl.create(:product, title: "Latest product",
+				business: founder_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+
+			describe "Index" do
+
+				describe "redirect to the signin page" do
+				
+					before { get my_business_events_path(founder_biz) }
+					inaccessible_without_signin
+				end
+
+				describe "go to correct Index page after signing in" do
+
+					before do
+						visit my_business_events_path(founder_biz)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title('Event schedule')
+						expect(page).to have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}")
+						expect(page).to have_content("Some training activities")
+						expect(page).not_to have_content("You need to add at least one event-type
+							training product before you can start scheduling.")
+					end
+
+					describe "but don't go to this index page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title('Event schedule') }
+					end
+				end
+			end
+		end
+
+		describe "when both product and events exist" do
+
+			let!(:product_1) 	{ FactoryGirl.create(:product, title: "Latest product",
+				business: founder_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+			
+			let!(:event)		{ FactoryGirl.create(:event, product: product_1) }
+
+			describe "Index" do
+					
+				describe "redirect to the signin page" do
+				
+					before { get my_business_events_path(founder_biz) }
+					inaccessible_without_signin
+				end
+
+				describe "go to correct Index page after signing in" do
+
+					before do
+						visit my_business_events_path(founder_biz)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title('Event schedule')
+						expect(page).to have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}")
+						expect(page).to have_selector("tr#event_#{event.id}", text: product_1.title)
+						expect(page).to have_selector("tr#event_#{event.id}", text: event.start_date.strftime("%d-%b-%y"))
+						expect(page).to have_selector("tr#event_#{event.id}", text: event.end_date.strftime("%d-%b-%y"))
+
+					end
+
+					describe "but don't go to this index page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title('Event schedule') }
+					end
+				end
+			end
+
+			describe "Show" do
+
+				before { get event_path(event) }
+				inaccessible_without_signin
+
+				describe "go to correct Show page after signing in" do
+
+					before do
+						visit event_path(event)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title("Event details")
+						expect(page).to have_link("Update event details ->", event_path(event))
+						expect(page).to have_content("Cast yourself in the role of the outsider looking in.")
+						expect(page).to have_selector('div.strong', text: "#{founder_biz.name}")
+						expect(page).to have_selector('span.js-toggle-detail', text: "(more..)")
+						expect(page).to have_content("#{product_1.content}")
+						expect(page).to have_content("#{event.start_date.strftime('%a %d %b, %Y')} -> #{event.end_date.strftime('%a %d %b, %Y')}")
+					end
+
+					describe "but don't go to this Show page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title("Event details") }
+					end
+				end
+			end
+
+			describe "Edit" do
+
+				before { get edit_event_path(event) }
+				inaccessible_without_signin
+
+				describe "go to correct Edit page after signing in" do
+
+					before do
+						visit edit_event_path(event)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title("Edit event")
+						expect(page).to have_link('Products', href: my_business_products_path(founder_biz))
+						expect(page).to have_selector("input#event_start_date[value='#{event.start_date}']")
+					end
+
+					describe "but don't go to this Edit page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title("Edit event") }
+					end
+				end
+			end
+
+			describe "New" do
+
+				before { get new_my_business_event_path(founder_biz) }
+				inaccessible_without_signin
+
+				describe "go to correct New page after signing in" do
+
+					before do
+						visit new_my_business_event_path(founder_biz)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title("Add event")
+			    		expect(page).to have_link("<- Back to event schedule", href: my_business_events_path(founder_biz))
+						expect(page).to have_link("Products", href: my_business_products_path(founder_biz)) #checking Business menu displayed
+						expect(page).to have_selector("select#event_product_id", text: "#{product_1.title}")
+					end
+
+					describe "but don't go to this New page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title('Add event') }
+					end
+				end
+			end
+
+			describe "attempting to manipulate data" do
+
+				describe "Create" do
+
+              		let(:params) do
+                		{ event: { 	product_id: product_1.id,
+            						start_date: Date.today + 60,
+            						end_date: Date.today + 67, 
+            						created_by: 1  } }
+              		end
+              
+              		it "should not create a new Product" do
+                		expect do
+                  			post my_business_events_path(founder_biz, params)
+                		end.not_to change(Event, :count)
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { post my_business_events_path(founder_biz, params) }
+                		forbidden_without_signin
+              		end
+            	end
+
+            	describe "Update" do
+
+              		let(:new_start_date)  { Date.today - 1 }
+              		let(:params) do
+                		{ event: { start_date: new_start_date } }
+              		end
+              
+              		describe "should not modify the existing event" do
+                
+                		before { patch event_path(event), params } 
+                		specify { expect(event.reload.start_date).not_to eq new_start_date }
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { patch event_path(event, params) }
+                		forbidden_without_signin
+              		end
+            	end
+
+            	describe "Destroy" do
+
+              		it "should not delete the existing Event" do
+                		expect do
+                  			delete event_path(event)
+                		end.not_to change(Event, :count)
+              		end
+
+              		describe "should redirect to root" do
+
+                		before { delete event_path(event) }
+                		forbidden_without_signin
+                	end
+              	end
+			end
+		end
 	end
 
 	describe "when signed in but not as administrator of this business" do
 
+		let!(:product_1) 	{ FactoryGirl.create(:product, title: "Latest product",
+			business: founder_biz,
+			topic: genre_1_cat_1_topic_1, training_method: event_method, 
+			content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+		
+		let!(:event)		{ FactoryGirl.create(:event, product: product_1) }
+		let!(:non_authorized_user)	{ FactoryGirl.create(:user) }
+		let!(:non_authorized_biz)	{ FactoryGirl.create(:business, created_by: non_authorized_user.id)} 
+
+		describe "displaying forms" do
+			before do
+				sign_in non_authorized_user
+				visit my_business_path(non_authorized_biz)
+			end
+
+			describe "Index page" do
+
+				before { visit my_business_events_path(founder_biz) }
+				
+				it { should have_content("The page you requested doesn't belong to you") }
+				it { should have_title("#{non_authorized_user.name}") }
+			end
+
+			describe "Show page" do
+
+				before { visit event_path(event) }
+				
+				it { should have_content("The page you requested doesn't belong to you") }
+				it { should have_title("#{non_authorized_user.name}") }
+			end
+
+			describe "Edit page" do
+
+				before { visit edit_event_path(event) }
+				
+				it { should have_title("#{non_authorized_user.name}") }
+				it { should have_content("The page you requested doesn't belong to you") }
+			end
+
+			describe "New page" do
+
+				before { visit new_my_business_event_path(founder_biz) }
+				
+				it { should have_title("#{non_authorized_user.name}") }
+				it { should have_content("The page you requested doesn't belong to you") }
+			end
+		end
+
+		describe "attempting to modify Event data" do
+
+			before do
+				sign_in non_authorized_user, no_capybara: true
+				visit my_business_path(non_authorized_biz)
+			end
+
+				describe "Create" do
+
+				let(:params) do
+             		{ event: { 	product_id: product_1.id,
+            						start_date: Date.today + 60,
+            						end_date: Date.today + 67, 
+            						created_by: 1  } }
+           		end
+          
+           		it "should not create a new Event" do
+             		expect do
+               			post my_business_events_path(founder_biz, params)
+            		end.not_to change(Event, :count)
+           		end
+
+           		describe "redirects to user home page" do
+
+             		before { post my_business_events_path(founder_biz, params) }
+             		
+             		specify do
+						expect(response).to redirect_to(user_path(non_authorized_user))
+		    			expect(flash[:error]).to eq("Action not permitted!")
+		    		end
+           		end
+         	end
+
+         	describe "Update" do
+
+           		let(:new_start_date)  { Date.today - 1 }
+          		let(:params) do
+            		{ event: { start_date: new_start_date } }
+          		end
+          
+           		describe "should not modify the existing Event" do
+            
+             		before { patch event_path(event, params) } 
+             		specify { expect(event.reload.start_date).not_to eq new_start_date }
+           		end
+
+           		describe "should redirect to root" do
+
+             		before { patch event_path(event, params) }
+             		
+            		specify do
+             			expect(response).to redirect_to(user_path(non_authorized_user))
+		    			expect(flash[:error]).to eq("Action not permitted!")
+		    		end
+           		end             		
+         	end
+
+         	describe "Destroy" do
+
+         		it "should not delete the existing Event" do
+            		expect do
+              			delete event_path(event)
+            		end.not_to change(Event, :count)
+          		end
+
+          		describe "redirects to User home" do
+
+            		before { delete event_path(event) }
+            		
+            		specify do
+             			expect(response).to redirect_to(user_path(non_authorized_user))
+		    			expect(flash[:error]).to eq("Action not permitted!")
+		    		end
+            	end
+         	end
+		end
 	end
 end

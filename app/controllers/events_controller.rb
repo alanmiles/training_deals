@@ -1,13 +1,19 @@
 class EventsController < ApplicationController
+  
+  before_action :not_signed_in,               only: [:index, :show, :new, :edit]
+  before_action :illegal_action,              only: [:create, :update, :destroy]
+  before_action :event_team_member_illegal, only: [:show, :edit, :update, :destroy]
+  before_action :team_member,                 only: [:index, :new, :create]
+
   helper_method :sort_column, :sort_direction
 
   def index
-  	@business = Business.find(params[:my_business_id])
+  	#@business = Business.find(params[:my_business_id])
   	@events = @business.events.order(sort_column + " " + sort_direction)
   end
 
   def new
-  	@business = Business.find(params[:my_business_id])
+  	#@business = Business.find(params[:my_business_id])
   	@event = @business.events.new
     @event.created_by = current_user.id
     @products = @business.products.schedulable
@@ -19,7 +25,7 @@ class EventsController < ApplicationController
   def create
     @prod_id = params[:event][:product_id]
     unless @prod_id.nil? || @prod_id.empty?
-      @business = Business.find(params[:my_business_id])
+      #@business = Business.find(params[:my_business_id])
     	@product = Product.find(@prod_id)
       @event = @product.events.build(event_params)
       attended = []
@@ -50,7 +56,7 @@ class EventsController < ApplicationController
         	render 'new'
     	end
     else
-      @business = Business.find(params[:my_business_id])
+      #@business = Business.find(params[:my_business_id])
       @event = @business.events.new
       @event.created_by = current_user.id
       @periods = Event.day_periods
@@ -62,16 +68,16 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find(params[:id])
-    @product = Product.find(@event.product_id)
-    @business = Business.find(@product.business_id)
+    #@event = Event.find(params[:id])
+    #@product = Product.find(@event.product_id)
+    #@business = Business.find(@product.business_id)
     @owners = @business.contactable_users
   end
 
   def edit
-    @event = Event.find(params[:id])
-    @product = Product.find(@event.product_id)
-    @business = Business.find(@product.business_id)
+    #@event = Event.find(params[:id])
+    #@product = Product.find(@event.product_id)
+    #@business = Business.find(@product.business_id)
     @checked_days = []
     unless @event.attendance_days.nil?
       @attdays = @event.attendance_days.split(', ')
@@ -88,8 +94,8 @@ class EventsController < ApplicationController
   end
 
   def update
-    @event = Event.find(params[:id])
-    @product = Product.find(@event.product_id)
+    #@event = Event.find(params[:id])
+    #@product = Product.find(@event.product_id)
     attended = []
     unless params[:weekdays].nil?
       params[:weekdays].each do |day|
@@ -114,9 +120,9 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    @event = Event.find(params[:id])
-    @product = Product.find(@event.product_id)
-    @business = Business.find(@product.business_id)
+    #@event = Event.find(params[:id])
+    #@product = Product.find(@event.product_id)
+    #@business = Business.find(@product.business_id)
     @event.destroy
     flash[:success] = "Event for '#{@product.title}' deleted"
     redirect_to my_business_events_path(@business)

@@ -33,16 +33,17 @@
 						<th></th>
 					</tr>
 	 				<% @events.each do |event| %>
-	 				<tr>
-	 					<td><%= event.product.title %></td>
-	 					<td><%= event.start_date.strftime("%d-%b-%y") %></td>
-	 					<td><%= event.end_date.strftime("%d-%b-%y") %></td>
-	 					<td><%= link_to "details", event_path(event) %></td>
-	 					<td>
-	 						<%= link_to "delete", event, method: :delete,
-									data: { confirm: "Are you sure?" } %>
-						</td>
-					</tr>
+	 					<%= content_tag_for :tr, event do %>
+	 				 
+		 					<td><%= event.product.title %></td>
+		 					<td><%= event.start_date.strftime("%d-%b-%y") %></td>
+		 					<td><%= event.end_date.strftime("%d-%b-%y") %></td>
+		 					<td><%= link_to "details", event_path(event) %></td>
+		 					<td>
+		 						<%= link_to "delete", event, method: :delete,
+										data: { confirm: "Are you sure?" } %>
+							</td>
+						<% end %>
 					<% end %>
 	 			</table>
 			<% end %>
