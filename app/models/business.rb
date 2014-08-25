@@ -127,6 +127,24 @@ class Business < ActiveRecord::Base
 		@count > 0
 	end
 
+	def current_and_future_events
+		self.events.where("events.end_date >= ?", Date.today)
+	end
+
+	def has_current_and_future_events?
+		cnt = self.current_and_future_events.count
+		cnt > 0
+	end
+
+	def previous_events
+		self.events.where("events.end_date < ?", Date.today)
+	end
+
+	def has_previous_events?
+		cnt = self.previous_events.count
+		cnt > 0
+	end
+
 	def contactable_users
 		self.users.joins(:ownerships).where(ownerships: { contactable: true } ).order("position")
 	end

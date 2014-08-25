@@ -21,6 +21,10 @@ module ApplicationHelper
 		field.strftime('%a %d %b, %Y')
 	end
 
+	def formatted_shortdate(field)
+		field.strftime('%d-%b-%Y')
+	end
+
 	def formatted_time(field)
 		field.strftime('%l:%M %P')
 	end

@@ -9,7 +9,7 @@ class EventsController < ApplicationController
 
   def index
   	#@business = Business.find(params[:my_business_id])
-  	@events = @business.events.order(sort_column + " " + sort_direction)
+  	@events = @business.current_and_future_events.order(sort_column + " " + sort_direction)
   end
 
   def new
@@ -124,8 +124,17 @@ class EventsController < ApplicationController
     #@product = Product.find(@event.product_id)
     #@business = Business.find(@product.business_id)
     @event.destroy
-    flash[:success] = "Event for '#{@product.title}' deleted"
-    redirect_to my_business_events_path(@business)
+    if @event.end_date < Date.today
+      flash[:success] = "Completed event starting #{@event.start_date.strftime('%d-%b-%y')} for '#{@product.title}' deleted"
+      if @business.has_previous_events?
+        redirect_to my_business_previous_events_path(@business)
+      else
+        redirect_to my_business_events_path(@business)
+      end
+    else
+      flash[:success] = "Event starting #{@event.start_date.strftime('%d-%b-%y')} for '#{@product.title}' deleted"
+      redirect_to my_business_events_path(@business)
+    end
   end
 
   private

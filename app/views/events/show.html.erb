@@ -69,6 +69,11 @@
 			<div class="subject">
 				<%= image_tag 'calendar-icon.png', class: "img-rounded" %>
 			</div>
+			<% if @event.end_date < Date.today %>
+				<div class="check-info add-bottom-space">
+					This event has now finished.
+				</div>
+			<% end %>
 			<% if @event.start_date == @event.end_date %>
 				<div class="subject"></div>
 				<div class="detail">
@@ -123,8 +128,11 @@
 			<% end %>
 		</div>
 	</div>
-	<div class="navigator add-top-space">	
-		<%= link_to "<- All scheduled events", my_business_events_path(@business) %>
+	<div class="navigator add-top-space">
+		<% if @business.has_previous_events? %>
+			<%= link_to "<- All completed events ", my_business_previous_events_path(@business) %> | 
+		<% end %>	
+		<%= link_to "<- All current & future events", my_business_events_path(@business) %>
 		| <%= link_to "Update event details ->", edit_event_path(@event) %>
 	</div>
 </div>

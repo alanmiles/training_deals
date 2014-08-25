@@ -24,38 +24,49 @@
 					class: "btn btn-large btn-primary" 
 				%>
 			<% else %>
-				<table class="table table-striped table-bordered table-condensed">
-					<tr>
-						<th><%= sortable "products.title", "Title" %></th>
-						<th><%= sortable "start_date", "Start" %></th>
-						<th><%= sortable "end_date", "End" %></th>
-						<th></th>
-						<th></th>
-					</tr>
-	 				<% @events.each do |event| %>
-	 					<%= content_tag_for :tr, event do %>
-	 				 
-		 					<td><%= event.product.title %></td>
-		 					<td><%= event.start_date.strftime("%d-%b-%y") %></td>
-		 					<td><%= event.end_date.strftime("%d-%b-%y") %></td>
-		 					<td><%= link_to "details", event_path(event) %></td>
-		 					<td>
-		 						<%= link_to "delete", event, method: :delete,
-										data: { confirm: "Are you sure?" } %>
-							</td>
+				<% unless @business.has_current_and_future_events? %>
+					<%= render 'no_current_events' %>
+					<%= link_to "Schedule an event", 
+						new_my_business_event_path(@business), 
+						class: "btn btn-large btn-primary" 
+					%>
+				<% else %>
+					<table class="table table-striped table-bordered table-condensed">
+						<tr>
+							<th><%= sortable "products.title", "Title" %></th>
+							<th><%= sortable "start_date", "Start" %></th>
+							<th><%= sortable "end_date", "End" %></th>
+							<th></th>
+							<th></th>
+						</tr>
+		 				<% @events.each do |event| %>
+		 					<%= content_tag_for :tr, event do %>
+		 				 
+			 					<td><%= event.product.title %></td>
+			 					<td><%= event.start_date.strftime("%d-%b-%y") %></td>
+			 					<td><%= event.end_date.strftime("%d-%b-%y") %></td>
+			 					<td><%= link_to "details", event_path(event) %></td>
+			 					<td>
+			 						<%= link_to "delete", event, method: :delete,
+											data: { confirm: "Are you sure?" } %>
+								</td>
+							<% end %>
 						<% end %>
-					<% end %>
-	 			</table>
+		 			</table>
+		 		<% end %>
 			<% end %>
 		<% end %>
-		<div class="add-top-space navigator">
-		    <%= link_to "<- Business details", my_business_path(@business) %> 
-		    <% if @business.has_events? %>
-		    	| <%= link_to "Schedule an event ->", 
-		    			new_my_business_event_path(@business) 
-		    	  %>
-		    <% end %>
-		</div>
+	</div>
+	<div class="add-top-space navigator">
+	    <%= link_to "<- Business details", my_business_path(@business) %> 
+	    <% if @business.has_previous_events? %>
+	    	| <%= link_to "<- Completed events", 
+    			my_business_previous_events_path(@business) %>
+    	<% end %>
+	    <% if @business.has_schedulable_products? %>
+	    	| <%= link_to "Schedule an event ->", 
+	    			new_my_business_event_path(@business) %>
+	    <% end %>
 	</div>
 </div>
 

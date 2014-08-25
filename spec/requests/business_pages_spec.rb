@@ -96,7 +96,7 @@ describe "BusinessPages" do
 		            it { should have_selector('li', text: business_1.country) }
 		            it { should have_selector('li', text: business_2.name) }
 		            it { should_not have_selector('li', text: other_user_business.name) } #only own businesses
-		            it { should have_link('select', href: my_business_path(business_1)) }
+		            it { should have_link('SELECT', href: my_business_path(business_1)) }
 		            it { should have_link('delete', href: my_business_path(business_1)) }
 		            it { should have_link('Add a business', href: new_my_business_path) }
 			        

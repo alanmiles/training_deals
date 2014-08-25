@@ -119,7 +119,8 @@ describe "EventPages" do
 
 			            		it { should have_title("Event details") }
 								it { should have_selector('h2', text: "- as seen by other HROOMPH users")}
-								it { should have_link("<- All scheduled events", my_business_events_path(founder_biz)) }
+								it { should have_link("<- All current & future events", my_business_events_path(founder_biz)) }
+								it { should_not have_link("Completed events", href: my_business_previous_events_path(founder_biz)) }
 								it { should have_link("Update event details ->", event_path(@event)) }
 								it { should have_content("Cast yourself in the role of the outsider looking in.") }
 								it { should have_selector('div.strong', text: "#{founder_biz.name}") }	
@@ -192,9 +193,13 @@ describe "EventPages" do
 
 			end
 
-			describe "with events previously scheduled" do
+			describe "with current/future Events scheduled" do
 
 				let!(:event)		{ FactoryGirl.create(:event, product: product_1) }
+				let!(:old_event)	{ FactoryGirl.create(:event, product: product_1,
+										start_date: Date.today - 30, end_date: Date.today - 23) }
+				let!(:ongoing_event) { FactoryGirl.create(:event, product: product_1,
+										start_date: Date.today - 7, end_date: Date.today + 7) }
 
 				describe "visit Index page" do
 					before { visit my_business_events_path(founder_biz) }
@@ -211,9 +216,16 @@ describe "EventPages" do
 					it { should have_link('details', href: event_path(event))}
 					it { should have_link('delete', href: event_path(event)) }   #provided not a HROOMPH special
 																				#otherwise 'cancel'
+					it { should have_selector("tr#event_#{ongoing_event.id}", 
+								text: ongoing_event.start_date.strftime("%d-%b-%y")) }
+					it { should_not have_selector("tr#event_#{old_event.id}", 
+								text: old_event.start_date.strftime("%d-%b-%y")) }
 					it { should have_link("<- Business details", href: my_business_path(founder_biz)) }
 					it { should have_link("Schedule an event", href: new_my_business_event_path(founder_biz)) }
-
+					#list order asc
+					it { should have_selector("table tr:nth-child(2)", text: ongoing_event.start_date.strftime("%d-%b-%y")) }
+					it { should have_selector("table tr:nth-child(3)", text: event.start_date.strftime("%d-%b-%y")) }
+					
 					#business menu links:
 					it { should have_link("Business home page", href: my_businesses_path) }
 					it { should have_link("Products", href: my_business_products_path(founder_biz)) }
@@ -233,7 +245,8 @@ describe "EventPages" do
 
 						expect(page).not_to have_selector('td', text: event.start_date.strftime("%d-%b-%y"))
 						expect(page).not_to have_selector('td', text: event.end_date.strftime("%d-%b-%y"))
-			            expect(page).to have_content("Some training activities")
+			            expect(page).to have_selector("tr#event_#{ongoing_event.id}", 
+								text: ongoing_event.start_date.strftime("%d-%b-%y"))
 			        end
 				end
 
@@ -260,6 +273,7 @@ describe "EventPages" do
             		it { should_not have_content("Mon, Wed, Fri") }
             		it { should_not have_content("Location:") }
             		it { should_not have_content("Notes:")}
+            		it { should_not have_content("This event has now finished.") }
 
             		describe "when team member is contactable but no phone" do
 
@@ -324,7 +338,7 @@ describe "EventPages" do
 					it { should have_title('Edit event') }
 					it { should have_selector('h1', "Edit event")}
 					it { should have_selector('h2', "for '#{product_1.title}'") }
-					it { should have_link('<- Cancel', href: event_path(event)) }
+					it { should have_link('<- Drop changes', href: event_path(event)) }
 					it { should have_link('Products', href: my_business_products_path(founder_biz)) }
 					it { should have_selector("input#event_start_date[value='#{event.start_date}']") }
 					it { should have_selector("input#event_end_date[value='#{event.end_date}']") }
@@ -334,7 +348,8 @@ describe "EventPages" do
 					it { should have_select('event_time_of_day', selected: "Varies") }
 					it { should have_selector("input#event_start_time[value='#{event.start_time.strftime('%H:%M')}']") }
 					it { should have_selector("input#event_finish_time[value='#{event.finish_time.strftime('%H:%M')}']") }
-				
+					it { should_not have_content("Now finished. Only change details if absolutely essential.") }
+
 					describe "Update the event" do
 
 						describe "successfully" do
@@ -373,6 +388,89 @@ describe "EventPages" do
 							it { should have_selector("input#event_finish_time[value='13:00']") }
 						end
 					end
+				end
+			end
+
+			describe "with events scheduled but only in the past" do
+
+				let!(:old_event)	{ FactoryGirl.create(:event, product: product_1,
+										start_date: Date.today - 30, end_date: Date.today - 23) }
+				let!(:last_old_event)	{ FactoryGirl.create(:event, product: product_1,
+										start_date: Date.today - 60, end_date: Date.today - 53) }
+				let!(:first_old_event)	{ FactoryGirl.create(:event, product: product_1,
+										start_date: Date.today - 15, end_date: Date.today - 8) }
+				
+
+
+				describe "Events/Index page" do
+
+					before { visit my_business_events_path(founder_biz) }
+
+					it { should have_title("Event schedule") }
+					it { should have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}") }
+					it { should have_content("There are no current or future events scheduled for this business.") }
+					it { should_not have_selector("tr#event_#{old_event.id}", 
+								text: old_event.start_date.strftime("%d-%b-%y")) }
+					it { should have_link("Schedule an event ->", href: new_my_business_event_path(founder_biz)) }
+					it { should have_link("Completed events", href: my_business_previous_events_path(founder_biz)) }
+					#business menu links:
+					it { should have_link("Products", href: my_business_products_path(founder_biz)) }	
+				end
+
+				describe "visit the Previous_Events/Index page" do
+
+					before { visit my_business_previous_events_path(founder_biz) }
+
+					it { should have_title("Completed events") }
+					it { should have_selector('h1', "Completed events") }
+					it { should have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}") }
+					it { should have_selector("tr#event_#{old_event.id}", 
+								text: old_event.start_date.strftime("%d-%b-%y")) }
+					it { should have_link("Schedule a new event ->", href: new_my_business_event_path(founder_biz)) }
+					it { should have_link("All current & future events ->", href: my_business_events_path(founder_biz)) }
+					#list order descending
+					it { should have_selector("table tr:nth-child(2)", text: first_old_event.start_date.strftime("%d-%b-%y")) }
+					it { should have_selector("table tr:nth-child(3)", text: old_event.start_date.strftime("%d-%b-%y")) }
+					it { should have_selector("table tr:nth-child(4)", text: last_old_event.start_date.strftime("%d-%b-%y")) }
+					#it { should have_selector("tr#dates td:nth-child(2)", content: @date2.content) }
+
+					#business menu links:
+					it { should have_link("Products", href: my_business_products_path(founder_biz)) }
+
+					it "should be able to delete the product and redirect correctly" do   #provided never scheduled
+		            
+			            expect do
+			              click_link('delete', href: event_path(old_event))
+			            end.to change(founder_biz.events, :count).by(-1)
+			            
+			            expect(page).to have_title('Completed events')
+			            expect(page).not_to have_selector("tr#event_#{old_event.id}")
+
+						expect(page).not_to have_selector('td', text: old_event.start_date.strftime("%d-%b-%y"))
+						expect(page).not_to have_selector('td', text: old_event.end_date.strftime("%d-%b-%y"))
+			            expect(page).to have_selector("tr#event_#{first_old_event.id}", 
+								text: first_old_event.start_date.strftime("%d-%b-%y"))
+			        
+			            pending "return to current event schedule after deleting the last prevous event - untested"
+			        end
+				end
+
+				describe "Show page" do
+
+					before { visit event_path(old_event) }
+
+					it { should have_title("Event details") }
+					it { should have_content("This event has now finished.") }
+
+				end
+
+				describe "Edit page" do
+
+					before { visit edit_event_path(old_event) }
+
+					it { should have_title('Edit event') }
+					it { should have_content("Now finished. Only change details if absolutely essential.") }
+
 				end
 			end
 		end
@@ -660,6 +758,53 @@ describe "EventPages" do
               	end
 			end
 		end
+
+		describe "when completed events exist" do
+
+			let!(:product_1) 	{ FactoryGirl.create(:product, title: "Latest product",
+				business: founder_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+			
+			let!(:old_event)	{ FactoryGirl.create(:event, product: product_1,
+									start_date: Date.today - 30, end_date: Date.today - 20) }
+
+			describe "PreviousEvents/Index" do
+					
+				describe "redirect to the signin page" do
+				
+					before { get my_business_previous_events_path(founder_biz) }
+					inaccessible_without_signin
+				end
+
+				describe "go to correct Index page after signing in" do
+
+					before do
+						visit my_business_previous_events_path(founder_biz)
+						valid_signin(founder)
+					end
+					
+					specify do
+						expect(page).to have_title('Completed events')
+						expect(page).to have_selector('h2', "for #{founder_biz.name}, #{founder_biz.city}")
+						expect(page).to have_selector("tr#event_#{old_event.id}", text: product_1.title)
+						expect(page).to have_selector("tr#event_#{old_event.id}", text: old_event.start_date.strftime("%d-%b-%y"))
+						expect(page).to have_selector("tr#event_#{old_event.id}", text: old_event.end_date.strftime("%d-%b-%y"))
+
+					end
+
+					describe "but don't go to this index page when signing in the next time" do
+
+						before do
+							click_link "Sign out"
+							sign_in founder
+						end	
+
+						specify { expect(page).not_to have_title('Completed events') }
+					end
+				end
+			end
+		end
 	end
 
 	describe "when signed in but not as administrator of this business" do
@@ -682,6 +827,17 @@ describe "EventPages" do
 			describe "Index page" do
 
 				before { visit my_business_events_path(founder_biz) }
+				
+				it { should have_content("The page you requested doesn't belong to you") }
+				it { should have_title("#{non_authorized_user.name}") }
+			end
+
+			describe "PreviousEvents/Index page for completed events" do
+
+				let!(:old_event)	{ FactoryGirl.create(:event, product: product_1,
+									start_date: Date.today - 30, end_date: Date.today - 20) }
+
+				before { visit my_business_previous_events_path(founder_biz) }
 				
 				it { should have_content("The page you requested doesn't belong to you") }
 				it { should have_title("#{non_authorized_user.name}") }

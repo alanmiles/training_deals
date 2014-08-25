@@ -1,5 +1,6 @@
 TrainingDeals::Application.routes.draw do
   
+  get "previous_events/index"
   get "events/new"
   get "events/edit"
   get "topic_selections/new"
@@ -30,6 +31,7 @@ TrainingDeals::Application.routes.draw do
       get 'newprod', on: :new              #'new' route - html only
     end
     resources :events, shallow: true
+    resources :previous_events, only: [:index], shallow: true
   end
   resources :genre_selections, only: [:new, :create] do
     resources :category_selections, only: [:new, :create]

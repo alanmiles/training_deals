@@ -11,6 +11,11 @@
 	<div class="span8">
 		<%= form_for @event do |f| %>
 			<%= render 'shared/error_messages', object: f.object %>
+			<% if @event.end_date < Date.today %>
+				<div class = "check-info add-bottom-space">
+					Now finished. Only change details if absolutely essential.
+				</div>
+			<% end %>
 			<%= render 'fields', f: f %>
 			<div class="entry">
 				<%= f.hidden_field :created_by %>
@@ -19,6 +24,6 @@
 		<% end %>
 	</div>
 	<div class="navigator">
-		<%= link_to "<- Cancel", event_path(@event) %>
+		<%= link_to "<- Drop changes", event_path(@event) %>
 	</div>
 </div>

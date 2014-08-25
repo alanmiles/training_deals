@@ -20,7 +20,7 @@
 						<strong><%= business.name %></strong>,
 						<%= business.city %>,
 						<%= business.country %>
-						| <%= link_to "select", my_business_path(business) %>
+						| <strong><%= link_to "SELECT", my_business_path(business) %></strong>
 						| <%= link_to "delete", { controller: 'my_businesses',
 												action: 'destroy', 
 												id: business.id }, 

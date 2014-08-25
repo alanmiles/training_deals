@@ -225,28 +225,9 @@ aside, .sidebar {
   } 
 }
 
-/*.js-toggle-detail {
-  padding-left: 20px;
-  color: #1378b1;
-  cursor: pointer;
-  cursor: hand;
-  &:hover {
-    color: #233d87;
-    text-decoration: underline;
-  } 
-} */
-
 .js-link-reveal, .js-more-detail, .js-more-detail-2, .hidden-content {
   display: none;
 }
-
-/* .js-more-detail {
-  display: none;
-}
-
-.hidden-content {
-  display: none; 
-} */
 
 /* forms */
 
@@ -368,6 +349,11 @@ input {
   font-weight: bold;
 }
 
+.check-info {
+  color: #8A0808;
+  font-size: 0.9em;
+  width: 85%;
+}
 
 /* entry pages */
 
