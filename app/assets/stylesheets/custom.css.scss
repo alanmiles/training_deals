@@ -73,6 +73,15 @@ h2 {
   color: $grayLight;
 }
 
+.subhead {
+  font-size: 1.2em;
+  letter-spacing: -1px;
+  /*margin-bottom: 30px; */
+  text-align: center;
+  font-weight: normal;
+  color: $grayLight;
+}
+
 p {
   font-size: 1.1em;
   line-height: 1.7em;
@@ -280,8 +289,11 @@ input {
 
 .navigator {
   float: right;
+  display: inline-block;
+  margin-top: 10
+  .0px; 
   font-size: 14px;
-  padding: 3px;
+  padding: 0 3px;
   border-style: solid;
   border-width: thin;
   border-color: #3399FF #fff;
@@ -326,6 +338,9 @@ input {
     font-size: 0.8em;
     color: $grayMediumText;
   }
+  .half-width {
+    width: 50%;
+  }
 }
 
 .guidance {
@@ -338,7 +353,7 @@ input {
     font-style: normal;
     font-weight: normal;
     color: #0D6CBF;
-    padding: 5px;
+    padding: 5px 5px 0px 5px;
   }
 }
 
@@ -358,12 +373,12 @@ input {
 /* entry pages */
 
 .entry-page {
-  padding-bottom: 20px;
+  padding-bottom: 5px;
 }
 
 .entry { 
   clear: both;
-  padding-top: 5px;
+  padding-top: 0px;
   .sub-header {
     color: #8A0808;
     font-size: 0.8em;
@@ -385,6 +400,13 @@ input {
     float: right; 
     display: inline-block; 
     width: 75%;
+    .info-below {
+      float:left;
+      /* display: inline-block; */
+      font-size: 0.9em;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
   }
   .image-fill {
     float: right; 

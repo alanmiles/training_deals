@@ -10,3 +10,10 @@
 				new_genre_selection_path, 
 				class: "btn btn-large btn-primary" 
 			%>
+<div class="navigator">
+	<% if @business.has_products? %>
+		<%= link_to "<- All products/services", my_business_products_path(@business) %>
+	<% else %>
+		<%= link_to "<- Products/services intro", my_business_products_path(@business) %>
+	<% end %>
+</div>

@@ -14,9 +14,22 @@
 		<%= f.text_field :end_date, placeholder: "YYYY-MM-DD"  %>
 	</div>
 </div>
-<div class ="entry">
-	<div class="sub-header">OPTIONALLY INCLUDE -></div>
+
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :price, "Price this time (#{@business.currency_symbol})" %></span>
+	</div>
+	<div class="box-fill half-line">
+		<%= f.text_field :price, placeholder: "Value only - no currency symbol"  %>
+		<% if params[:action] == 'edit' %>
+			<div class="info-below">
+				Standard price: <%= @business.currency_symbol %>
+				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+			</div>
+		<% end %>
+	</div>
 </div>
+
 <div class="entry">
 	<div class="add-this">
 		<%= f.label :attendance_days  %>

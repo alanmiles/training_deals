@@ -21,9 +21,9 @@
 				<%= render 'fields', f: f %>
 			</div>
 			<%= f.submit "Confirm", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Cancel", product_path(@product) %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- Cancel", product_path(@product) %>
-</div>

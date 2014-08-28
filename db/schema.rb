@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140814075946) do
+ActiveRecord::Schema.define(version: 20140825133900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,9 +82,10 @@ ActiveRecord::Schema.define(version: 20140814075946) do
     t.string   "location"
     t.string   "note"
     t.integer  "created_by"
+    t.boolean  "cancelled",                               default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "cancelled",       default: false
+    t.decimal  "price",           precision: 8, scale: 2
   end
 
   add_index "events", ["product_id", "start_date"], name: "index_events_on_product_id_and_start_date", unique: true, using: :btree

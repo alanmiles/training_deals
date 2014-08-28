@@ -5,7 +5,7 @@
 <div class="row">
 	<aside class="span3">
 		<section>
-			<%= render "/shared/business_menu" %>
+			<%= render "/shared/business_menu" %> 
 		</section>
 	</aside>
 	<div class="span8">
@@ -21,9 +21,9 @@
 				<%= f.hidden_field :created_by %>
 			</div>
 			<%= f.submit "Update", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Drop changes", event_path(@event) %>
+			</div>
 		<% end %>
-	</div>
-	<div class="navigator">
-		<%= link_to "<- Drop changes", event_path(@event) %>
 	</div>
 </div>

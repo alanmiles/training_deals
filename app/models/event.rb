@@ -11,6 +11,8 @@ class Event < ActiveRecord::Base
 	validates :start_date,		presence: true, uniqueness: { scope: :product_id, 
 									message: "is a duplicate for this product"  }
 	validates :end_date,		presence: true, incorrect_end_date: true
+	validates :price,			presence: { message: "must be entered, even if it is 0" },
+								numericality: true
 	VALID_TIME_REGEX = /([0-1]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?\z/
 	validates :start_time,		presence: true, if: lambda {|s| !s.finish_time.blank?},
 								format: { with: VALID_TIME_REGEX, allow_blank: true }
@@ -33,5 +35,26 @@ class Event < ActiveRecord::Base
 	def self.day_periods_with_blank
 		@period = ["Morning", "Afternoon", "Evening", "Morning/Afternoon", "Afternoon/Evening", "Varies", "Not displayed"]
 		return @period
+	end
+
+	def standard_price
+		@product = Product.find(self.product_id)
+		normal_price = @product.standard_cost
+	end
+
+	def savings
+		result = self.standard_price - self.price
+	end
+
+	def savings_percent
+		if self.price == 0
+			if self.standard_price == 0
+				percent = 0
+			else
+				percent = 100
+			end
+		else
+			percent = self.savings / self.standard_price * 100.00
+		end
 	end
 end

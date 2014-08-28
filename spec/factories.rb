@@ -78,6 +78,7 @@ FactoryGirl.define do
 		product
 		sequence(:start_date)			{ |n| Date.today + n }
 		sequence(:end_date)				{ |n| Date.today + n + 7}
+		price 100.00
 		created_by 1
 	end
 end

@@ -15,9 +15,9 @@
 		 	<%= render 'new_fields', f: f %>
 
 			<%= f.submit "Create", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Team list", my_business_ownerships_path(@business) %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- Team list", my_business_ownerships_path(@business) %>
-</div>

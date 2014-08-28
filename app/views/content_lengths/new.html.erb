@@ -13,9 +13,9 @@
 		 	<%= render 'fields', f: f %>
 
 			<%= f.submit "Create", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- All content lengths", content_lengths_path %>
+			</div>
 		<% end %>
-	</div>
-	<div class="navigator">
-		<%= link_to "<- All content lengths", content_lengths_path %>
-	</div>
+	</div>	
 </div> 

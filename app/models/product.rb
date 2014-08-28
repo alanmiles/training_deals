@@ -28,7 +28,8 @@ class Product < ActiveRecord::Base
 									numericality: { only_integer: true, allow_nil: true }
 	validates :content_number,		presence: true, if: lambda {|s| !s.content_length_id.nil? }
 	#validates :currency,			presence: true
-	validates :standard_cost,		presence: { message: "must be entered, even if it is 0" }
+	validates :standard_cost,		presence: { message: "must be entered, even if it is 0" },
+									numericality: true
 	validates :content,				presence: true, length: { maximum: 125 }
 	validates :outcome,				presence: true, length: { maximum: 125 }
 	validates :created_by,			presence: true,
@@ -66,6 +67,11 @@ class Product < ActiveRecord::Base
 
 	def self.schedulable
 		Product.joins(:training_method).where({ "training_methods.event" => true }).order("products.title")
+	end
+
+	def title_and_price
+		@business = Business.find(self.business_id)
+		self.title + " (" + @business.currency_symbol + " " + sprintf("%.2f", self.standard_cost) + ")"
 	end
 
 	private

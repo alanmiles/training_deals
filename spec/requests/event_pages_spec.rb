@@ -93,9 +93,11 @@ describe "EventPages" do
 						describe "successfully" do
 
 							before do
-								select "#{product_1.title}", from: 'event_product_id'
+								select "#{product_1.title} (#{founder_biz.currency_symbol} #{sprintf('%.2f', product_1.standard_cost)})", 
+									from: 'event_product_id'
 								fill_in 'event_start_date', with: (Date.today + 14).strftime('%Y-%m-%d')
 								fill_in 'event_end_date', with: (Date.today + 21).strftime('%Y-%m-%d')
+								fill_in 'event_price', with: 100
 								find(:css, "#weekdays_Mon").set(true)
 								find(:css, "#weekdays_Wed").set(true)
 								find(:css, "#weekdays_Fri").set(true)
@@ -118,7 +120,7 @@ describe "EventPages" do
 			            		end
 
 			            		it { should have_title("Event details") }
-								it { should have_selector('h2', text: "- as seen by other HROOMPH users")}
+								it { should have_selector('div.subhead', text: "- as seen by other HROOMPH users")}
 								it { should have_link("<- All current & future events", my_business_events_path(founder_biz)) }
 								it { should_not have_link("Completed events", href: my_business_previous_events_path(founder_biz)) }
 								it { should have_link("Update event details ->", event_path(@event)) }
@@ -180,7 +182,8 @@ describe "EventPages" do
 
 									it { should have_title("Add event") }
 									it { should have_selector('li', text: "* End date can't be blank") }
-			              			it { should have_select('event_product_id', selected: "#{product_1.title}")}
+			              			it { should have_select('event_product_id', 
+			              				selected: "#{product_1.title} (#{founder_biz.currency_symbol} #{sprintf('%.2f', product_1.standard_cost)})") }
 			              			it { should have_checked_field("weekdays_Mon") } 
 			              			it { should have_unchecked_field("weekdays_Sun") }
 			              			it { should have_select('event_time_of_day', selected: "Evening") }
@@ -274,6 +277,7 @@ describe "EventPages" do
             		it { should_not have_content("Location:") }
             		it { should_not have_content("Notes:")}
             		it { should_not have_content("This event has now finished.") }
+            		it { should_not have_content("Special pricing") }
 
             		describe "when team member is contactable but no phone" do
 
@@ -321,6 +325,78 @@ describe "EventPages" do
             				it { should have_content("#{administrator.name} <#{administrator.email} - #{ownership_1.phone}>") }
             				it { should_not have_content(founder_biz.phone) }
             			end
+            		end
+
+            		describe "when Event price is discounted by more than 1%" do
+
+            			before do
+            				event_2.price = event_2.price - 5
+            				event_2.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should have_content("Special pricing: £ 95.00 - SAVE 5% !") }
+            		end
+
+            		describe "when Event discount is a fraction" do
+
+            			before do
+            				event_2.price = event_2.price - 4.75
+            				event_2.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should have_content("Special pricing: £ 95.25 - SAVE 4.75% !") }
+
+            		end
+
+            		describe "when Event price is discounted by less than 1%" do
+
+            			before do
+            				event_2.price = event_2.price - 0.5
+            				event_2.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should have_content("Special pricing: £ 99.50") }
+            			it { should_not have_content("SAVE") }
+            		end
+
+            		describe "when Event price is free" do
+
+            			before do
+            				event_2.price = 0
+            				event_2.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should have_content("* * FREE! SAVE £ 100.00 ! * *") }
+            		end
+
+            		describe "when Product and Event prices are free" do
+
+            			before do
+            				product_1.standard_cost = 0
+            				product_1.save
+            				event_2.price = 0
+            				event_2.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should_not have_content("* * FREE! SAVE") }
+            			it { should have_content("* * FREE! * *") }
+            		end
+
+            		describe "when Event price is higher than Product price" do
+
+            			before do
+            				event_2.price = event_2.price + 5
+            				event_2.save
+            				visit event_path(event_2)
+            			end
+
+            			it { should have_content("Special pricing: £ 105.00") }
+            			it { should_not have_content("SAVE") }
             		end
 				end
 
@@ -460,7 +536,7 @@ describe "EventPages" do
 					before { visit event_path(old_event) }
 
 					it { should have_title("Event details") }
-					it { should have_content("This event has now finished.") }
+					it { should have_content("This #{founder_biz.currency_symbol} #{sprintf('%.2f', old_event.price)} event has now finished.") }
 
 				end
 

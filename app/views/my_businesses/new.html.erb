@@ -16,9 +16,9 @@
 		<%= form_for(@business, url: my_businesses_path, html: { multipart: true }) do |f| %>
 			<%= render 'fields', f: f %>
 			<%= f.submit "Create", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Cancel", my_businesses_path %> 
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- Cancel", my_businesses_path %> 
-</div>

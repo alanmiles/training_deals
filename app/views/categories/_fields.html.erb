@@ -1,6 +1,12 @@
-<%= render 'shared/error_messages', object: f.object %>
-			
-<%= f.label :description %>
-<%= f.text_field :description %>
-
-<%= f.hidden_field :status %>
+<%= render 'shared/error_messages', object: f.object %> 
+<div class="entry-page">
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= f.label :description %></span>
+		</div>
+		<div class="box-fill">
+			<%= f.text_field :description %>
+		</div>
+	</div>
+	<div class="entry"><%= f.hidden_field :status %></div>
+</div>

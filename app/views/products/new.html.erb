@@ -16,6 +16,13 @@
 					html: { multipart: true }) do |f| %>
 				<%= render 'fields_js', f: f %>
 				<%= f.submit "Create", class: "btn btn-primary" %>
+				<div class="navigator">
+					<% if @business.has_products? %>
+						<%= link_to "<- All products/services", my_business_products_path(@business) %>
+					<% else %>
+						<%= link_to "<- Products/services intro", my_business_products_path(@business) %>
+					<% end %>
+				</div>
 			<% end %>
 		</div>
 		<div class="html-content">
@@ -23,10 +30,3 @@
 		</div>
 	</div>
 </div> 
-<div class="navigator">
-	<% if @business.has_products? %>
-		<%= link_to "<- All products/services", my_business_products_path(@business) %>
-	<% else %>
-		<%= link_to "<- Products/services intro", my_business_products_path(@business) %>
-	<% end %>
-</div>

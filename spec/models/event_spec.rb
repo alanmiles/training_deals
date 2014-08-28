@@ -27,6 +27,7 @@ describe Event do
 	  					end_date: Date.today + 34,
 	  					start_time: TimeOfDay.new(10, 00).strftime("%H:%M"),
 	  					finish_time: TimeOfDay.new(13, 00).strftime("%H:%M"),
+	  					price: 100.00,
 	  					created_by: user.id)
 	  end
 
@@ -34,6 +35,7 @@ describe Event do
 
 	  it { should respond_to(:product_id) }
 	  it { should respond_to(:start_date) }
+	  it { should respond_to(:price) }
 	  it { should respond_to(:end_date) }
 	  it { should respond_to(:start_time) }
 	  it { should respond_to(:finish_time) }
@@ -66,6 +68,21 @@ describe Event do
 	  describe "when end_date is earlier than start_date" do
 	  	before { @event.end_date = Date.today + 3 }
 	  	it { should_not be_valid }
+	  end
+
+	  describe "when price is missing" do
+	  	before { @event.price = nil }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when price is not a numeral" do
+	  	before { @event.price = "GBP 5.00" }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when price is 0" do
+	    before { @event.price = 0 }
+	    it { should be_valid }
 	  end
 
 	  pending "no tests yet for date format or validity - but this is catered for using DatePicker"

@@ -37,7 +37,7 @@ class EventsController < ApplicationController
       end
       @selected_period = params[:event][:time_of_day]
       if @event.save
-        	flash[:success] = "Successfully created. Please check the details carefully"
+        	flash[:success] = "Successfully created. Please check the details carefully."
         	redirect_to event_path(@event)
       else
           @event.created_by = current_user.id
@@ -140,8 +140,8 @@ class EventsController < ApplicationController
   private
 
     def event_params
-      params.require(:event).permit(:product_id, :start_date, :end_date, :attendance_days, :created_by,
-                      :weekdays, :start_time, :finish_time, :time_of_day, :location, :note )
+      params.require(:event).permit(:product_id, :start_date, :end_date, :price, :attendance_days, 
+        :created_by, :weekdays, :start_time, :finish_time, :time_of_day, :location, :note )
     end
 
     def sort_column

@@ -22,9 +22,9 @@
 					{ selected: @category.id } %>
 			<% end %>
 			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Back to genre selection", new_genre_selection_path %>
+			</div>
 		<% end %>
 	</div>
-</div>
-<div class="navigator">
-	<%= link_to "<- Back to genre selection", new_genre_selection_path %>
 </div>

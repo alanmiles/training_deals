@@ -10,13 +10,11 @@
 
 	<div class="span8">
 		<%= form_for(@duration) do |f| %>
-
 		 	<%= render 'fields', f: f %>
-
-			<%= f.submit "Confirm", class: "btn btn-primary" %>
+			<%= f.submit "Confirm", class: "btn btn-primary add-top-space" %>
+			<div class="navigator">
+				<%= link_to "<- Cancel changes", durations_path %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- Cancel changes", durations_path %>
-</div>

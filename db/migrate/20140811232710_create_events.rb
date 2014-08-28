@@ -4,6 +4,7 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :product_id
       t.date :start_date
       t.date :end_date
+      t.decimal :price, precision: 8, scale: 2
       t.time :start_time
       t.time :finish_time
       t.string :attendance_days
@@ -11,6 +12,8 @@ class CreateEvents < ActiveRecord::Migration
       t.string :location
       t.string :note
       t.integer :created_by
+      t.boolean :cancelled, default: false   #use cancelled instead of deletion when
+                                   #event already has user interest.
 
       t.timestamps
     end

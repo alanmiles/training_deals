@@ -170,6 +170,11 @@ describe Product do
     it { should_not be_valid }
   end
 
+  describe "when standard cost is not a numeral" do
+    before { @product.standard_cost = "GBP 5.00" }
+    it { should_not be_valid }
+  end
+
   describe "when standard_cost is 0" do
     before { @product.standard_cost = 0 }
     it { should be_valid }

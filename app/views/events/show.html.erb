@@ -1,7 +1,6 @@
 <% provide(:title, "Event details") %>
 <span class="two-line-header"><h1>Event details</h1></span>
-<h2>- as seen by other HROOMPH users</h2>
-
+<div class="subhead">- as seen by other HROOMPH users</div>
 <div class="row">
 	<aside class="span3">
 		<section>
@@ -54,8 +53,14 @@
 				<% end %>
 			</div>
 			<div class="detail">
-				<%= @business.currency_symbol %> 
-				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+				<% if @product.standard_cost == 0 %>
+					<span class="check-info"><strong>
+							* * FREE! * *
+					</strong></span>
+				<% else %>
+					<%= @business.currency_symbol %> 
+					<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+				<% end %>
 				<span class="js-toggle-detail-2">(more..)</span>
 			</div>
 		</div>
@@ -71,8 +76,33 @@
 			</div>
 			<% if @event.end_date < Date.today %>
 				<div class="check-info add-bottom-space">
-					This event has now finished.
+					This <%= @business.currency_symbol %> <%= sprintf("%.2f", @event.price) %> 
+					event has now finished.
 				</div>
+			<% end %>
+
+			<% unless @event.end_date < Date.today %>
+				<% unless @event.standard_price == @event.price %>
+					<div class="subject"></div>
+					<div class="detail">
+						<% if @event.price == 0 %>
+							<span class="check-info"><strong>
+								* * FREE! SAVE <%= @business.currency_symbol %> 
+								<%= number_with_precision(@event.savings, precision: 2, delimiter: ',') %> ! * * 
+							</strong></span>
+						<% else %>
+							<strong>Special pricing: <%= @business.currency_symbol %>
+							  <%= number_with_precision(@event.price, precision: 2, delimiter: ',') %>
+							</strong>
+							<% if @event.savings_percent >= 1 %>
+								<span class="check-info"><strong>- SAVE 
+									<%= number_to_percentage(@event.savings_percent, 
+										precision: 2, strip_insignificant_zeros: true) %> !</strong>
+								</span>
+							<% end %>
+						<% end %>
+					</div>
+				<% end %>
 			<% end %>
 			<% if @event.start_date == @event.end_date %>
 				<div class="subject"></div>

@@ -17,9 +17,9 @@
 					<div class="add-this">
 						<span class="label"><%= label_tag :product_id, "Relating to" %></span>
 					</div>
-					<div class="box-fill half-line">
+					<div class="box-fill">
 						<%= f.collection_select :product_id, @products, 
-							:id, :title, prompt: true %>
+							:id, :title_and_price, prompt: true %>
 					</div>
 				</div>
 				<%= render 'fields', f: f %>
@@ -27,10 +27,10 @@
 					<%= f.hidden_field :created_by %>
 				</div>
 				<%= f.submit "Create", class: "btn btn-primary" %>
+				<div class="navigator"> 
+					<%= link_to "<- Back to event schedule", my_business_events_path(@business) %>
+				</div>
 			</div>
 		<% end %>
-	</div>
-	<div class="navigator">
-		<%= link_to "<- Back to event schedule", my_business_events_path(@business) %>
 	</div>
 </div>

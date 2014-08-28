@@ -12,9 +12,9 @@
 		<%= form_for(@method) do |f| %>
 		 	<%= render 'fields', f: f %>
 			<%= f.submit "Confirm", class: "btn btn-primary add-top-space" %>
+			<div class="navigator">
+				<%= link_to "<- Cancel", training_methods_path %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- Cancel", training_methods_path %>
-</div>

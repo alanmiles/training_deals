@@ -12,10 +12,11 @@
 
 		 	<%= render 'fields', f: f %>
 
-			<%= f.submit "Create", class: "btn btn-primary" %>
+			<%= f.submit "Create", class: "btn btn-primary add-top-space" %>
+			<div class="navigator">
+				<%= link_to "<- All methods", training_methods_path %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- All methods", training_methods_path %>
-</div>
+

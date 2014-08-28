@@ -1,4 +1,18 @@
-<%= render 'shared/error_messages', object: f.object %>
+<%= render 'shared/error_messages', object: f.object %> 
+<div class="entry-page">
+	<div class="entry">
+		<div class="add-this">
+			<span class="label"><%= f.label :time_unit, "Time period" %></span>
+		</div>
+		<div class="box-fill">
+			<%= f.text_field :time_unit %>
+		</div>
+	</div>
+	<div class="entry"></div>
+</div>
+
+
+
+
+
 			
-<%= f.label :time_unit, "Time period" %>
-<%= f.text_field :time_unit %>

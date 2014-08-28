@@ -14,9 +14,10 @@
 		 	<%= render 'fields', f: f %>
 
 			<%= f.submit "Confirm", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Cancel", category_topics_path(@category) %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- Cancel", category_topics_path(@category) %>
-</div>
+

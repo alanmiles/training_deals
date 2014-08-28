@@ -18,9 +18,10 @@
 			<%= collection_select :topic, :id, @topics, :id, :description %>
 
 			<%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Back to category selection", new_category_selection_path %>
+			</div>
 		<% end %>
 	</div>
 </div>
-<div class="navigator">
-	<%= link_to "<- Back to category selection", new_category_selection_path %>
-</div>
+

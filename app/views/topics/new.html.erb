@@ -14,10 +14,11 @@
 		 	<%= render 'fields', f: f %>
 
 			<%= f.submit "Create", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- All topics for '#{@category.description}'", 
+								category_topics_path(@category) %>
+			</div>
 		<% end %>
 	</div>
 </div> 
-<div class="navigator">
-	<%= link_to "<- All topics for '#{@category.description}'", 
-					category_topics_path(@category) %>
-</div>
+
