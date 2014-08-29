@@ -31,3 +31,20 @@ jQuery ($) ->
   	else
   		$(".js-toggle-detail-2").text("(more..)")
   		handle_2 = "(more..)"	
+
+jQuery ->
+  #Ajax sorting and pagination on click
+  $('#events td.sortable a, #events .pagination a').on('click', ->
+    $.getScript(this.href)
+    false
+  )
+  #Ajax search on submit
+  $('#events_search').submit( ->
+    $.get(this.action, $(this).serialize(), null, 'script')
+    false
+  )
+  #Ajax search on keyup
+  $('#events_search input').keyup( ->
+    $.get($("#events_search").attr("action"), $("#events_search").serialize(), null, 'script')
+    false
+  )

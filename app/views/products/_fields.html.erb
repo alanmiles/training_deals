@@ -2,13 +2,13 @@
 	<div class="add-this">
 		<span class="label"><%= f.label :title %></span>
 	</div>
-	<div class="box-fill"><%= f.text_field :title %></div>
+	<div class="box-fill"><%= f.text_field :title, placeholder: "Max 50 characters" %></div>
 </div>
 <div class="entry">
 	<div class="add-this">
 		<%= f.label :ref_code, "Our reference code" %>
 	</div>
-	<div class="box-fill half-line"><%= f.text_field :ref_code %></div>
+	<div class="box-fill half-line"><%= f.text_field :ref_code, placeholder: "Optional.  Max 20 characters" %></div>
 </div>
 <div class="entry">
 	<div class="add-this">
@@ -23,19 +23,19 @@
 	<div class="add-this">
 		<span class="label"><%= f.label :content %></span>
 	</div>
-	<div class="box-fill"><%= f.text_area :content %></div>
+	<div class="box-fill"><%= f.text_area :content, placeholder: "Max 125 characters" %></div>
 </div>	
 <div class="entry">
 	<div class="add-this">
 		<span class="label"><%= f.label :outcome, "Benefits/results" %></span>
 	</div>
-	<div class="box-fill"><%= f.text_area :outcome %></div>
+	<div class="box-fill"><%= f.text_area :outcome, placeholder: "Max 125 characters" %></div>
 </div>
 <div class="entry">
 	<div class="add-this">
 		<%= f.label :qualification %>
 	</div>
-	<div class="box-fill"><%= f.text_field :qualification %></div>
+	<div class="box-fill"><%= f.text_field :qualification, placeholder: "Optional. Max 50 characters" %></div>
 </div>
 <div class="entry">
 	<div class="add-this"><%= f.label :duration_id, "Duration (time)" %></div>
@@ -84,7 +84,8 @@
 <% end %>
 <div class="entry">
 	<div class="add-this"><%= f.label :web_link %></div>
-	<div class="box-fill"><%= f.text_field :web_link %></div>
+	<div class="box-fill"><%= f.text_field :web_link, 
+			placeholder: "Optional. If used, include http:// or https://" %></div>
 </div>
 <div class="entry"> 
 	<div class="add-this"><%= f.label :image %></div>

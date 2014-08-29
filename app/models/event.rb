@@ -57,4 +57,12 @@ class Event < ActiveRecord::Base
 			percent = self.savings / self.standard_price * 100.00
 		end
 	end
+
+	def self.search(search)
+		if search
+			joins(:product).where('products.title ILIKE ?', "%#{search}%")
+		else
+			all
+		end
+	end
 end

@@ -11,6 +11,8 @@ describe "EventPages" do
 	let!(:founder) 			{ FactoryGirl.create(:user) }
 	let!(:administrator)	{ FactoryGirl.create(:user) }
 	let!(:founder_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}  #founder is automatically an owner
+	let!(:administrator_biz) { FactoryGirl.create(:business, created_by: administrator.id)}
+					
 	let!(:ownership_1)		{ FactoryGirl.create(:ownership, business: founder_biz, user: administrator,
 								 email_address: administrator.email) }
 	let!(:event_method)		{ FactoryGirl.create(:training_method, description: "Seminar",
@@ -55,6 +57,11 @@ describe "EventPages" do
 						business: founder_biz,
 						topic: genre_1_cat_1_topic_1, training_method: non_event_method,
 						content_length: length) }
+
+			let!(:admin_product) 	{ FactoryGirl.create(:product, title: "Admin product",
+						business: administrator_biz,
+						topic: genre_1_cat_1_topic_1, training_method: event_method, 
+						content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
 
 			before { sign_in founder }
 
@@ -198,11 +205,13 @@ describe "EventPages" do
 
 			describe "with current/future Events scheduled" do
 
-				let!(:event)		{ FactoryGirl.create(:event, product: product_1) }
+				let!(:event)		{ FactoryGirl.create(:event, product: product_1,
+										start_date: Date.today + 30, end_date: Date.today + 37) }
 				let!(:old_event)	{ FactoryGirl.create(:event, product: product_1,
 										start_date: Date.today - 30, end_date: Date.today - 23) }
 				let!(:ongoing_event) { FactoryGirl.create(:event, product: product_1,
 										start_date: Date.today - 7, end_date: Date.today + 7) }
+
 
 				describe "visit Index page" do
 					before { visit my_business_events_path(founder_biz) }
@@ -253,9 +262,25 @@ describe "EventPages" do
 			        end
 				end
 
+				describe "pagination link" do
+
+					before do
+						(0..15).each do |i|
+							FactoryGirl.create(:event, product_id: admin_product.id)
+						end
+						sign_in administrator
+					    visit my_business_events_path(administrator_biz)
+					end
+					
+					it { should have_selector('div.pagination') }
+				    
+				end
+
 				describe "visit Show page with ref_code and business phone" do
 			
-					let!(:event_2) { FactoryGirl.create(:event, product: product_1, time_of_day: "Morning") }
+					let!(:event_2) { FactoryGirl.create(:event, product: product_1, 
+						start_date: Date.today + 50, end_date: Date.today + 51, 
+						time_of_day: "Morning") }
 					
 					before do
 						founder_biz.phone = "0770-604022"
@@ -530,6 +555,8 @@ describe "EventPages" do
 			            pending "return to current event schedule after deleting the last prevous event - untested"
 			        end
 				end
+
+				pending 'pagination for Previous Events untested'
 
 				describe "Show page" do
 

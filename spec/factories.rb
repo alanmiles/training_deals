@@ -77,7 +77,7 @@ FactoryGirl.define do
 	factory :event do
 		product
 		sequence(:start_date)			{ |n| Date.today + n }
-		sequence(:end_date)				{ |n| Date.today + n + 7}
+		sequence(:end_date)				{ |n| Date.today + n + 28}
 		price 100.00
 		created_by 1
 	end
