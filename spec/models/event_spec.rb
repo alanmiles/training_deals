@@ -28,6 +28,8 @@ describe Event do
 	  					start_time: TimeOfDay.new(10, 00).strftime("%H:%M"),
 	  					finish_time: TimeOfDay.new(13, 00).strftime("%H:%M"),
 	  					price: 100.00,
+	  					places_available: 12,
+	  					places_sold: 4,
 	  					created_by: user.id)
 	  end
 
@@ -37,6 +39,8 @@ describe Event do
 	  it { should respond_to(:start_date) }
 	  it { should respond_to(:price) }
 	  it { should respond_to(:end_date) }
+	  it { should respond_to(:places_available) }
+	  it { should respond_to(:places_sold) }
 	  it { should respond_to(:start_time) }
 	  it { should respond_to(:finish_time) }
 	  it { should respond_to(:attendance_days) }
@@ -83,6 +87,69 @@ describe Event do
 	  describe "when price is 0" do
 	    before { @event.price = 0 }
 	    it { should be_valid }
+	  end
+
+	  describe "when places_available is missing" do
+	  	before { @event.places_available = nil }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_sold is missing" do
+	  	before { @event.places_sold = nil }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_available is not a number" do
+	  	before { @event.places_available = "Twelve" }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_sold is not a number" do
+	  	before { @event.places_sold = "Zero" }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_available is not a whole number" do
+	  	before { @event.places_available = 3.5 }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_sold is not a whole number" do
+	  	before { @event.places_sold = 3.5 }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_available is less than zero" do
+	  	before { @event.places_available = -2 }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_sold is less than 0" do
+	  	before { @event.places_sold = -2 }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_available and sold are both 0" do
+	  	before do 
+	  		@event.places_sold = 0
+	  		@event.places_available = 0
+	  	end
+	  	it { should be_valid }
+	  end
+
+	  describe "when places_sold is 0" do
+	  	before { @event.places_sold = 0 }
+	  	it { should be_valid }
+	  end
+
+	  describe "when places_sold is greater than places_available" do
+	  	before { @event.places_sold = 13 }
+	  	it { should_not be_valid }
+	  end
+
+	  describe "when places_available is less than places_sold" do
+	  	before { @event.places_available = 3 }
+	  	it { should_not be_valid }
 	  end
 
 	  pending "no tests yet for date format or validity - but this is catered for using DatePicker"

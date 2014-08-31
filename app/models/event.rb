@@ -11,6 +11,16 @@ class Event < ActiveRecord::Base
 	validates :start_date,		presence: true, uniqueness: { scope: :product_id, 
 									message: "is a duplicate for this product"  }
 	validates :end_date,		presence: true, incorrect_end_date: true
+	validates :places_available, :places_sold,	presence: true 
+
+	validates :places_available,	numericality: { only_integer: true, 
+										greater_than_or_equal_to: 0,
+										greater_than_or_equal_to: :places_sold },
+									unless: Proc.new { |event| event.places_available.nil? || event.places_sold.nil? }
+	validates :places_sold,		numericality: { only_integer: true, 
+									greater_than_or_equal_to: 0,
+									less_than_or_equal_to: :places_available },
+								unless: Proc.new { |event| event.places_available.nil? || event.places_sold.nil? }	
 	validates :price,			presence: { message: "must be entered, even if it is 0" },
 								numericality: true
 	VALID_TIME_REGEX = /([0-1]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?\z/
@@ -64,5 +74,13 @@ class Event < ActiveRecord::Base
 		else
 			all
 		end
+	end
+
+	def remaining_places
+		places_available - places_sold
+	end
+
+	def has_places?
+		remaining_places > 0
 	end
 end

@@ -104,13 +104,15 @@ describe "EventPages" do
 									from: 'event_product_id'
 								fill_in 'event_start_date', with: (Date.today + 14).strftime('%Y-%m-%d')
 								fill_in 'event_end_date', with: (Date.today + 21).strftime('%Y-%m-%d')
+								fill_in 'event_places_available', with: 16
+								fill_in 'event_places_sold', with: 4
 								fill_in 'event_price', with: 100
 								find(:css, "#weekdays_Mon").set(true)
 								find(:css, "#weekdays_Wed").set(true)
 								find(:css, "#weekdays_Fri").set(true)
 								select "Evening", from: "Time of day"
-								fill_in 'Start time', with: "19:30"
-								fill_in 'Finish time', with: "22:00"
+								fill_in 'event_start_time', with: "19:30"
+								fill_in 'event_finish_time', with: "22:00"
 								fill_in 'Location', with: "University campus"
 								fill_in 'Notes', with: "Piffle"
 							end
@@ -144,6 +146,8 @@ describe "EventPages" do
 								it { should_not have_content("Reference code:") } #no ref code entered for product
 								it { should have_content("#{product_1.content}") }
 								it { should have_content("#{@event.start_date.strftime('%a %d %b, %Y')} -> #{@event.end_date.strftime('%a %d %b, %Y')}") }
+			            		it { should have_content("Accepting bookings") }
+			            		it { should_not have_content("Sold out") }
 			            		it { should have_content("Evening : #{@event.start_time.strftime('%l:%M %P')} -> #{@event.finish_time.strftime('%l:%M %P')}") }
 			            		it { should have_content("Mon, Wed, Fri") }
 			            		it { should have_content("University campus") }
@@ -245,6 +249,7 @@ describe "EventPages" do
 
 					pending "Nothing built or tested for 'Cancel' yet"
 					pending "column sorting not tested"
+					pending "search not tested"
 
 					it "should be able to delete the product and redirect correctly" do   #provided never scheduled
 		            
@@ -279,7 +284,8 @@ describe "EventPages" do
 				describe "visit Show page with ref_code and business phone" do
 			
 					let!(:event_2) { FactoryGirl.create(:event, product: product_1, 
-						start_date: Date.today + 50, end_date: Date.today + 51, 
+						start_date: Date.today + 50, end_date: Date.today + 51,
+						places_available: 12, places_sold: 12,
 						time_of_day: "Morning") }
 					
 					before do
@@ -303,6 +309,7 @@ describe "EventPages" do
             		it { should_not have_content("Notes:")}
             		it { should_not have_content("This event has now finished.") }
             		it { should_not have_content("Special pricing") }
+            		it { should have_content("Sold out") }
 
             		describe "when team member is contactable but no phone" do
 
@@ -427,11 +434,14 @@ describe "EventPages" do
 
 				describe "visit Edit page" do
 
+					let!(:arrive_time) { "10:00"}
 					before do
 						event.attendance_days = "Mon, Wed"
 						event.time_of_day = "Varies"
-						event.start_time = "10:00"
+						event.start_time = arrive_time
 						event.finish_time = "12:30"
+						event.places_sold = 12
+						event.places_available = 12
 						event.save
 						visit edit_event_path(event)
 					end
@@ -459,7 +469,8 @@ describe "EventPages" do
 								find(:css, "#weekdays_Mon").set(false)
 								find(:css, "#weekdays_Tue").set(true)
 								select "Not displayed", from: "Time of day"
-								fill_in 'Finish time', with: "13:00"
+								fill_in 'event_finish_time', with: "13:00"
+								fill_in 'event_places_sold', with: event.places_available - 1
 								click_button 'Update'
 							end
 
@@ -467,6 +478,7 @@ describe "EventPages" do
 							it { should have_content("#{event.start_time.strftime('%l:%M %P')} -> 1:00 pm") }
 			            	it { should have_content("Tue, Wed") }
 			            	it { should_not have_content("Not displayed") }
+			            	it { should have_content("1 place left") }
 						end
 
 						describe "unsuccessfully" do
@@ -475,8 +487,8 @@ describe "EventPages" do
 								find(:css, "#weekdays_Mon").set(false)
 								find(:css, "#weekdays_Tue").set(true)
 								select "Not displayed", from: "Time of day"
-								fill_in 'Finish time', with: "13:00"
-								fill_in 'Start date', with: nil
+								fill_in 'event_finish_time', with: "13:00"
+								fill_in 'event[start_time]', with: ""
 								click_button 'Update'
 							end
 
@@ -485,8 +497,8 @@ describe "EventPages" do
 							it { should have_checked_field("weekdays_Tue") }
 							it { should have_checked_field("weekdays_Wed") }
 							it { should have_select('event_time_of_day', selected: "Not displayed") }
-							it { should have_selector("input#event_start_time[value='#{event.start_time.strftime('%H:%M')}']") }
 							it { should have_selector("input#event_finish_time[value='13:00']") }
+							it { should have_content("Start time can't be blank")}
 						end
 					end
 				end

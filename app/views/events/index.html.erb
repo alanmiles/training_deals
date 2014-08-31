@@ -8,7 +8,7 @@
 			<%= render "/shared/business_menu" %>
 		</section>
 	</aside>
-
+	
 	<div class="span8">
 		<% unless @business.has_products? %>
 			<%= render 'no_products' %>
@@ -39,6 +39,19 @@
 							<span class="js-content glyphicon glyphicon-search"></span>
 							<span class="html-content"><%= submit_tag "Search", title: nil %></span>
 						</p>
+						<div class="js-navigator add-bottom-space">
+						    <%= link_to "<- Business details", my_business_path(@business) %> 
+						    <% if @business.has_previous_events? %>
+						    	| <%= link_to "<- Completed events", 
+					    			my_business_previous_events_path(@business) %>
+					    	<% end %>
+						    <% if @business.has_schedulable_products? %>
+						    	| <%= link_to "Schedule an event ->", 
+						    			new_my_business_event_path(@business) %>
+						    <% end %> 
+						</div>
+
+
 						<div id="events"><%= render 'events' %></div>
 					<% end %>
 		 		<% end %>

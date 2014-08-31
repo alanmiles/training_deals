@@ -143,7 +143,8 @@ class EventsController < ApplicationController
 
     def event_params
       params.require(:event).permit(:product_id, :start_date, :end_date, :price, :attendance_days, 
-        :created_by, :weekdays, :start_time, :finish_time, :time_of_day, :location, :note )
+        :created_by, :weekdays, :start_time, :finish_time, :time_of_day, :location, :note,
+        :places_available, :places_sold )
     end
 
     def sort_column

@@ -43,6 +43,13 @@ textarea {
   color: grayMediumText;
 }
 
+.glyphicon-search {
+  background-color: $blueLabel;
+  color: #FFF;
+  padding: 5px;
+  vertical-align: 15%;
+}
+
 .toggler {
   .caret {
     vertical-align: middle;
@@ -274,6 +281,9 @@ input, textarea, select, .uneditable-input {
 
 input {
   height: auto !important;
+  .numeric {
+    text-align: right;
+  }
 }
 
 #error_explanation {
@@ -289,7 +299,7 @@ input {
   @extend .error;
 }
 
-.navigator {
+.navigator, .js-navigator {
   float: right;
   display: inline-block;
   margin-top: 10
@@ -300,6 +310,10 @@ input {
   border-width: thin;
   border-color: #3399FF #fff;
   color: #3399FF; 
+}
+
+.js-navigator {
+  /* display: none; */
 }
 
 .add-top-space {
@@ -342,6 +356,14 @@ input {
   }
   .half-width {
     width: 50%;
+  }
+  .start-phrase {
+    float: left;
+  }
+  .tag-phrase {
+    display: inline-block;
+    padding-left: 10px;
+    font-weight: bold;
   }
 }
 
@@ -447,6 +469,30 @@ input {
       vertical-align: top;
       padding-top: 5px;
       width: 20%;
+    }
+    .small-box-text {
+      display: inline-block;
+      width: 40%;
+      font-size: 0.9em;
+      vertical-align: 15%;
+    }
+    .small-box-fill {
+      display: inline-block;
+      width: 20%;
+    }
+    .mini-box-text {
+      display: inline-block;
+      width: 20%;
+      font-size: 0.9em;
+      vertical-align: 15%;
+    }
+    .mid-box-fill {
+      display: inline-block;
+      width: 30%;
+    }
+    .date-box-fill {
+      display: inline-block;
+      width: 50%;
     }
     .filler {
       display: inline-block;

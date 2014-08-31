@@ -1,23 +1,21 @@
 <div class="entry">
 	<div class="add-this">
-		<span class="label"><%= f.label :start_date %></span>
+		<span class="label"><%= f.label :start_date, "Dates" %></span>
 	</div>
-	<div class="box-fill half-line">
-		<%= f.text_field :start_date, placeholder: "YYYY-MM-DD" %>
+	<div class="half-line">
+		<div class="mini-box-text">From</div>
+		<div class="date-box-fill"><%= f.text_field :start_date, placeholder: "YYYY-MM-DD" %></div>
+	</div>
+	<div class="half-line">
+		<div class="mini-box-text">To</div>
+		<div class="date-box-fill"><%= f.text_field :end_date, placeholder: "YYYY-MM-DD" %></div>
 	</div>
 </div>
 <div class="entry">
 	<div class="add-this">
-		<span class="label"><%= f.label :end_date  %></span>
-	</div>
-	<div class="box-fill half-line">
-		<%= f.text_field :end_date, placeholder: "YYYY-MM-DD"  %>
-	</div>
-</div>
-
-<div class="entry">
-	<div class="add-this">
-		<span class="label"><%= f.label :price, "Price this time (#{@business.currency_symbol})" %></span>
+		<span class="label">
+			<%= f.label :price, "Price this time (#{@business.currency_symbol})" %>
+		</span>
 	</div>
 	<div class="box-fill half-line">
 		<%= f.text_field :price, placeholder: "Value only - no currency symbol"  %>
@@ -29,7 +27,19 @@
 		<% end %>
 	</div>
 </div>
-
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :places_avaliable, "Availability" %></span>
+	</div>
+	<div class="half-line">
+		<div class="small-box-text">Total places</div>
+		<div class="small-box-fill"><%= f.text_field :places_available, class: "numeric"  %></div>
+	</div>
+	<div class="half-line">
+		<div class="small-box-text">Places sold</div>
+		<div class="small-box-fill"><%= f.text_field :places_sold, class: "numeric"  %></div>
+	</div>
+</div>
 <div class="entry">
 	<div class="add-this">
 		<%= f.label :attendance_days  %>
@@ -61,28 +71,29 @@
 </div>
 <div class="entry">
 	<div class="add-this">
-		<%= f.label :start_time  %>
+		<%= f.label :start_time, "Timings"  %>
 	</div>
-	<div class="box-fill half-line">
-		<% if @event.start_time? && @event.start_time.class != String %>
-			<%= f.text_field :start_time, placeholder: "HH:MM", 
-				value: @event.start_time.strftime('%H:%M')  %>
-		<% else %>
-			<%= f.text_field :start_time, placeholder: "HH:MM" %>
-		<% end %>
+	<div class="half-line">
+		<div class="small-box-text">Start time</div>
+		<div class="mid-box-fill">
+			<% if @event.start_time? && @event.start_time.class != String %>
+				<%= f.text_field :start_time, placeholder: "HH:MM", 
+					value: @event.start_time.strftime('%H:%M')  %>
+			<% else %>
+				<%= f.text_field :start_time, placeholder: "HH:MM" %>
+			<% end %>
+		</div>
 	</div>
-</div>
-<div class="entry">
-	<div class="add-this">
-		<%= f.label :finish_time  %>
-	</div>
-	<div class="box-fill half-line">
-		<% if @event.finish_time? && @event.start_time.class != String %>
-			<%= f.text_field :finish_time, placeholder: "HH:MM",
-				value: @event.finish_time.strftime('%H:%M') %>
-		<% else %>
-			<%= f.text_field :finish_time, placeholder: "HH:MM" %>
-		<% end %>
+	<div class="half-line">
+		<div class="small-box-text">Finish time</div>
+		<div class="mid-box-fill">
+			<% if @event.finish_time? && @event.start_time.class != String %>
+				<%= f.text_field :finish_time, placeholder: "HH:MM",
+					value: @event.finish_time.strftime('%H:%M') %>
+			<% else %>
+				<%= f.text_field :finish_time, placeholder: "HH:MM" %>
+			<% end %>
+		</div>
 	</div>
 </div>
 <div class="entry">

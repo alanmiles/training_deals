@@ -79,9 +79,7 @@
 					This <%= @business.currency_symbol %> <%= sprintf("%.2f", @event.price) %> 
 					event has now finished.
 				</div>
-			<% end %>
-
-			<% unless @event.end_date < Date.today %>
+			<% else %>
 				<% unless @event.standard_price == @event.price %>
 					<div class="subject"></div>
 					<div class="detail">
@@ -101,22 +99,57 @@
 								</span>
 							<% end %>
 						<% end %>
+						
 					</div>
 				<% end %>
 			<% end %>
-			<% if @event.start_date == @event.end_date %>
-				<div class="subject"></div>
-				<div class="detail">
-					<%= formatted_daydate(@event.start_date) %>
+			
+
+				<div>
+					<% if @event.start_date == @event.end_date %>
+						<div class="subject"></div>
+						<div class="detail">
+							<%= formatted_daydate(@event.start_date) %>
+							<div class="tag-phrase">
+								<% if @event.has_places? %>
+									<% if @event.remaining_places > 4 %>
+										<span class="check-info"> -- Accepting bookings --</span>
+									<% else %>
+										<span class="check-info">
+											-- <%= pluralize(@event.remaining_places, "place") %> left --
+										</span>
+									<% end %>
+								<% else %>
+									<span class="check-info"> -- Sold out --</span>
+								<% end %>
+							</div>
+						</div>
+					<% else %>
+						<div class="subject"></div>
+						<div class="detail">
+							<%= formatted_daydate(@event.start_date) %> 
+								-> <%= formatted_daydate(@event.end_date) %>
+						
+							<div class="tag-phrase">
+								<% if @event.has_places? %>
+									<% if @event.remaining_places > 4 %>
+										<span class="check-info"> -- Accepting bookings --</span>
+									<% else %>
+										<span class="check-info">
+											-- <%= pluralize(@event.remaining_places, "place") %> left --
+										</span>
+									<% end %>
+								<% else %>
+									<span class="check-info"> -- Sold out --</span>
+								<% end %>
+							</div>
+						</div>
+					<% end %>
 				</div>
-			<% else %>
-				<div class="subject"></div>
-				<div class="detail">
-					<%= formatted_daydate(@event.start_date) %> 
-						-> <%= formatted_daydate(@event.end_date) %>
-				</div>
-			<% end %>
-		
+				
+			
+
+
 			<% if @event.time_of_day? || (@event.start_time? && @event.finish_time?) %>
 			
 				<div class="subject"></div>
