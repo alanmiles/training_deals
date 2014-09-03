@@ -74,6 +74,27 @@ class Product < ActiveRecord::Base
 		self.title + " (" + @business.currency_symbol + " " + sprintf("%.2f", self.standard_cost) + ")"
 	end
 
+	def has_future_events?
+		if schedulable?
+			count = events.where("start_date >= ?", Date.today).count
+		else
+			count = 0
+		end
+		count > 0
+	end
+
+	def next_future_events
+		events.where("start_date >= ?", Date.today).order("start_date ASC").limit(3)
+	end
+
+	def all_future_events
+		events.where("start_date >= ?", Date.today).order("start_date ASC")
+	end
+
+	def total_future_events
+		events.where("start_date >= ?", Date.today).count
+	end
+
 	private
 
 		def add_currency

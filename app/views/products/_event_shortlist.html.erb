@@ -1,0 +1,8 @@
+<ul class="unspaced-lists" id="shortlist">
+	<% @events.each do |event| %>
+		<%= content_tag_for :li, event do %>
+			<%= render 'event_list', event: event %>
+			| <%= link_to("Edit", edit_event_path(event), id: "shortlist_#{event.id}") %>
+		<% end %>
+	<% end %>
+</ul>

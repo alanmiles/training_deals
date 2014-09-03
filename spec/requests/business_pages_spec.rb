@@ -77,6 +77,17 @@ describe "BusinessPages" do
 			            expect(page).not_to have_selector('li', text: business_1.name)
 			        end
 		  		end
+
+		  		describe "menu when signed in as a HROOMPH administrator" do
+
+		  			before do
+		  				user.toggle!(:admin)
+		  				sign_in user
+		  				visit my_businesses_path
+		  			end
+
+		  			it {should have_link("Admin home page", href: admin_menu_path) }
+		  		end
 	  		end
 
 	    	describe "with more than 1 existing business" do

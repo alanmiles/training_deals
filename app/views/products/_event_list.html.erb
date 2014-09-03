@@ -1,0 +1,26 @@
+
+	<%= formatted_shortdate(event.start_date) %>
+	<% unless event.start_date == event.end_date %> to <%= formatted_shortdate(event.end_date) %>
+	<% end %>
+	<% if event.start_time? || event.time_of_day? %>
+		<% if event.start_time? %>
+			| <%= formatted_time(event.start_time) %> - 
+					<%= formatted_time(event.finish_time) %>
+		<% else %>
+			| <%= event.time_of_day %>
+		<% end %>
+	<% end %>
+	<% unless event.price == @product.standard_cost %>
+		| <span class="check-info">
+			<strong>Price: 
+			<%= @business.currency_symbol %>
+		  	<%= number_with_precision(event.price, precision: 2, delimiter: ',') %>
+		  	</strong>
+		  </span>
+	<% end %>
+	<% unless event.has_places? %>
+		| <strong>Sold Out</strong>
+	<% else %>
+		| <%= pluralize(event.remaining_places, "space") %>
+	<% end %>
+	

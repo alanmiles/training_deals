@@ -1,4 +1,21 @@
 jQuery ($) ->
+	$(".js-toggle-list").show()
+
+jQuery ($) ->
+	listHandle = $(".js-toggle-list").text()
+	$(".js-toggle-list").click ->
+  		if listHandle == "(show all..)"
+  			$("#showlist").hide()
+  			$("#longlist").show()
+  			$(".js-toggle-list").text("(show first 3 only..)")
+  			listHandle = "(show first 3 only..)"
+  		else
+  			$("#shortlist").show()
+  			$("#longlist").hide()
+  			$(".js-toggle-list").text("(show all..)")
+  			listHandle = "(show all..)"
+
+jQuery ($) ->
 	$(".html-content").hide()
 	$(".js-content").show()
 
@@ -55,3 +72,5 @@ jQuery ($) ->
   		$(".js-link").click ->
   			$(".js-link-reveal").show "slow", ->
   return
+
+

@@ -359,26 +359,132 @@ describe "ProductPages" do
 
 			describe "visit the Show page" do
 
-				before do
-					visit my_business_path(other_biz)
-					visit my_business_products_path(other_biz)
-				  	click_link('details')
+				describe "when not event-type" do
+				
+					before do
+						visit my_business_path(other_biz)
+						visit my_business_products_path(other_biz)
+					  	click_link('details')
+					end
+
+					it { should have_title("#{other_biz_product.title}") }
+					it { should have_selector('h1', text: "Product details") }
+					it { should have_selector('h2', text: "#{other_biz.name}, #{other_biz.city}")}
+					it { should have_link('Update', href: edit_product_path(other_biz_product)) }
+					it { should have_link('<- All products/services', href: my_business_products_path(other_biz)) }
+					it { should have_selector('div.detail', text: "#{other_biz_product.title}") }
+					it { should have_selector('div.detail', 
+						text: "#{genre_1.description} >> #{genre_1_cat_1.description} >> #{genre_1_cat_1_topic_1.description}") }
+					it { should have_selector('div.detail', text: "No reference code entered") }
+					it { should have_selector('div.detail', text: "#{method.description} - 5 modules") }
+					it { should have_selector('div.detail', text: "#{other_biz_product.content}") }
+					it { should have_selector('div.detail', text: "#{other_biz_product.outcome}") }
+					it { should have_selector('div.detail', text: "#{other_biz.currency_symbol} 100") }
+					it { should_not have_selector('div#qualification') }
+
+					it { should_not have_content("NEXT SCHEDULED") }
+					it { should_not have_content("NO SCHEDULED EVENTS") }
+
 				end
 
-				it { should have_title("#{other_biz_product.title}") }
-				it { should have_selector('h1', text: "Product details") }
-				it { should have_selector('h2', text: "#{other_biz.name}, #{other_biz.city}")}
-				it { should have_link('Update', href: edit_product_path(other_biz_product)) }
-				it { should have_link('<- All products/services', href: my_business_products_path(other_biz)) }
-				it { should have_selector('div.detail', text: "#{other_biz_product.title}") }
-				it { should have_selector('div.detail', 
-					text: "#{genre_1.description} >> #{genre_1_cat_1.description} >> #{genre_1_cat_1_topic_1.description}") }
-				it { should have_selector('div.detail', text: "No reference code entered") }
-				it { should have_selector('div.detail', text: "#{method.description} - 5 modules") }
-				it { should have_selector('div.detail', text: "#{other_biz_product.content}") }
-				it { should have_selector('div.detail', text: "#{other_biz_product.outcome}") }
-				it { should have_selector('div.detail', text: "#{other_biz.currency_symbol} 100") }
-				it { should_not have_selector('div#qualification') }
+				describe "when product is event-type" do
+
+					let!(:event_method)			{ FactoryGirl.create(:training_method, 
+													description: "Training course", event: true) }
+					let!(:other_biz_event_product) { FactoryGirl.create(:product, business: other_biz,
+							topic: genre_1_cat_1_topic_1, training_method: event_method, 
+							duration_id: duration.id, duration_number: 1000,
+							content_length_id: nil, content_number: nil) }
+
+					describe "with no events scheduled" do
+
+						before { visit product_path(other_biz_event_product) }
+
+						it { should have_title("#{other_biz_event_product.title}") }
+						it { should have_selector('h1', text: "Product details") }
+						it { should have_selector('h5', text: "NO SCHEDULED EVENTS")}
+					end
+
+					describe "with 1 future event scheduled" do
+
+						let!(:in_progress_event)	{ FactoryGirl.create(:event, product: other_biz_event_product,
+							start_date: Date.today - 1, end_date: Date.today + 6) }
+						let!(:new_event_1)	{ FactoryGirl.create(:event, product: other_biz_event_product,
+							price: other_biz_event_product.standard_cost - 10) }
+
+						before { visit product_path(other_biz_event_product) }
+
+						it { should have_title("#{other_biz_event_product.title}") }
+						it { should have_selector('h1', text: "Product details") }
+						it { should have_content("NEXT SCHEDULED") }
+						it { should_not have_selector('.js-toggle-list', text: "(show all..)") }
+						it { should have_selector("li#event_#{new_event_1.id}", 
+							text: "Price: #{other_biz.currency_symbol} #{other_biz_event_product.standard_cost - 10}") }
+						it { should have_selector("li#event_#{new_event_1.id}", 
+							text: "#{new_event_1.remaining_places} spaces") }
+						it { should_not have_selector("li#event_#{in_progress_event.id}") }
+					
+						describe "edit Event from Product Show page" do
+
+							before do 
+								click_link "shortlist_#{new_event_1.id}"
+								fill_in "Location", with: "Here"
+								click_button "Update"
+							end
+
+							it { should have_title("#{other_biz_event_product.title}") }
+							# i.e. redirecting to Product Show page rather than Event show page
+						end
+
+						describe "follow the Drop Changes link on Event Edit back to the Product page" do
+	
+							before do 
+								click_link "shortlist_#{new_event_1.id}"
+								fill_in "Location", with: "Here"
+								click_link "<- Drop changes"
+							end
+
+							it { should have_title("#{other_biz_event_product.title}") }
+							# i.e. redirecting to Product Show page rather than Event show page
+						end
+					end
+					
+					describe "with 4 future events scheduled" do
+
+						let!(:new_event_1)	{ FactoryGirl.create(:event, product: other_biz_event_product,
+							price: other_biz_event_product.standard_cost - 10) }
+
+						let!(:new_event_2)	{ FactoryGirl.create(:event, product: other_biz_event_product,
+							start_date: Date.today + 13, end_date: Date.today + 13, 
+							price: other_biz_event_product.standard_cost, places_available: 16,
+							places_sold: 16) }
+
+						let!(:new_event_3)	{ FactoryGirl.create(:event, product: other_biz_event_product,
+							start_date: Date.today + 14, end_date: Date.today + 21, 
+							price: other_biz_event_product.standard_cost, places_available: 16,
+							places_sold: 15) }
+
+						let!(:new_event_4)	{ FactoryGirl.create(:event, product: other_biz_event_product,
+							start_date: Date.today + 21, end_date: Date.today + 28, 
+							price: other_biz_event_product.standard_cost) }
+
+						before { visit product_path(other_biz_event_product) }
+
+						it { should have_title("#{other_biz_event_product.title}") }
+						it { should have_content("NEXT SCHEDULED") }
+						it { should have_selector('.js-toggle-list', text: "(show all..)") }
+						it { should_not have_selector("li#event_#{new_event_2.id}", text: "Price") }
+						it { should_not have_selector("li#event_#{new_event_2.id}", 
+							text: "#{formatted_shortdate(new_event_2.start_date)} - #{formatted_shortdate(new_event_2.end_date)}") }
+						it { should have_selector("li#event_#{new_event_2.id}", 
+							text: "#{formatted_shortdate(new_event_2.start_date)}") }
+						it { should have_selector("li#event_#{new_event_2.id}", text: "Sold Out") }
+						it { should have_selector("li#event_#{new_event_3.id}", 
+							text: "#{new_event_3.remaining_places} space") }
+						pending "Javscript show/reveal not tested for events list"
+
+					end
+				end
 			end
 
 			describe "visit the Edit page" do

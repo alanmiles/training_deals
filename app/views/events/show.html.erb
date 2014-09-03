@@ -103,55 +103,48 @@
 					</div>
 				<% end %>
 			<% end %>
-			
-
-				<div>
-					<% if @event.start_date == @event.end_date %>
-						<div class="subject"></div>
-						<div class="detail">
-							<%= formatted_daydate(@event.start_date) %>
-							<div class="tag-phrase">
-								<% if @event.has_places? %>
-									<% if @event.remaining_places > 4 %>
-										<span class="check-info"> -- Accepting bookings --</span>
-									<% else %>
-										<span class="check-info">
-											-- <%= pluralize(@event.remaining_places, "place") %> left --
-										</span>
-									<% end %>
+			<div>
+				<% if @event.start_date == @event.end_date %>
+					<div class="subject"></div>
+					<div class="detail">
+						<%= formatted_daydate(@event.start_date) %>
+						<div class="tag-phrase">
+							<% if @event.has_places? %>
+								<% if @event.remaining_places > 4 %>
+									<span class="check-info"> -- Accepting bookings --</span>
 								<% else %>
-									<span class="check-info"> -- Sold out --</span>
+									<span class="check-info">
+										-- <%= pluralize(@event.remaining_places, "place") %> left --
+									</span>
 								<% end %>
-							</div>
+							<% else %>
+								<span class="check-info"> -- Sold out --</span>
+							<% end %>
 						</div>
-					<% else %>
-						<div class="subject"></div>
-						<div class="detail">
-							<%= formatted_daydate(@event.start_date) %> 
-								-> <%= formatted_daydate(@event.end_date) %>
-						
-							<div class="tag-phrase">
-								<% if @event.has_places? %>
-									<% if @event.remaining_places > 4 %>
-										<span class="check-info"> -- Accepting bookings --</span>
-									<% else %>
-										<span class="check-info">
-											-- <%= pluralize(@event.remaining_places, "place") %> left --
-										</span>
-									<% end %>
+					</div>
+				<% else %>
+					<div class="subject"></div>
+					<div class="detail">
+						<%= formatted_daydate(@event.start_date) %> 
+							-> <%= formatted_daydate(@event.end_date) %>
+					
+						<div class="tag-phrase">
+							<% if @event.has_places? %>
+								<% if @event.remaining_places > 4 %>
+									<span class="check-info"> -- Accepting bookings --</span>
 								<% else %>
-									<span class="check-info"> -- Sold out --</span>
+									<span class="check-info">
+										-- <%= pluralize(@event.remaining_places, "place") %> left --
+									</span>
 								<% end %>
-							</div>
+							<% else %>
+								<span class="check-info"> -- Sold out --</span>
+							<% end %>
 						</div>
-					<% end %>
-				</div>
-				
-			
-
-
+					</div>
+				<% end %>
+			</div>
 			<% if @event.time_of_day? || (@event.start_time? && @event.finish_time?) %>
-			
 				<div class="subject"></div>
 				<div class="detail">
 					<%= @event.time_of_day unless @event.time_of_day == "Not displayed" %>

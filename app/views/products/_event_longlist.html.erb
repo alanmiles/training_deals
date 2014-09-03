@@ -1,0 +1,8 @@
+<ul class="unspaced-lists" id="longlist"> 
+	<% @all_events.each do |event| %>
+		<%= content_tag_for :li, event do %>
+			<%= render 'event_list', event: event %>
+			| <%= link_to("Edit", edit_event_path(event), id: "longlist_#{event.id}") %>
+		<% end %>
+	<% end %>
+</ul>

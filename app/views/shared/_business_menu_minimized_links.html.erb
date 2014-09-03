@@ -1,1 +1,5 @@
 <li><%= link_to "User home page", user_path(current_user) %></li>
+<% if current_user.admin? %>
+	<li class="divider"></li>
+	<li><%= link_to "Admin home page", admin_menu_path %></li>
+<% end %>

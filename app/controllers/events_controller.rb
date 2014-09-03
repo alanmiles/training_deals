@@ -12,6 +12,7 @@ class EventsController < ApplicationController
     @events = @business.current_and_future_events.search(params[:search])
               .order(sort_column + " " + sort_direction)
               .paginate(per_page: 15, page: params[:page])
+    session.delete(:product_page)
   end
 
   def new
@@ -107,7 +108,11 @@ class EventsController < ApplicationController
     end
     if @event.update_attributes(event_params)
       flash[:success] = "Updated event details"
-      redirect_to event_path(@event)
+      if session[:product_page]
+        redirect_to_product
+      else
+        redirect_to event_path(@event)
+      end
     else
       @periods = Event.day_periods_with_blank
       @selected_period = @event.time_of_day

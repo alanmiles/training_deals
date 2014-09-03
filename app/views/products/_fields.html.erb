@@ -33,6 +33,14 @@
 </div>
 <div class="entry">
 	<div class="add-this">
+		<span class="label"><%= f.label :standard_cost, 
+			"Standard price (#{@business.currency_symbol})" %></span>
+	</div>
+	<div class="box-fill half-line"><%= f.text_field :standard_cost, 
+			placeholder: "Value only - no currency symbol" %></div>
+</div>
+<div class="entry">
+	<div class="add-this">
 		<%= f.label :qualification %>
 	</div>
 	<div class="box-fill"><%= f.text_field :qualification, placeholder: "Optional. Max 50 characters" %></div>
@@ -60,14 +68,6 @@
 		<span class="rubric">Qty</span>
 		<span class="filler"><%= f.text_field :content_number %></span>
 	</div>
-</div>
-<div class="entry">
-	<div class="add-this">
-		<span class="label"><%= f.label :standard_cost, 
-			"Standard price (#{@business.currency_symbol})" %></span>
-	</div>
-	<div class="box-fill half-line"><%= f.text_field :standard_cost, 
-			placeholder: "Value only - no currency symbol" %></div>
 </div>
 <% unless params[:action] == 'new' || params[:action] == 'newprod' %>
 	<div class="entry">

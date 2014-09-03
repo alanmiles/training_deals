@@ -1,10 +1,5 @@
 TrainingDeals::Application.routes.draw do
   
-  get "previous_events/index"
-  get "events/new"
-  get "events/edit"
-  get "topic_selections/new"
-  get "category_selections/new"
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :training_methods do

@@ -22,7 +22,11 @@
 			</div>
 			<%= f.submit "Update", class: "btn btn-primary" %>
 			<div class="navigator">
-				<%= link_to "<- Drop changes", event_path(@event) %>
+				<% if session[:product_page] %>
+        			<%= link_to "<- Drop changes", product_path(@product) %>
+        		<% else %>
+				  	<%= link_to "<- Drop changes", event_path(@event) %>
+				<% end %>  	
 			</div>
 		<% end %>
 	</div>

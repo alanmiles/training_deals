@@ -22,14 +22,6 @@
 			</div>
 		</div>
 		<div class="paragraph">
-			<div class="subject">Classification:</div>
-			<div class="detail"><%= @product.topic.classification %></div>
-		</div>
-		<div class="paragraph">
-			<div class="subject">Reference code:</div>
-			<div class="detail"><%= @product.ref_code_formatted %></div>
-		</div>
-		<div class="paragraph">
 			<div class="subject">Format:</div>
 			<div class="detail">
 				<%= @product.training_method.description %>
@@ -42,6 +34,21 @@
 					@product.duration.time_unit.downcase) %>
 				<% end %>
 			</div>
+			<div class="subject">Standard price:</div>
+			<div class="detail">
+				<%= @business.currency_symbol %> 
+				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+			</div>
+		</div>
+		<div class="paragraph">
+			<div class="subject">Classification:</div>
+			<div class="detail"><%= @product.topic.classification %></div>
+			<div class="subject">Reference code:</div>
+			<div class="detail"><%= @product.ref_code_formatted %></div>
+			<% if @product.qualification? %>
+				<div class="subject">Qualification:</div>
+				<div class="detail" id="qualification"><%= @product.qualification %></div>
+			<% end %>
 		</div>
 		<div class="paragraph">
 			<div class="subject">Description:</div>
@@ -50,19 +57,6 @@
 		<div class="paragraph">
 			<div class="subject">Benefits/results:</div>
 			<div class="detail"><%= @product.outcome %></div>
-		</div>
-		<% if @product.qualification? %>
-			<div class="paragraph">
-				<div class="subject">Qualification:</div>
-				<div class="detail" id="qualification"><%= @product.qualification %></div>
-			</div>
-		<% end %>
-		<div class="paragraph">
-			<div class="subject">Standard price:</div>
-			<div class="detail">
-				<%= @business.currency_symbol %> 
-				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
-			</div>
 		</div>
 		<% if @product.web_link? %>
 			<div class="paragraph">
@@ -74,11 +68,27 @@
 		<% end %>
 		<% if @product.image? %>
 			<div class="paragraph">
-				<div class="subject">Image:</div>
+				<div class="subject"></div>
 				<div class="detail">
 					<%= image_tag @product.image_url, class: "img-rounded" %>
 				</div>
 			</div>
+		<% end %>
+		<% if @product.schedulable? %>
+			<% if @product.has_future_events? %>
+				<div class="paragraph">
+					<div class="add-top-space add-bottom-space">
+						<strong>NEXT SCHEDULED</strong>
+						<% if @product.total_future_events > 3 %>
+							<span class="js-toggle-list">(show all..)</span> 
+						<% end %>
+					</div>
+				</div>
+				<%= render "event_shortlist" %>
+				<%= render "event_longlist" %>
+			<% else %>
+				<div class="paragraph"><h5>NO SCHEDULED EVENTS</h5></div>
+			<% end %>
 		<% end %>
 	</div>
 </div>

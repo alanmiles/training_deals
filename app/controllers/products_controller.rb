@@ -76,6 +76,9 @@ class ProductsController < ApplicationController
   def show
     #@product = Product.find(params[:id])
     #@business = Business.find(@product.business_id)
+    @events = @product.next_future_events
+    @all_events = @product.all_future_events
+    store_product_page
   end
 
   def edit

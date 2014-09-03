@@ -48,6 +48,16 @@ module SessionsHelper
 		session[:mybiz] = nil
 	end
 
+	def store_product_page
+		session[:product_page] = request.url
+	end
+
+	def redirect_to_product
+		redirect_to(session[:product_page])
+		session.delete(:product_page)
+	end
+
+
 	def current_business?
 		session[:mybiz] != nil
 	end
