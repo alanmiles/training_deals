@@ -5,40 +5,54 @@ describe "UserPages" do
   subject { page }
 
   describe "index" do
-    let(:user)    { FactoryGirl.create(:user) }
-    before do
-      sign_in user
-      visit users_path
-    end
-
-    it { should have_title('All users') }
-    it { should have_content('All users') }
-
-    describe "pagination" do
-
-      before(:all)  { 30.times { FactoryGirl.create(:user) } }
-      after(:all)   { User.delete_all }
-
-      it { should have_selector('div.pagination') }
     
-      it "should list each user" do
-        User.paginate(page: 1).each do |user|
-          expect(page).to have_selector('li', text: user.name)
+    describe "when signed in as admin" do
+
+      let!(:admin)    { FactoryGirl.create(:admin) }
+      before do
+        sign_in admin
+        visit users_path
+      end
+
+      it { should have_title('All users') }
+      it { should have_content('All users') }
+
+      describe "pagination" do
+
+        before(:all)  { 30.times { FactoryGirl.create(:user) } }
+        after(:all)   { User.delete_all }
+
+        it { should have_selector('div.pagination') }
+      
+        it "should list each user" do
+          User.paginate(page: 1).each do |user|
+            expect(page).to have_selector('li', text: user.name)
+          end
         end
       end
-    end
 
-    describe "delete links" do
+      describe "list ordered alphabetically by name" do
 
-      it { should_not have_link('delete') }
+        let!(:user_a)  { FactoryGirl.create(:user, name: "AAA") }
 
-      describe "as an admin user" do
-        let(:admin)     { FactoryGirl.create(:admin) }
-        before do
+        before do 
           sign_in admin
           visit users_path
         end
 
+        it { should have_selector("ul#userlist li:first-child", text: user_a.name) }
+        it { should have_selector("ul#userlist li:last-child", text: admin.name) }
+      end
+
+      describe "delete links" do
+
+        let!(:user) { FactoryGirl.create(:user) }
+
+        before do
+          sign_in admin
+          visit users_path
+        end
+        
         it { should have_link('delete', href: user_path(user)) }
         it { should_not have_link('delete', href: user_path(admin)) }
         
@@ -57,6 +71,57 @@ describe "UserPages" do
           specify { expect(response).to redirect_to(root_url) }
         end
       end
+    end
+
+    describe "when not signed in" do
+
+      let(:admin)   { FactoryGirl.create(:admin) }
+      
+      describe "redirect to the signin page" do
+        
+        before { get users_path }
+        inaccessible_without_signin
+      end
+
+      describe "go to correct Index page after signing in" do
+
+        before do
+          visit users_path
+          valid_signin(admin)
+        end
+        
+        specify do
+          expect(page).to have_title('All users')
+          expect(page).to have_selector('li', text: admin.name)
+        end
+
+        describe "but don't go to this index page when signing in the next time" do
+
+          before do
+            click_link "Sign out"
+            sign_in admin
+          end 
+
+          specify { expect(page).not_to have_title('All users') }
+        end
+      end
+    end
+
+    describe "when signed in but not as admin" do
+
+      let(:user)    { FactoryGirl.create(:user) }
+      let(:admin)    { FactoryGirl.create(:admin) }
+      
+      before do
+        sign_in user, no_capybara: true
+        get users_path
+      end
+
+      specify do
+        expect(page).to redirect_to(root_url)
+        expect(flash[:error]).to eq("Permission denied.")
+      end
+
     end
   end
 
@@ -82,13 +147,6 @@ describe "UserPages" do
     it { should have_link("Find trainers", href: "#") }
     it { should have_link("Add a business", href: my_businesses_path) }
     it { should_not have_link("Business home page", href: my_businesses_path) }
-
-    describe "when user is a hrOOMPH admin" do
-      let(:admin) { FactoryGirl.create(:admin) }
-      before { visit user_path(admin) }
-
-      it { should have_link("Switch to admin interface ->", href: admin_menu_path) }
-    end
 
     describe "when team-member in one or more business" do
       let!(:business_1)  { FactoryGirl.create(:business, created_by: user.id) }

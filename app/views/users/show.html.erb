@@ -11,9 +11,4 @@
 			<%= render "/shared/user_menu" %>
 		</section>
 	</aside>
-	<% if @user.admin? %>
-		<div class="navigator">
-		    <%= link_to "Switch to admin interface ->", admin_menu_path %> 
-		</div>
-	<% end %>
 </div>

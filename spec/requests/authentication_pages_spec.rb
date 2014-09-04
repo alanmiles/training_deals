@@ -55,7 +55,7 @@ describe "Authentication" do
 
       it { should have_title("Admin menu") }
       it { should have_link('Framework', href: framework_path) }
-      it { should have_link('Users', href: "#") }
+      it { should have_link('Users', href: users_path) }
       it { should have_link('Vendors', href: "#") }
       it { should have_link('Feedback', href: "#") }
       it { should have_link('Site activity', href: "#") }
@@ -63,7 +63,8 @@ describe "Authentication" do
       it { should have_link('Text editor', href: "#") }
       it { should have_selector('span#user-id', text: admin.name) }
       it { should have_link('Sign out',   href: signout_path) }
-      it { should have_link('Switch to user interface ->', href: user_path(admin)) }
+      it { should have_link('User home page', href: user_path(admin)) }
+      it { should have_link('Add a business', href: my_businesses_path) }
     end
   end
 
@@ -148,7 +149,7 @@ describe "Authentication" do
         before { delete user_path(user) }
         specify do 
           expect(response).to redirect_to(root_url)
-          expect(flash[:notice]).to eq("Only hrOOMPH administrators can do this.")
+          expect(flash[:error]).to eq("Permission denied.")
         end
       end
 

@@ -2,11 +2,11 @@ class UsersController < ApplicationController
   
   before_action :signed_in_user,  only: [:index, :edit, :update, :destroy]
   before_action :correct_user,    only: [:edit, :update]
-  before_action :admin_user,      only: :destroy
+  before_action :admin_user,      only: [:index, :destroy]
   before_action :duplicate_user,  only: [:new, :create]
 
 	def index
-    @users = User.paginate(page: params[:page])
+    @users = User.paginate(page: params[:page]).order("name")
   end
 
   def show
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
     def signed_in_user
       unless signed_in?
         store_location
-        redirect_to signin_url, notice: "Please sign in."
+        redirect_to signin_url, notice: "Page not accessible. Please sign in or sign up."
       end
     end
 
@@ -74,8 +74,10 @@ class UsersController < ApplicationController
     end
 
     def admin_user
-      flash[:notice] = "Only hrOOMPH administrators can do this."
-      redirect_to(root_url) unless current_user.admin?
+      unless current_user.admin?
+        flash[:error] = "Permission denied."
+        redirect_to(root_url) 
+      end
     end 
 
     def duplicate_user

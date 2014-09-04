@@ -455,17 +455,17 @@ describe "ProductPages" do
 							price: other_biz_event_product.standard_cost - 10) }
 
 						let!(:new_event_2)	{ FactoryGirl.create(:event, product: other_biz_event_product,
-							start_date: Date.today + 13, end_date: Date.today + 13, 
+							start_date: Date.today + 33, end_date: Date.today + 33, 
 							price: other_biz_event_product.standard_cost, places_available: 16,
 							places_sold: 16) }
 
 						let!(:new_event_3)	{ FactoryGirl.create(:event, product: other_biz_event_product,
-							start_date: Date.today + 14, end_date: Date.today + 21, 
+							start_date: Date.today + 43, end_date: Date.today + 50, 
 							price: other_biz_event_product.standard_cost, places_available: 16,
 							places_sold: 15) }
 
 						let!(:new_event_4)	{ FactoryGirl.create(:event, product: other_biz_event_product,
-							start_date: Date.today + 21, end_date: Date.today + 28, 
+							start_date: Date.today + 63, end_date: Date.today + 70, 
 							price: other_biz_event_product.standard_cost) }
 
 						before { visit product_path(other_biz_event_product) }
