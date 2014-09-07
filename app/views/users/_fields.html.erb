@@ -1,13 +1,52 @@
 <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.label :name %>
-<%= f.text_field :name %>
-
-<%= f.label :email %>
-<%= f.text_field :email %>
-
-<%= f.label :password %>
-<%= f.password_field :password %>
-
-<%= f.label :password_confirmation, "Confirm Password" %>
-<%= f.password_field :password_confirmation %>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :name %></span>
+	</div>	
+	<div class="box-fill"><%= f.text_field :name, placeholder: "Your real first and last name" %></div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :email %></span>
+	</div>
+	<div class="box-fill"><%= f.text_field :email %></div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :location %></span>
+	</div>
+	<div class="box-fill">
+		<%= f.text_field :location, 
+			placeholder: "Type in an address. The map should then show your location", 
+			id: "geocomplete" %>
+	</div>
+</div>
+<div class="entry add-bottom-space">
+	<div class="add-this"></div>
+	<div class="box-fill">
+		<div class="map_canvas"></div>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :password %></span>
+	</div>
+	<div class="box-fill">
+		<%= f.password_field :password, placeholder: @password_text %>
+	</div>
+</div>
+<div class="entry">
+	<div class="add-this">
+		<span class="label"><%= f.label :password_confirmation, "Confirm password" %></span>
+	</div>
+	<div class="box-fill">
+		<%= f.password_field :password_confirmation, placeholder: @confirm_text %>
+	</div>
+</div>
+<div class="entry add-bottom-space">
+	<%= f.hidden_field :latitude, name: "lat" %>
+	<%= f.hidden_field :longitude, name: "lng" %>
+	<%= f.hidden_field :city, name: "locality" %>
+	<%= f.hidden_field :country, name: "country" %>
+</div>

@@ -465,7 +465,7 @@ describe "ProductPages" do
 							places_sold: 15) }
 
 						let!(:new_event_4)	{ FactoryGirl.create(:event, product: other_biz_event_product,
-							start_date: Date.today + 63, end_date: Date.today + 70, 
+							start_date: Date.today + 73, end_date: Date.today + 80, 
 							price: other_biz_event_product.standard_cost) }
 
 						before { visit product_path(other_biz_event_product) }

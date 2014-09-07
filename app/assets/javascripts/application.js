@@ -16,4 +16,5 @@
 //= require jquery.ui.all
 //= require bootstrap
 //= require turbolinks
+//= require jquery.geocomplete.min
 //= require_tree .

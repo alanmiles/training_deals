@@ -15,10 +15,16 @@ class UsersController < ApplicationController
 
   def new
 		@user = User.new
+    @password_text = "At least 6 letters/numbers"
+    @confirm_text = "Repeat password"
 	end
 
 	def create
 		@user = User.new(user_params)
+    @user.latitude = params[:lat]
+    @user.longitude = params[:lng]
+    @user.city = params[:locality]
+    @user.country = params[:country]
 		if @user.save
       sign_in @user
       flash[:success] = "Welcome to HROOMPH."
@@ -29,9 +35,17 @@ class UsersController < ApplicationController
 	end
 
   def edit
+    @password_text = "Your usual password"
+    @confirm_text = "Repeat password"
   end
 
-  def update 
+  def update
+    unless params[:user][:location] == @user.location
+      @user.latitude = params[:lat]
+      @user.longitude = params[:lng]
+      @user.city = params[:locality]
+      @user.country = params[:country]
+    end
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
       redirect_to @user
@@ -56,7 +70,8 @@ class UsersController < ApplicationController
 
 		def user_params
 			params.require(:user).permit(:name, :email, :password,
-											:password_confirmation)
+											:password_confirmation, :latitude, :longitude, :location,
+                      :city, :country)
 		end
 
     # Before filters
