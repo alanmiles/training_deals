@@ -17,9 +17,14 @@
 		<span class="label"><%= f.label :location %></span>
 	</div>
 	<div class="box-fill">
-		<%= f.text_field :location, 
-			placeholder: "Type in an address. The map should then show your location", 
-			id: "geocomplete" %>
+		<div class="large-box-fill">
+			<%= f.text_field :location, 
+				placeholder: "Type in an address. The map should then show your location", 
+				id: "geocomplete" %>
+		</div>
+		<div class="confirm-button">
+			<input id="find" type="button" value="find">
+		</div>
 	</div>
 </div>
 <div class="entry add-bottom-space">

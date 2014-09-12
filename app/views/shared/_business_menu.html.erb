@@ -1,9 +1,13 @@
 <div class="well sidebar-nav">
 	<ul class="nav nav-list">
-		<div class = "js-menu">
+		<div id="menu-items" class = "js-menu">
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#"> 
-					<span class="column-wide"><span class="label label-info">MENU </span><b class="caret"></b></span>
+					<span class="toggler-menu column-wide">
+						<span class="label label-info">MENU 
+							<span id="ct-menu" class="caret down"></span>
+						</span>
+					</span>
 				</a>
 				<ul class="dropdown-menu" role="menu">
 					<% if current_user.has_businesses? && !@business.nil? %>

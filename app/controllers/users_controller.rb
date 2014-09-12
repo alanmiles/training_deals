@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   def new
 		@user = User.new
-    @password_text = "At least 6 letters/numbers"
+    @password_text = "At least 6 characters/numbers. Make it hard to guess."
     @confirm_text = "Repeat password"
 	end
 
@@ -85,7 +85,10 @@ class UsersController < ApplicationController
 
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      unless current_user?(@user)
+        flash[:error] = "Permission denied"
+        redirect_to(root_url)
+      end
     end
 
     def admin_user

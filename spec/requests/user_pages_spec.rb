@@ -24,11 +24,6 @@ describe "UserPages" do
 
         it { should have_selector('div.pagination') }
       
-        it "should list each user" do
-          User.paginate(page: 1).each do |user|
-            expect(page).to have_selector('li', text: user.name)
-          end
-        end
       end
 
       describe "list ordered alphabetically by name" do
@@ -163,6 +158,17 @@ describe "UserPages" do
 
   	it { should have_content('Sign up') }
   	it { should have_title(full_title('Sign up')) }
+    it { should have_link('<- Not now - cancel', href: root_path) }
+    it { should have_selector("input#user_name") }
+    it { should have_selector("input#user_email") }
+    it { should have_selector("input#geocomplete") }
+    it { should have_selector("input#find") }
+    it { should have_selector("input#user_password") }
+    it { should have_selector("input#user_password_confirmation") }
+    it { should have_selector("input#user_latitude", visible: false) }
+    it { should have_selector("input#user_longitude", visible: false) }
+    it { should have_selector("input#user_city", visible: false) }
+    it { should have_selector("input#user_country", visible: false) }
   end
 
   describe "signup" do
@@ -184,22 +190,31 @@ describe "UserPages" do
       end
     end
 
-    describe "with valid information" do
-      before { valid_signup }
+    #describe "with valid information", js: true do
+    #  before do
+    #   fill_in "user[location]",     with: "Tonbridge, United Kingdom"
+    #    fill_in "Name",             with: "Example User"
+    #    fill_in "Email",            with: "user@example.com"
+    #    fill_in "Password",         with: "foobar"
+    #    fill_in "Confirm password", with: "foobar"
+    #    find('input[name="user[location]"]').trigger('geocode')
+    #  end
 
-      it "should create a user" do
-        expect { click_button submit }.to change(User, :count).by(1)
-      end
+    #  it "should create a user" do
+    #    expect { click_button "Create my account" }.to change(User, :count).by(1)
+    #  end
 
-      describe "after saving the user" do
-        before { click_button submit }
-        let(:user)        { User.find_by(email: 'user@example.com') }
+    #  describe "after saving the user" do
+    #    before { click_button "Create my account" }
+    #    let(:user)        { User.find_by(email: 'user@example.com') }
         
-        it { should have_link('Sign out') }
-        it { should have_title(user.name) }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome') } 
-      end
-    end
+     #   it { should have_link('Sign out') }
+     #   it { should have_title(user.name) }
+     #   it { should have_selector('div.alert.alert-success', text: 'Welcome') } 
+    #  end
+
+    pending "can't test user login with JS in until Selenium (current v2.42) is compatible with Firefox 32."
+    
   end
 
   describe "prevent a signed-in user from creating another new user record" do
@@ -231,9 +246,10 @@ describe "UserPages" do
     end
 
     describe "page" do
-      it { should have_content('Update your profile') }
+      it { should have_selector('h1', text: 'Update your profile') }
       it { should have_title('Edit user') }
       it { should have_link('change', href: 'http://gravatar.com/emails') }
+      it { should_not have_content("Permission denied") }
     end
 
     describe "with invalid information" do
@@ -273,5 +289,44 @@ describe "UserPages" do
 
       specify { expect(user.reload).not_to be_admin }
     end          
+  end
+
+  describe "when user tries to modify or view another user's pages" do
+
+    let(:user) { FactoryGirl.create(:user) }
+    let(:second_user) { FactoryGirl.create(:user) }
+    
+    describe "visiting the Edit page" do
+      
+      before do
+        sign_in user
+        visit edit_user_path(second_user)
+      end
+
+      it { should have_title("#{user.name}") }
+      it { should_not have_selector('h1', text: 'Update your profile') }
+      it { should have_content("Permission denied") }
+    end
+
+    describe "trying to update the other user's data" do
+
+      let(:new_email)  { "changed_email@example.com"}
+        
+      let(:params) do
+        { user: { email: new_email } }
+      end
+  
+      before do
+        sign_in user, no_capybara: true
+        patch user_path(second_user), params
+      end
+
+      specify do
+        expect(second_user.reload.email).not_to eq new_email
+        expect(flash[:error]).to eq("Permission denied")
+      end
+    end
+
+    pending "consider whether all users should be able to see user 'Show' page - OK if no contact details?"
   end
 end

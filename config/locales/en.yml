@@ -22,8 +22,17 @@
 en:
   activerecord:
     attributes:
+      user:
+        latitude: "Your location"
       product:
         content: "Description"
         outcome: "Benefits/results"
         training_method: "Format"
         standard_cost: "Standard price"
+    errors:
+      models:
+        user:
+          attributes:
+            latitude:
+              blank: "was not recognized. Please re-enter, then wait for the map to display it."
+

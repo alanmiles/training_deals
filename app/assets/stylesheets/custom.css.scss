@@ -5,6 +5,7 @@
 $grayMediumLight: #eaeaea;
 $grayMediumText: #757575;
 $blueLabel: #469bcd;
+$blueLabelSelect: #28749F;
 
 @mixin box_sizing {
   -mox-box-sizing: border-box;
@@ -50,12 +51,37 @@ textarea {
   vertical-align: 15%;
 }
 
-.toggler {
+/*.toggler, .toggler-2 {
   .caret {
     vertical-align: middle;
     border-bottom-color: #339bb9;
     border-top-color: #339bb9;
   }
+} */
+
+.caret {
+  border: 5px solid transparent;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  opacity: 0.5;
+  margin-left: 5px;
+}
+.caret.up {
+  border-bottom: 5px solid;
+  border-top: 0;
+  vertical-align: middle;
+} 
+.caret.right {
+  border-left: 5px solid;
+}
+.caret.down {
+  border-top: 5px solid;
+  border-bottom: 0;
+  vertical-align: middle;
+}
+.caret.left {
+  border-right: 5px solid;
 }
 
 /* typography */
@@ -132,6 +158,34 @@ p {
       color: $grayMediumLight;
     }
   }
+}
+
+a {
+  .caret {
+    border: 5px solid transparent;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+    margin-left: 5px;
+  }
+  .caret.up {
+    border-bottom: 5px solid;
+    border-top: 0;
+    vertical-align: top;
+  } 
+  .caret.right {
+    border-left: 5px solid;
+  }
+  .caret.down {
+    border-top: 5px solid;
+    border-bottom: 0;
+    vertical-align: top;
+  }
+  .caret.left {
+    border-right: 5px solid;
+  }
+
 }
 
 /* footer */
@@ -221,16 +275,47 @@ aside, .sidebar {
       .label-info {
         width: 90%;
         background-color: $blueLabel;
+        cursor: pointer;  
+        &:hover {
+          background-color: $blueLabelSelect;
+          text-decoration: underline;
+        }
       }
-    } 
+    }
+    a {
+      .column-wide {
+        .label-info {
+          .caret {
+            border: 5px solid transparent;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            opacity: 0.5;
+            margin-left: 5px;
+          }
+          .caret.up {
+            border-bottom: 5px solid;
+            border-top: 0;
+            vertical-align: top;
+          } 
+          .caret.right {
+            border-left: 5px solid;
+          }
+          .caret.down {
+            border-top: 5px solid;
+            border-bottom: 0;
+            vertical-align: top;
+          }
+          .caret.left {
+            border-right: 5px solid;
+          }
+        }
+      } 
+    }
   }
 }
 
-.js-menu {
-  display: none;
-}
-
-.js-guidance, .explanation {
+.js-menu, .js-guidance, .explanation, .explanation-2 {
   display: none;
 }
 
@@ -256,6 +341,21 @@ aside, .sidebar {
 
 #longlist {
   display: none;
+}
+
+#side-content-1, #side-content-2, #side-content-3, #side-content-4, #side-content-5, #side-content-6{
+  font-weight:bold;
+  color: #1378b1;
+  cursor: pointer;
+  &:hover {
+    color: #233d87;
+    text-decoration: underline;
+  } 
+}
+
+#side-detail-1, #side-detail-2, #side-detail-3, #side-detail-4, #side-detail-5, #side-detail-6{
+  display: none;
+  padding: 5px 0;
 }
 
 /* forms */
@@ -392,8 +492,6 @@ input {
   }
 }
 
-
-
 .check-notice {
   color: #8A0808;
   font-weight: bold;
@@ -436,6 +534,17 @@ input {
     float: right; 
     display: inline-block; 
     width: 75%;
+    .large-box-fill {
+      display: inline-block;
+      width: 85%;
+    }
+    .confirm-button {
+      display: inline-block;
+      padding: 0px;
+      max-height: 20px;
+      vertical-align: top; 
+      margin-top: 2px;
+    }
     .info-below {
       float:left;
       /* display: inline-block; */

@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 							uniqueness: { case_sensitive: false }
 	
 	validates :password,	length: { minimum: 6 }
+	validates :latitude,	presence: true
 
 	def User.new_remember_token
 		SecureRandom.urlsafe_base64

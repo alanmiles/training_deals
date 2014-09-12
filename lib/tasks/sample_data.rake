@@ -18,19 +18,34 @@ def make_users
 	@admin1 = User.create!(	name: "Alan Miles",
 							email: "alanpqs@gmail.com",
 							password: "foobar",
-							password_confirmation: "foobar")
+							password_confirmation: "foobar",
+							location: "23 Pembroke Street, Salford M6 5GS, United Kingdom",
+							city: "Salford",
+							country: "United Kingdom",
+							latitude: 53.4828912,
+							longitude: -2.29700509)
 	@admin1.toggle!(:admin)
 
 	@admin2 = User.create!(	name: "Edwin Miles",
 							email: "edwinthemiles@gmail.com",
 							password: "foobar",
-							password_confirmation: "foobar")
+							password_confirmation: "foobar",
+							location: "10 Pittard Road, Basingstoke, United Kingdom",
+							city: "Basingstoke",
+							country: "United Kingdom",
+							latitude: 51.2584453,
+							longitude: -1.09995649)
 	@admin2.toggle!(:admin)
 
 	@admin3 = User.create!(	name: "Mike Stiff",
 							email: "michael.stiff@hotmail.co.uk",
 							password: "foobar",
-							password_confirmation: "foobar")
+							password_confirmation: "foobar",
+							location: "15 Norwich Avenue, Grimsby, United Kingdom",
+							city: "Grimsby",
+							country: "United Kingdom",
+							latitude: 53.5523669,
+							longitude: -0.10902650)
 	@admin3.toggle!(:admin)
 end
 

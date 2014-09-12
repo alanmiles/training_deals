@@ -4,13 +4,20 @@ describe User do
   
   before do 
   	@user = User.new(name: "Example User", email: "user@example.com",
-  					password: "foobar", password_confirmation: "foobar") 
+  					password: "foobar", password_confirmation: "foobar", 
+            location: "23 Pembroke Street, Salford, United Kingdom", city: "Salford",
+            country: "United Kingdom", latitude: 53.4828912, longitude: -2.29700509) 
   end
 
   subject { @user }
 
   it { should respond_to(:name) }
   it { should respond_to(:email) }
+  it { should respond_to(:location) }
+  it { should respond_to(:city) }
+  it { should respond_to(:country) }
+  it { should respond_to(:latitude) }
+  it { should respond_to(:longitude) }
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
@@ -125,5 +132,10 @@ describe User do
   describe "remember_token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+
+  describe "when latitude is not present" do
+    before { @user.latitude = nil }
+    it { should_not be_valid }
   end
 end

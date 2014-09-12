@@ -4,6 +4,11 @@ FactoryGirl.define do
 		sequence(:email)	{ |n| "person_#{n}@example.com" }
 		password "foobar"
 		password_confirmation "foobar"
+		latitude 53.4828912
+		longitude -2.29700509
+		location "23 Pembroke Street, Salford, M6 5GS"
+		city "Salford"
+		country "United Kingdom"
 
 		factory :admin do
 			admin true
