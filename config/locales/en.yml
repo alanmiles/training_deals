@@ -24,6 +24,8 @@ en:
     attributes:
       user:
         latitude: "Your location"
+      business:
+        latitude: "The address"
       product:
         content: "Description"
         outcome: "Benefits/results"
@@ -35,4 +37,7 @@ en:
           attributes:
             latitude:
               blank: "was not recognized. Please re-enter, then wait for the map to display it."
-
+        business:
+          attributes:
+            latitude:
+              blank: "was not recognized. Please re-enter, then wait for the map to display it."

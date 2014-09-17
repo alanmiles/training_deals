@@ -115,27 +115,42 @@ jQuery ($) ->
       $('#ct-content-6').removeClass('up')       
 
 jQuery ->
-	if document.getElementById("user_latitude") isnt null
-    	latitude = document.getElementById("user_latitude")
-    	longitude = document.getElementById("user_longitude")
-    	if latitude.value is ""
-      		coords = [
-        		53.47213
-        		-2.2972999
-      		]
-    	else
-      		coordinates = [
-        		latitude.value
-        		longitude.value
-      		]
-      		coords = coordinates.join(", ")
-		$("#geocomplete").geocomplete
-  			map: ".map_canvas"
-  			location: coords
-  			details: "form"
+  if document.getElementById("latitude") isnt null
+    currentAddress = $("#loctn").val()
+    if currentAddress is ""
+        foundPlace = "Manchester, UK"
+    else
+        foundPlace = currentAddress
+    storedLocation = foundPlace
+    $("#map_updated").val("No")
+    $("#geocomplete").geocomplete(
+        map: ".map_canvas"
+        location: foundPlace
+        details: "form"
+    ).bind("geocode:result", (event, result) ->
+        $("#loctn_status").val("Pass")
+        $(".map_canvas").show()
+        newLocation = $("#geocomplete").val()
+        if newLocation is storedLocation
+          $("#map_updated").val("No")
+        else
+          $("#map_updated").val("Yes")
+    ).bind("geocode:error", (event, status) ->
+        $("#loctn_status").val("Fail")
+        $(".map_canvas").hide()
+        $("#map_updated").val("No")
+        alert "ERROR: Google Maps does not recognize this location. Please try again."
+    )
 
-		$("#find").click ->
-  			$("#geocomplete").trigger "geocode"			
+    $("#find").click ->
+        $("#geocomplete").trigger "geocode"
 
-      		
+    $("form").submit (event) ->
+        finalLocation = $("#geocomplete").val()
+        updateStatus = $("#map_updated").val()
+        unless (finalLocation is storedLocation) or (updateStatus is "Yes")
+          event.preventDefault()
+          alert "There's a problem with your location. If the map is displayed, try clicking on the 'find' button, and the map should reset to your location. If it's not displayed, re-enter your location and click 'find'; if the location is a valid Google Maps reference, the map will be displayed. Then try creating your account again. If still unsuccessful, please read 'Guidance (Location)' on the left."
+
+
   		

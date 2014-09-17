@@ -49,8 +49,6 @@ FactoryGirl.define do
 		description	"Simply the best"
 		street_address "23 Pembroke Street"
 		city "Salford"
-		state "Greater Manchester"
-		postal_code "M6 5GS"
 		country "United Kingdom"
 		latitude 53.482616
 		longitude -2.296699

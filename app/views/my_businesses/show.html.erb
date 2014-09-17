@@ -44,7 +44,7 @@
 		</div>
 		<div class="paragraph">
 			<div class="subject"><em>Address:</em></div>
-			<div class="detail"> <%= @business.full_address %>
+			<div class="detail"> <%= @business.street_address %>
 				<% unless @business.inactive? %>
 					<% if @business.hide_address? %>
 						<span class="check-notice"> - Hidden from users</span>

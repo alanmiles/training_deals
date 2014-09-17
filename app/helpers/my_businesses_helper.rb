@@ -1,8 +1,8 @@
 module MyBusinessesHelper
 
-	def priority_countries
-		countries = ["United Kingdom", "United States"]
-	end
+	#def priority_countries
+	#	countries = ["United Kingdom", "United States"]
+	#end
 
 	def inactive_unchecked
 		return "Check the box if you no longer want users to see 
@@ -19,8 +19,8 @@ module MyBusinessesHelper
 	def hide_address_unchecked
 		return "Check the box to hide your address from other users and 
 			exclude your services/products from location searches. You might want to do 
-			this if, for example, you sell training books worldwide - your location 
-			is irrelevant."
+			this if, for example, your sole business was selling training books worldwide - 
+			your location would be irrelevant."
 	end
 
 	def hide_address_checked

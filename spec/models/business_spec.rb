@@ -17,8 +17,6 @@ describe Business do
   it { should respond_to(:description) }
   it { should respond_to(:street_address) }
   it { should respond_to(:city) }
-  it { should respond_to(:state) }
-  it { should respond_to(:postal_code) }
   it { should respond_to(:country) }
   it { should respond_to(:latitude) }
   it { should respond_to(:longitude) }
@@ -48,11 +46,6 @@ describe Business do
 
   describe "when street_address is not present" do
     before { @business.street_address = " " }
-    it { should_not be_valid }
-  end
-
-  describe "when city is not present" do
-    before { @business.city = " " }
     it { should_not be_valid }
   end
 

@@ -17,31 +17,26 @@
 		</div>
 		<div class="box-fill"><%= f.text_area :description %></div>
 	</div>
+
 	<div class="entry">
 		<div class="add-this">
-			<span class="label"><%= f.label :street_address %></span>
+			<span class="label"><%= f.label :street_address, "Full address" %></span>
 		</div>
-		<div class="box-fill"><%= f.text_area :street_address %></div>
-	</div>
-	<div class="entry">
-		<div class="add-this">
-			<span class="label"><%= f.label :city, "Town/city" %></span>
+		<div class="box-fill">
+			<div class="large-box-fill">
+				<%= text_field_tag 'geocomplete', @business.street_address, 
+					placeholder: "Type in an address. The map should then show your location" %>
+			</div>
+			<div class="confirm-button">
+				<input id="find" type="button" value="find">
+			</div>
 		</div>
-		<div class="box-fill"><%= f.text_field :city %></div>
 	</div>
-	<div class="entry">
-		<div class="add-this"><%= f.label :state, "County/state" %></div>
-		<div class="box-fill"><%= f.text_field :state %></div>
-	</div>
-	<div class="entry">
-		<div class="add-this"><%= f.label :postal_code, "Post/zip code" %></div>
-		<div class="box-fill"><%= f.text_field :postal_code %></div>
-	</div>
-	<div class="entry">
-		<div class="add-this">
-			<span class="label"><%= f.label :country %></span>
+	<div class="entry add-bottom-space">
+		<div class="add-this"></div>
+		<div class="box-fill">
+			<div class="map_canvas"></div>
 		</div>
-		<div class="box-fill"><%= country_select(:business, :country, priority_countries) %></div>
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :hide_address %></div>
@@ -126,8 +121,13 @@
 		</div>
 	<% end %>
 	<div class="entry">
-		<%= f.hidden_field :latitude %>
-		<%= f.hidden_field :longitude %>
+		<%= f.hidden_field :latitude, name: "lat", id: "latitude" %>
+		<%= f.hidden_field :longitude, name: "lng" %>
+		<%= f.hidden_field :city, name: "locality" %>
+		<%= f.hidden_field :country, name: "country" %>
+		<%= f.hidden_field :street_address, id: "loctn" %>
+		<%= hidden_field_tag :loctn_status %>
+		<%= hidden_field_tag :map_updated %>
 		<%= f.hidden_field :created_by %>
 		<%= f.hidden_field :inactive_from %>
 	</div>

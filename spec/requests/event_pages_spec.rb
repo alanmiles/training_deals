@@ -138,7 +138,7 @@ describe "EventPages" do
 								it { should have_selector('div.strong', text: "#{product_1.title}") }
 								it { should have_selector('span.js-toggle-detail', text: "(more..)") }
 								it { should have_selector('span.js-toggle-detail-2', text: "(more..)") }	
-								it { should have_content("#{founder_biz.full_address}") }     
+								it { should have_content("#{founder_biz.street_address}") }     
 								pending "test for exclusion of address if it's hidden" 
 								it { should_not have_content("#{founder.name} <#{founder.email}>") }  #no owner marked as contactable 
 								it { should_not have_content("Phone:") } #no phone number entered for founder_biz

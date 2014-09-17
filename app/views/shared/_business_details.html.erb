@@ -6,7 +6,7 @@
 	<% unless @business.hide_address? %>
 		<div>
 			<div class="subject"><em>Address:</em></div>
-			<div class="detail"> <%= @business.full_address %></div>
+			<div class="detail"> <%= @business.street_address %></div>
 		</div>
 	<% end %>
 	<% if @business.has_contactable_users? %>

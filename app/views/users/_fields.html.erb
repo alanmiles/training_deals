@@ -18,9 +18,8 @@
 	</div>
 	<div class="box-fill">
 		<div class="large-box-fill">
-			<%= f.text_field :location, 
-				placeholder: "Type in an address. The map should then show your location", 
-				id: "geocomplete" %>
+			<%= text_field_tag 'geocomplete', @user.location,
+				placeholder: "Type in an address. The map should then show your location" %>
 		</div>
 		<div class="confirm-button">
 			<input id="find" type="button" value="find">
@@ -50,8 +49,11 @@
 	</div>
 </div>
 <div class="entry add-bottom-space">
-	<%= f.hidden_field :latitude, name: "lat" %>
+	<%= f.hidden_field :latitude, name: "lat", id: "latitude" %>
 	<%= f.hidden_field :longitude, name: "lng" %>
 	<%= f.hidden_field :city, name: "locality" %>
 	<%= f.hidden_field :country, name: "country" %>
+	<%= f.hidden_field :location, id: "loctn" %>
+	<%= hidden_field_tag :loctn_status %>
+	<%= hidden_field_tag :map_updated %>
 </div>

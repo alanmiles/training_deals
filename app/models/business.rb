@@ -1,13 +1,13 @@
 class Business < ActiveRecord::Base
 
-	#before_save						:capitalize_locality
-	geocoded_by :full_address 
-	#accepts_nested_attributes_for :ownerships
+	##before_save						:capitalize_locality
+	#geocoded_by :full_address 
+	##accepts_nested_attributes_for :ownerships
 
 	mount_uploader :logo, LogoUploader
 	mount_uploader :image, ImageUploader
 	
-	after_validation :geocode, :if => :check_address?
+	#after_validation :geocode, :if => :check_address?
 	after_validation :inactive_date
 	after_create :new_ownership
 
@@ -19,10 +19,9 @@ class Business < ActiveRecord::Base
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }
 	validates :street_address, 		presence: true
-	#validates :latitude,			presence: true
+	validates :latitude,			presence: true
+	validates :country,				presence: true
 	#validates :longitude,			presence: true
-	validates :country, 			presence: true
-	validates :city,				presence: true
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, 				presence: true, format: { with: VALID_EMAIL_REGEX }
 
@@ -44,13 +43,13 @@ class Business < ActiveRecord::Base
 	  write_attribute :website, url_str
 	end
 
-	def full_address
-		address = [self.street_address, self.city]
-		address.push(self.state) unless self.state.blank?
-		address.push(self.postal_code) unless self.postal_code.blank?
-		address.push(self.country)
-		address.join(", ")
-	end
+	#def full_address
+	#	address = [self.street_address, self.city]
+	#	address.push(self.state) unless self.state.blank?
+	#	address.push(self.postal_code) unless self.postal_code.blank?
+	#	address.push(self.country)
+	#	address.join(", ")
+	#end
 
 	def all_phones_vendor
 		if self.phone.blank? && self.alt_phone.blank?

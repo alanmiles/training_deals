@@ -165,7 +165,7 @@ describe "UserPages" do
     it { should have_selector("input#find") }
     it { should have_selector("input#user_password") }
     it { should have_selector("input#user_password_confirmation") }
-    it { should have_selector("input#user_latitude", visible: false) }
+    it { should have_selector("input#latitude", visible: false) }
     it { should have_selector("input#user_longitude", visible: false) }
     it { should have_selector("input#user_city", visible: false) }
     it { should have_selector("input#user_country", visible: false) }
@@ -190,15 +190,16 @@ describe "UserPages" do
       end
     end
 
-    #describe "with valid information", js: true do
-    #  before do
-    #   fill_in "user[location]",     with: "Tonbridge, United Kingdom"
-    #    fill_in "Name",             with: "Example User"
-    #    fill_in "Email",            with: "user@example.com"
-    #    fill_in "Password",         with: "foobar"
-    #    fill_in "Confirm password", with: "foobar"
-    #    find('input[name="user[location]"]').trigger('geocode')
-    #  end
+    describe "with valid information" do
+      before do
+        fill_in "geocomplete",      with: "Tonbridge, United Kingdom"
+        click_button 'find'
+        fill_in "Name",             with: "Example User"
+        fill_in "Email",            with: "user@example.com"
+        fill_in "Password",         with: "foobar"
+        fill_in "Confirm password", with: "foobar"
+        
+      end
 
     #  it "should create a user" do
     #    expect { click_button "Create my account" }.to change(User, :count).by(1)
@@ -211,10 +212,10 @@ describe "UserPages" do
      #   it { should have_link('Sign out') }
      #   it { should have_title(user.name) }
      #   it { should have_selector('div.alert.alert-success', text: 'Welcome') } 
-    #  end
+    end
 
     pending "can't test user login with JS in until Selenium (current v2.42) is compatible with Firefox 32."
-    
+    pending "can't test failing location for User create till we can test javascript"
   end
 
   describe "prevent a signed-in user from creating another new user record" do
@@ -274,6 +275,8 @@ describe "UserPages" do
       it { should have_link('Sign out', href: signout_path) }
       specify { expect(user.reload.name).to eq new_name }
       specify { expect(user.reload.email).to eq new_email }
+    
+      pending "no javascript testing to check location change or failed location input"
     end
 
     describe "forbidden attributes" do

@@ -11,5 +11,3 @@ jQuery ($) ->
     	else
       		$('#ct-toggler-1').addClass('down');
       		$('#ct-toggler-1').removeClass('up')
-  	
-

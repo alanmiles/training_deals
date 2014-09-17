@@ -25,13 +25,21 @@ class UsersController < ApplicationController
     @user.longitude = params[:lng]
     @user.city = params[:locality]
     @user.country = params[:country]
-		if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to HROOMPH."
-			redirect_to @user
-		else
-			render 'new'
-		end
+    @user.location = params[:geocomplete]
+    @status = params[:loctn_status]
+    if @status == "Fail"
+      flash.now[:error] = "The location you entered wasn't recognized by Google Maps. Please try again."
+      @user.location = ""
+      render 'new'
+    else
+      if @user.save
+        sign_in @user
+        flash[:success] = "Welcome to HROOMPH."
+  			redirect_to @user
+  		else
+        render 'new'
+  		end
+    end
 	end
 
   def edit
@@ -40,17 +48,33 @@ class UsersController < ApplicationController
   end
 
   def update
-    unless params[:user][:location] == @user.location
+    @user.latitude = params[:lat]
+    @user.longitude = params[:lng]
+    @user.city = params[:locality]
+    @user.country = params[:country]
+    @status = params[:loctn_status]
+    if @status == "Fail"
+      flash.now[:error] = "The location you entered wasn't recognized by Google Maps. Please try again."
       @user.latitude = params[:lat]
       @user.longitude = params[:lng]
       @user.city = params[:locality]
       @user.country = params[:country]
-    end
-    if @user.update_attributes(user_params)
-      flash[:success] = "Profile updated"
-      redirect_to @user
-    else
+     # @user.location = ""
       render 'edit'
+    else
+      if @user.update_attributes(user_params)
+        place = params[:geocomplete]
+        @user.update_attributes(location: place)
+        flash[:success] = "Profile updated"
+        redirect_to @user
+      else
+        @user.latitude = params[:lat]
+        @user.longitude = params[:lng]
+        @user.city = params[:locality]
+        @user.country = params[:country]
+        @user.location = params[:geocomplete]
+        render 'edit'
+      end
     end
   end
 
