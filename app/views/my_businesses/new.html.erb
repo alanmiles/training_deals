@@ -6,11 +6,12 @@
 		<section>
 			<%= render "/shared/business_menu_new" %>
 		</section>
-		<% if current_user.has_businesses? %>
-			<section>		
-				<%= render 'guidance' %>
-			</section>
-		<% end %>
+		<section>		
+			<%= render 'introduction' %>
+		</section>	
+		<section>
+			<%= render 'guidance' %>
+		</section>
 	</aside>
 	<div class="span8">
 		<%= form_for(@business, url: my_businesses_path, html: { multipart: true }) do |f| %>

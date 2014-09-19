@@ -312,8 +312,8 @@ describe "BusinessPages" do
 
 		        before { visit edit_my_business_path(changed_business) }
 
-	          	it { should have_title("Edit #{changed_business.name}, #{changed_business.city}") }
-	          	it { should have_content('Edit business') }
+	          	it { should have_title("Update #{changed_business.name}, #{changed_business.city}") }
+	          	it { should have_content('Update business') }
 	          	it { should have_link('<- Cancel', href: my_business_path(changed_business)) }
 	          	it { should have_unchecked_field("business_hide_address") }
 		        it { should have_content("Check the box to hide your address from other users") }
@@ -369,7 +369,7 @@ describe "BusinessPages" do
 		                	click_button "Confirm"
 		              	end
 
-		              	it { should have_title("Edit #{changed_business.name}, #{changed_business.city}")}
+		              	it { should have_title("Update #{changed_business.name}, #{changed_business.city}")}
 		              	it { should have_content('error') }
 		              	specify { expect(changed_business.reload.name).to eq old_name }
 		            end
@@ -558,7 +558,7 @@ describe "BusinessPages" do
 						valid_signin(user)
 					end
 					
-					specify { expect(page).to have_title("Edit #{unauthorized_business.name}, #{unauthorized_business.city}") }
+					specify { expect(page).to have_title("Update #{unauthorized_business.name}, #{unauthorized_business.city}") }
 		
 
 					describe "but don't go to this Edit page when signing in the next time" do
@@ -805,7 +805,7 @@ describe "BusinessPages" do
 
 			before { visit edit_my_business_path(founder_biz) }
 
-			it { should have_title("Edit #{founder_biz.name}, #{founder_biz.city}") }
+			it { should have_title("Update #{founder_biz.name}, #{founder_biz.city}") }
 			it { should have_selector('input#business_name') }
 
 			describe "and update successfully" do

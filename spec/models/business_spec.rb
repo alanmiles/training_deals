@@ -86,7 +86,7 @@ describe Business do
   end
 
   describe "when description is too long" do
-  	before { @business.description = "a" * 141 }
+  	before { @business.description = "a" * 121 }
   	it { should_not be_valid }
   end
 

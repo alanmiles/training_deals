@@ -25,7 +25,7 @@ class Business < ActiveRecord::Base
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, 				presence: true, format: { with: VALID_EMAIL_REGEX }
 
-	validates :description, 		presence: true, length: { maximum: 140 }
+	validates :description, 		presence: true, length: { maximum: 120 }
 
 	validates :created_by,			presence: true, 
 									numericality: { greater_than: 0, 

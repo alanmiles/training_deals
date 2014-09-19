@@ -8,13 +8,16 @@
 			<%= render "/shared/user_menu" %>
 		</section>
 		<section>
-			<%= render 'protection' %>
+			<%= render 'explanation' %>
 		</section>
 	</aside>
 	<div class="span8">
 		<%= form_for(@user) do |f| %>
 			<%= render 'fields', f: f %>
 			<%= f.submit "Save changes", class: "btn btn-primary" %>
+			<div class="navigator">
+				<%= link_to "<- Cancel", user_path(@user) %>
+			</div>
 		<% end %>
 
 		<%= gravatar_for @user %>

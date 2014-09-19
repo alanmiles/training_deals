@@ -1,10 +1,13 @@
-<% provide(:title, "Edit #{current_business.name}, #{current_business.city}") %>
-<h1>Edit business</h1>
+<% provide(:title, "Update #{current_business.name}, #{current_business.city}") %>
+<h1>Update business</h1>
 
 <div class="row">
 	<aside class="span3">
 		<section>
 			<%= render "/shared/business_menu" %>
+		</section>
+		<section>
+			<%= render "guidance" %>
 		</section>
 	</aside>
 	<div class="span8">

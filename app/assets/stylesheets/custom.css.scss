@@ -51,14 +51,6 @@ textarea {
   vertical-align: 15%;
 }
 
-/*.toggler, .toggler-2 {
-  .caret {
-    vertical-align: middle;
-    border-bottom-color: #339bb9;
-    border-top-color: #339bb9;
-  }
-} */
-
 .caret {
   border: 5px solid transparent;
   display: inline-block;
@@ -242,7 +234,7 @@ aside, .sidebar {
       padding-right: 0;
       li {
       line-height: 1.5;
-      font-size: 1em;
+      font-size: 1.1em;
       }
     }
   }
@@ -343,8 +335,9 @@ aside, .sidebar {
   display: none;
 }
 
-#side-content-1, #side-content-2, #side-content-3, #side-content-4, #side-content-5, #side-content-6{
+#side-content-1, #side-content-2, #side-content-3, #side-content-4, #side-content-5, #side-content-6 {
   font-weight:bold;
+  font-size: 1.1em;
   color: #1378b1;
   cursor: pointer;
   &:hover {
@@ -353,7 +346,23 @@ aside, .sidebar {
   } 
 }
 
-#side-detail-1, #side-detail-2, #side-detail-3, #side-detail-4, #side-detail-5, #side-detail-6{
+#side-detail-1, #side-detail-2, #side-detail-3, #side-detail-4, #side-detail-5, #side-detail-6 {
+  display: none;
+  padding: 5px 0;
+}
+
+#side-content-7, #side-content-8, #side-content-9, #side-content-10 {
+  font-weight:bold;
+  font-size: 1.1em;
+  color: #1378b1;
+  cursor: pointer;
+  &:hover {
+    color: #233d87;
+    text-decoration: underline;
+  } 
+}
+
+#side-detail-7, #side-detail-8, #side-detail-9, #side-detail-10 {
   display: none;
   padding: 5px 0;
 }

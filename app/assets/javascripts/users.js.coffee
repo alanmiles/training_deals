@@ -112,7 +112,47 @@ jQuery ($) ->
       $('#ct-content-6').removeClass('down')
     else
       $('#ct-content-6').addClass('down');
-      $('#ct-content-6').removeClass('up')       
+      $('#ct-content-6').removeClass('up')
+
+jQuery ($) ->
+  $("#side-content-7").click ->
+    $("#side-detail-7").toggle()
+    if $('#ct-content-7').hasClass('down')
+      $('#ct-content-7').addClass('up');
+      $('#ct-content-7').removeClass('down')
+    else
+      $('#ct-content-7').addClass('down');
+      $('#ct-content-7').removeClass('up')        
+
+jQuery ($) ->
+  $("#side-content-8").click ->
+    $("#side-detail-8").toggle()
+    if $('#ct-content-8').hasClass('down')
+      $('#ct-content-8').addClass('up');
+      $('#ct-content-8').removeClass('down')
+    else
+      $('#ct-content-8').addClass('down');
+      $('#ct-content-8').removeClass('up')    
+
+jQuery ($) ->
+  $("#side-content-9").click ->
+    $("#side-detail-9").toggle()
+    if $('#ct-content-9').hasClass('down')
+      $('#ct-content-9').addClass('up');
+      $('#ct-content-9').removeClass('down')
+    else
+      $('#ct-content-9').addClass('down');
+      $('#ct-content-9').removeClass('up') 
+
+jQuery ($) ->
+  $("#side-content-10").click ->
+    $("#side-detail-10").toggle()
+    if $('#ct-content-10').hasClass('down')
+      $('#ct-content-10').addClass('up');
+      $('#ct-content-10').removeClass('down')
+    else
+      $('#ct-content-10').addClass('down');
+      $('#ct-content-10').removeClass('up')    
 
 jQuery ->
   if document.getElementById("latitude") isnt null
@@ -150,7 +190,7 @@ jQuery ->
         updateStatus = $("#map_updated").val()
         unless (finalLocation is storedLocation) or (updateStatus is "Yes")
           event.preventDefault()
-          alert "There's a problem with your location. If the map is displayed, try clicking on the 'find' button, and the map should reset to your location. If it's not displayed, re-enter your location and click 'find'; if the location is a valid Google Maps reference, the map will be displayed. Then try creating your account again. If still unsuccessful, please read 'Guidance (Location)' on the left."
+          alert "There's a problem with your location. If the map is displayed, try clicking on the 'find' button, and the map should reset to your location. If it's not displayed, re-enter your location and click 'find'; if the location is a valid Google Maps reference, the map will be displayed. Then try creating your account again. If still unsuccessful, please read 'Page Guidance (Location)' on the left."
 
 
   		

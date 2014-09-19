@@ -8,14 +8,17 @@
 		<div class="add-this">
 			<span class="label"><%= f.label :name, "Business name" %></span>
 		</div>
-		<div class="box-fill"><%= f.text_field :name %></div>
+		<div class="box-fill"><%= f.text_field :name,
+				placeholder: "Max 75 characters. Must not be a duplicate in same town." %>
+		</div>
 	</div>
 	<div class="entry">
 		<div class="add-this">
-			<span class="label"><%= f.label :description %></span><br/>
-			<small><i>(Max 140 characters)</i></small>
+			<span class="label"><%= f.label :description %></span>
 		</div>
-		<div class="box-fill"><%= f.text_area :description %></div>
+		<div class="box-fill"><%= f.text_area :description,
+				placeholder: "Max 120 characters. A punchy headline, explaining what you do and why you're special." %>
+		</div>
 	</div>
 
 	<div class="entry">
@@ -41,7 +44,7 @@
 	<div class="entry">
 		<div class="add-this"><%= f.label :hide_address %></div>
 		<div class="cbox-fill"><%= f.check_box :hide_address %></div>
-		<div class="cbox-info">
+		<div class="cbox-info add-bottom-space">
 			<% if @business.hide_address? %>
 				<%= hide_address_checked %>
 			<% else %>
@@ -51,7 +54,9 @@
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :phone %></div>
-		<div class="box-fill"><%= f.text_field :phone %></div>
+		<div class="box-fill"><%= f.text_field :phone,
+				placeholder: "Optional - see Page Guidance (Contact details)" %>
+		</div>
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :alt_phone, "Alternative phone" %></div>
@@ -65,15 +70,18 @@
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :website %></div>
-		<div class="box-fill"><%= f.text_field :website %></div>
+		<div class="box-fill"><%= f.text_field :website,
+				placeholder: "Optional. If used, include http:// or https://" %>
+		</div>
 	</div>
 	<div class="entry">
 		<div class="add-this"><%= f.label :logo %></div>
 		<div class="image-fill">
 			<div class="image-labels">
 				Upload a file from your device:
-				<%= f.file_field :logo %>
-				<em> OR  - </em> Enter the image URL below: <%= f.text_field :remote_logo_url %>
+				<div class="form-inline"><%= f.file_field :logo %></div>
+				<em> OR  - </em> Enter the image URL below: <%= f.text_field :remote_logo_url,
+									placeholder: "Optional - see Page Guidance (Images)" %>
 				<% if @business.logo? %>
 					<label>
 						<em> OR - </em> <%= f.check_box :remove_logo %>
@@ -93,7 +101,8 @@
 			<div class="image-labels">
 				Upload a file from your device:
 				<%= f.file_field :image %>
-				<em> OR  - </em> Enter the image URL below <%= f.text_field :remote_image_url %>
+				<em> OR  - </em> Enter the image URL below <%= f.text_field :remote_image_url,
+									placeholder: "Optional - see Page Guidance (Images)" %>
 				<% if @business.image? %>
 					<label>
 						<em> OR - </em> <%= f.check_box :remove_image %>

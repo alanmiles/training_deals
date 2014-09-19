@@ -250,6 +250,7 @@ describe "UserPages" do
       it { should have_selector('h1', text: 'Update your profile') }
       it { should have_title('Edit user') }
       it { should have_link('change', href: 'http://gravatar.com/emails') }
+      it { should have_link('<- Cancel', href: user_path(user)) }
       it { should_not have_content("Permission denied") }
     end
 
