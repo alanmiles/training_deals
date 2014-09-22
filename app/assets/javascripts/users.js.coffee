@@ -191,6 +191,3 @@ jQuery ->
         unless (finalLocation is storedLocation) or (updateStatus is "Yes")
           event.preventDefault()
           alert "There's a problem with your location. If the map is displayed, try clicking on the 'find' button, and the map should reset to your location. If it's not displayed, re-enter your location and click 'find'; if the location is a valid Google Maps reference, the map will be displayed. Then try creating your account again. If still unsuccessful, please read 'Page Guidance (Location)' on the left."
-
-
-  		

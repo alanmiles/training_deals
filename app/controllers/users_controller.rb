@@ -1,13 +1,10 @@
 class UsersController < ApplicationController
   
-  before_action :signed_in_user,  only: [:index, :edit, :update, :destroy]
+  before_action :signed_in_user,  only: [:edit, :update]
   before_action :correct_user,    only: [:edit, :update]
-  before_action :admin_user,      only: [:index, :destroy]
   before_action :duplicate_user,  only: [:new, :create]
 
-	def index
-    @users = User.paginate(page: params[:page]).order("name")
-  end
+  helper_method :sort_column, :sort_direction
 
   def show
 		@user = User.find(params[:id])
@@ -78,18 +75,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def destroy
-    @user = User.find(params[:id])
-    if @user == current_user
-      flash[:notice] = "You're not allowed to delete yourself!"
-      redirect_to root_url
-    else
-      @user.destroy
-      flash[:success] = "User deleted"
-      redirect_to users_url
-    end
-  end
-
 	private
 
 		def user_params
@@ -127,5 +112,13 @@ class UsersController < ApplicationController
         flash[:notice] = "You've already created your user account."
         redirect_to root_url 
       end
+    end
+
+    def sort_column
+      ["name", "city", "country", "email"].include?(params[:sort]) ? params[:sort] : "name"
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     end
 end

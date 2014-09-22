@@ -644,6 +644,13 @@ input {
 
 /* tables */
 
+.table-total {
+  float:right; 
+  padding-right: 15px; 
+  font-size: small;
+  font-style: italic;
+}
+
 .table th .current {
   padding-right: 12px;
   background-repeat: no-repeat;
@@ -652,12 +659,12 @@ input {
 
 .table th .asc {
   background-image: image-url("chevron_up.png");
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .table th .desc {
   background-image: image-url("chevron_down.png");
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* miscellaneous */

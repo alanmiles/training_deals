@@ -1,0 +1,51 @@
+<% provide(:title, @user.name) %>
+<h1><%= @user.name %></h1>
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/admin_menu_side" %>
+		</section>
+	</aside>
+	<div class="span8">
+		
+		<div class="paragraph add-bottom-space">
+			<h5>Personal</h5>
+			<div class="subject">
+				<%= gravatar_for @user, size: 60 %>
+			</div>
+			<div class="detail"><%= @user.location %></div>
+			<div class="detail add-top-space"><%= @user.email %></div>
+		</div>
+		
+		<div class="paragraph">
+			<h5 class="add-top-space">Training preferences</h5>
+			<div class="subject">
+			</div>
+			<div class="detail">None</div>
+		</div>
+		<div class="paragraph">
+			<h5 class="add-top-space">Order history</h5>
+			<div class="subject">
+			</div>
+			<div class="detail">None</div>
+		</div>
+		<% if @user.has_businesses? %>
+			<div class="paragraph">
+				<h5 class="add-top-space">Business teams</h5>
+				<div class="subject">
+				</div>
+				<div class="detail">
+					<ul>
+						<% @businesses.each do |business| %>
+							<li><strong><%= business.name %></strong>, <%= business.short_locate %></li>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+		<% end %>
+		<div class="paragraph"></div>
+		<div class="navigator add-top-space">
+			<%= link_to "<- All users ", admin_users_path %>
+		</div>
+	</div>
+</div>

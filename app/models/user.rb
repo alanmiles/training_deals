@@ -37,6 +37,15 @@ class User < ActiveRecord::Base
 		@business = self.businesses.first
 	end
 
+	def self.search(search)
+		if search
+			where('name ILIKE ? or city ILIKE ? or country ILIKE ? or email ILIKE ?', 
+				"%#{search}%", "%#{search}%", "%#{search}%", "%#{search}%")
+		else
+			all
+		end
+	end
+
 	private
 
 		def create_remember_token

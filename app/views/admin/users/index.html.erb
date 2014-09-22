@@ -9,7 +9,7 @@
 	</aside>
 
 	<div class="span8">
-		<%= form_tag users_path, method: 'get', 
+		<%= form_tag admin_users_path, method: 'get',
 				id: "users_search" do %>
 			<p>
 				<%= text_field_tag :search, params[:search], 
@@ -20,6 +20,9 @@
 			</p>
 
 			<div id="users"><%= render 'users' %></div>
+			<div class="navigator">
+			    <%= link_to "<- Return to main admin menu", root_path %> 
+			</div>
 		<% end %>
 	</div>
 </div>

@@ -1,0 +1,25 @@
+<%= hidden_field_tag :direction, params[:direction] %>
+<%= hidden_field_tag :sort, params[:sort] %>
+<table class="table table-striped table-bordered table-condensed">
+	<tr>
+		<th><%= sortable "name"  %></th>
+		<th><%= sortable "city", "Town" %></th>
+		<th><%= sortable "country" %></th>
+		<th><%= sortable "email" %></th>
+		<th></th>
+	</tr>
+	<% @users.each do |user| %>
+		<%= content_tag_for :tr, user do %>
+	 
+			<td><%= link_to user.name, user_path(user) %></td>
+			<td><%= user.city %></td>
+			<td><%= user.country %></td>
+			<td><%= user.email %></td>
+			<td>
+				<%= link_to "delete", user, method: :delete,
+					data: { confirm: "Are you sure?" } %>
+			</td>
+		<% end %>
+	<% end %>
+</table>
+<%= will_paginate @users %>

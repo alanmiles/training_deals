@@ -114,11 +114,6 @@ describe "Authentication" do
           before { patch user_path(user) }
           specify { expect(response).to redirect_to(signin_path) }
         end
-
-        describe "visiting the user index" do
-          before { visit users_path }
-          it { should have_title('Sign in') }
-        end
       end
     end
 
@@ -144,14 +139,6 @@ describe "Authentication" do
       let(:non_admin) { FactoryGirl.create(:user) }
 
       before { sign_in non_admin, no_capybara: true }
-
-      describe "submitting a DELETE request to the User#destroy action" do
-        before { delete user_path(user) }
-        specify do 
-          expect(response).to redirect_to(root_url)
-          expect(flash[:error]).to eq("Permission denied.")
-        end
-      end
 
       describe "trying to access the Admin menu" do
         before { get admin_menu_path }

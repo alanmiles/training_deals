@@ -1,6 +1,6 @@
 TrainingDeals::Application.routes.draw do
   
-  resources :users
+  resources :users, except: [:index, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :training_methods do
     collection { post :sort }
@@ -35,7 +35,9 @@ TrainingDeals::Application.routes.draw do
     resources :topic_selections, only: [:new, :create]
   end
   resources :topic_selections, only: [:new, :create]
-  
+  namespace :admin do
+    resources :users, only: [:index, :show, :destroy]
+  end
 
   root  'static_pages#home'
   match '/signup',          to: 'users#new',                via: 'get'

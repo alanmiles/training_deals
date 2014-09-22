@@ -152,6 +152,14 @@ class Business < ActiveRecord::Base
 		self.contactable_users.count > 0
 	end
 
+	def short_locate
+		if city.nil?
+			return "#{country}"
+		else
+			return "#{city}, #{country}"
+		end
+	end
+
 
 	private
 
