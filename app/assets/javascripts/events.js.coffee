@@ -53,3 +53,9 @@ jQuery ->
     $.get $("#events_search").attr("action"), $("#events_search").serialize(), null, "script"
     false
     tableTopNav()
+
+jQuery ->
+  $("#event_product_id").change ->
+    productVal = "product_" + $("#event_product_id").val()
+    $(".hidden-content").not($("#" + productVal)).hide()
+    $("li").filter($("#" + productVal)).show()

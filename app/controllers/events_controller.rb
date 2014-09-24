@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   
   before_action :not_signed_in,               only: [:index, :show, :new, :edit]
   before_action :illegal_action,              only: [:create, :update, :destroy]
-  before_action :event_team_member_illegal, only: [:show, :edit, :update, :destroy]
+  before_action :event_team_member_illegal,   only: [:show, :edit, :update, :destroy]
   before_action :team_member,                 only: [:index, :new, :create]
 
   helper_method :sort_column, :sort_direction
@@ -82,6 +82,7 @@ class EventsController < ApplicationController
     #@product = Product.find(@event.product_id)
     #@business = Business.find(@product.business_id)
     @checked_days = []
+    @products = @business.products.schedulable
     unless @event.attendance_days.nil?
       @attdays = @event.attendance_days.split(', ')
       @attdays.each do |day|
@@ -99,6 +100,7 @@ class EventsController < ApplicationController
   def update
     #@event = Event.find(params[:id])
     #@product = Product.find(@event.product_id)
+    @business = Business.find(@product.business_id)
     attended = []
     unless params[:weekdays].nil?
       params[:weekdays].each do |day|
@@ -117,6 +119,7 @@ class EventsController < ApplicationController
       @periods = Event.day_periods_with_blank
       @selected_period = @event.time_of_day
       @checked_days = []
+      @products = @business.products.schedulable
       unless params[:weekdays].nil?
         params[:weekdays].each do |day|
           @checked_days << day

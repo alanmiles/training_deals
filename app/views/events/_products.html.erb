@@ -1,0 +1,14 @@
+<ul>
+<% @products.each do |product| %>
+	<%= content_tag_for(:li, product, class: "hidden-content") do %>
+		<% if product.duration_id? %>
+			Duration: <%= pluralize(sprintf("%g", product.duration_number), 
+				product.duration.time_unit.downcase) %>,
+		<% end %>
+		Standard price:
+			<%= @business.currency_symbol %> 
+			<%= number_with_precision(product.standard_cost, precision: 2, delimiter: ',') %>
+	<% end %>
+<% end %>
+</ul>
+		

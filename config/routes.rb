@@ -37,6 +37,7 @@ TrainingDeals::Application.routes.draw do
   resources :topic_selections, only: [:new, :create]
   namespace :admin do
     resources :users, only: [:index, :show, :destroy]
+    resources :businesses, only: [:index, :show, :destroy]
   end
 
   root  'static_pages#home'

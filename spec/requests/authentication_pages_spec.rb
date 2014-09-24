@@ -55,8 +55,8 @@ describe "Authentication" do
 
       it { should have_title("Admin menu") }
       it { should have_link('Framework', href: framework_path) }
-      it { should have_link('Users', href: users_path) }
-      it { should have_link('Vendors', href: "#") }
+      it { should have_link('Users', href: admin_users_path) }
+      it { should have_link('Vendors', href: admin_businesses_path) }
       it { should have_link('Feedback', href: "#") }
       it { should have_link('Site activity', href: "#") }
       it { should have_link('Billing', href: "#") }

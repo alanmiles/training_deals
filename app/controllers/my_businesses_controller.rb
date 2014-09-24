@@ -17,6 +17,7 @@ class MyBusinessesController < ApplicationController
   def show
     store_mybiz(@business.id)
     @owners = @business.users
+    @ownerships = @business.ownerships
   end
 
   def new

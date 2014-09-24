@@ -115,7 +115,7 @@ class UsersController < ApplicationController
     end
 
     def sort_column
-      ["name", "city", "country", "email"].include?(params[:sort]) ? params[:sort] : "name"
+      ["LOWER(name)", "city", "country", "email"].include?(params[:sort]) ? params[:sort] : "LOWER(name)"
     end
 
     def sort_direction

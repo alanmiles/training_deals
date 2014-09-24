@@ -15,6 +15,7 @@ class Business < ActiveRecord::Base
 	has_many :users, through: :ownerships
 	has_many :products, dependent: :destroy
 	has_many :events, through: :products
+	has_many :training_methods, through: :products
 
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }
@@ -160,12 +161,56 @@ class Business < ActiveRecord::Base
 		end
 	end
 
+	def self.search(search)
+		if search
+			where('name ILIKE ? or city ILIKE ? or country ILIKE ?', 
+				"%#{search}%", "%#{search}%", "%#{search}%")
+		else
+			all
+		end
+	end
+
+	def current_training_methods
+		@methods = training_methods
+			.joins(:products)
+			.where('products.current =?', true)
+			.group("training_methods.description, training_methods.id")
+			.order("training_methods.position")
+	end
+
+	def count_products(current, method)
+		@total = products
+			.where("products.training_method_id = ? and products.current = ?", method, current)
+			.count
+	end
+
+	def count_scheduled_events_for_products(current_product, method)
+		@total = events
+			.joins(:product)
+			.where("products.training_method_id = ? and products.current = ? and events.end_date >=?", method, current_product, Date.today)
+			.count
+	end
+
+	def count_previous_events_for_products(current_product, method)
+		@total = events
+			.joins(:product)
+			.where("products.training_method_id = ? and products.current = ? and events.end_date <?", method, current_product, Date.today)
+			.count
+	end
+
+	def old_training_methods
+		@methods = training_methods
+			.joins(:products)
+			.where('products.current =?', false)
+			.group("training_methods.description, training_methods.id")
+			.order("training_methods.position")
+	end
 
 	private
 
-		def check_address?
-			[street_address_changed?, city_changed?, state_changed?, postal_code_changed?, country_changed?].any?
-		end
+		#def check_address?
+		#	[street_address_changed?, city_changed?, state_changed?, postal_code_changed?, country_changed?].any?
+		#end
 
 		def inactive_date
 		if inactive_changed?

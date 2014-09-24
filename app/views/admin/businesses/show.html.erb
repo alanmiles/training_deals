@@ -1,0 +1,61 @@
+<% provide(:title, "#{@business.name}, #{@business.city}") %>
+<h1><%= @business.name %></h1>
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/admin_menu_side" %>
+		</section>
+	</aside>
+	<div class="span8">
+		<div class="navigator add-bottom-space">
+			<%= link_to "<- All businesses ", admin_businesses_path %>
+		</div>
+		<div class="paragraph add-bottom-space">
+			<% if @business.logo? %>
+				<div class="right-align">
+					<%= image_tag @business.logo_url, class: "img-rounded" %>
+				</div>
+			<% end %>
+
+			<div class="left-align">
+				<h5>Business</h5>
+				<div id="business-contacts"><%= render 'shared/business_contact_details' %></div>
+			</div>
+		</div>
+		
+		<div class="paragraph">
+			<% if @business.image? %>
+				<div class="right-align">
+					<%= image_tag(@business.image_url(:thumb), class: "img-rounded") %>
+				</div>
+			<% end %>
+
+			<div class="left-align">
+				<h5>Team</h5>
+				<div id="business-team"><%= render 'shared/business_team' %></div>
+			</div>
+		</div>
+		<div class="paragraph">
+			<h5>Active products / programmes</h5>
+			<div id="active-products"><%= render 'shared/business_active_products' %></div>
+		</div>
+
+		<div class="paragraph">
+			<h5>De-listed products / programmes</h5>
+			<div id="delisted-products"><%= render 'shared/business_delisted_products' %></div>
+		</div>
+		<div class="paragraph">
+			<h5>Sales</h5>
+			<div class="no-content">-- None --</div>
+		</div>
+		<div class="paragraph">
+			<h5>Reviews</h5>
+			<div class="no-content">-- None --</div>
+		</div>
+
+		<div class="paragraph"></div>
+		<div class="navigator add-top-space">
+			<%= link_to "<- All businesses ", admin_businesses_path %>
+		</div>
+	</div>
+</div>

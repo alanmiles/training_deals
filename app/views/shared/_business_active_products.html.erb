@@ -1,0 +1,33 @@
+<% unless @business.current_training_methods.length == 0 %>
+	<table class="table table-striped table-bordered table-condensed">
+		<tr>
+			<th></th>
+			<th class="numeric">No of products</th>
+			<th class="numeric">Current items / events</th>
+			<th class="numeric">Previous</th>
+		</tr>
+		<% @business.current_training_methods.each do |method| %>
+			<tr>
+				<td><%= method.description %></td>
+				<td class="numeric"><%= @business.count_products(true, method.id) %></td>
+				<td class="numeric">
+					<% if method.event? %>
+						<%= @business.count_scheduled_events_for_products(true, method.id) %>
+					<% else %>
+						<%= @business.count_products(true, method.id) %>
+					<% end %>
+				</td>
+				<td class="numeric">
+					<% if method.event? %>
+						<%= @business.count_previous_events_for_products(true, method.id) %>
+					<% else %>
+						0
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+	</table>
+
+<% else %>
+	<div class="no-content">-- None --</div>
+<% end %>

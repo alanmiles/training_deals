@@ -1,0 +1,16 @@
+<ul>
+	<% @ownerships.each do |ownership| %>
+		<li>
+			<% if ownership.contactable? %>
+				<span class="contact glyphicon glyphicon-headphones"></span>&nbsp;&nbsp;
+			<% end %>
+			<%= ownership.user.name %> <i> <%= "<#{ownership.user.email}>" %></i>
+			<% if ownership.contactable %>
+				<% unless ownership.phone.blank? %>
+					<span class="mobile glyphicon glyphicon-phone"></span>
+					<%= ownership.phone %>
+				<% end %>
+			<% end %>
+		</li>
+	<% end %>
+</ul>

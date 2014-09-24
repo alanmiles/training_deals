@@ -64,7 +64,7 @@
 			<div class="subject">
 				Team: <%= link_to "( update )", my_business_ownerships_path(@business) %>
 			</div>
-			<div class="detail"><%= @business.owners_list %></div>
+			<div class="detail"><%= render 'shared/business_team' %></div>
 		</div>
 		<% if @business.website? %>
 			<div class="paragraph">

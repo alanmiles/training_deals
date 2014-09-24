@@ -83,4 +83,5 @@ class Event < ActiveRecord::Base
 	def has_places?
 		remaining_places > 0
 	end
+
 end

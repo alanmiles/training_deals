@@ -61,12 +61,18 @@ class Product < ActiveRecord::Base
 	end
 
 	def schedulable?
-		@method = TrainingMethod.find(self.training_method_id)
-		@method.event?
+		if current?
+			@method = TrainingMethod.find(self.training_method_id)
+			@method.event?
+		else
+			false
+		end
 	end
 
 	def self.schedulable
-		Product.joins(:training_method).where({ "training_methods.event" => true }).order("products.title")
+		Product.joins(:training_method)
+			.where("training_methods.event =? and products.current =?", true, true)
+			.order("products.title")
 	end
 
 	def title_and_price

@@ -1,0 +1,8 @@
+<div><%= @business.street_address %></div>
+<div><%= @business.email %></div>
+<% unless @business.all_phones_vendor == "Not shown" %>
+	<div><%= @business.all_phones_vendor %></div>
+<% end %>
+<% if @business.website? %>
+	<div>Website: <%= link_to(@business.website, "#{@business.website}", target: "_blank") %></div>
+<% end %>

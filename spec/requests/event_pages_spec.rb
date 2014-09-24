@@ -63,6 +63,12 @@ describe "EventPages" do
 						topic: genre_1_cat_1_topic_1, training_method: event_method, 
 						content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
 
+			let!(:delisted_product) 	{ FactoryGirl.create(:product, title: "Delisted product",
+						business: founder_biz,
+						topic: genre_1_cat_1_topic_1, training_method: event_method, 
+						content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360,
+						current: false) }
+
 			before { sign_in founder }
 
 			describe "with no events scheduled" do
@@ -92,6 +98,7 @@ describe "EventPages" do
 					it { should have_link("<- Back to event schedule", href: my_business_events_path(founder_biz)) }
 					it { should have_link("Products", href: my_business_products_path(founder_biz)) }  #checking Business menu displayed
 					it { should have_selector("select#event_product_id", text: "#{product_1.title}") }
+					it { should_not have_selector("select#event_product_id", text: "#{delisted_product.title}") }
 					it { should_not have_selector("select#event_product_id", 
 							text: "#{non_event_product.title}") }   #non-event products are not in Select list
 				
@@ -100,7 +107,7 @@ describe "EventPages" do
 						describe "successfully" do
 
 							before do
-								select "#{product_1.title} (#{founder_biz.currency_symbol} #{sprintf('%.2f', product_1.standard_cost)})", 
+								select "#{product_1.title}", 
 									from: 'event_product_id'
 								fill_in 'event_start_date', with: (Date.today + 14).strftime('%Y-%m-%d')
 								fill_in 'event_end_date', with: (Date.today + 21).strftime('%Y-%m-%d')
@@ -194,7 +201,7 @@ describe "EventPages" do
 									it { should have_title("Add event") }
 									it { should have_selector('li', text: "* End date can't be blank") }
 			              			it { should have_select('event_product_id', 
-			              				selected: "#{product_1.title} (#{founder_biz.currency_symbol} #{sprintf('%.2f', product_1.standard_cost)})") }
+			              				selected: "#{product_1.title}") }
 			              			it { should have_checked_field("weekdays_Mon") } 
 			              			it { should have_unchecked_field("weekdays_Sun") }
 			              			it { should have_select('event_time_of_day', selected: "Evening") }

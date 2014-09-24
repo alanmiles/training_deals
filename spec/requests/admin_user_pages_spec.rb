@@ -26,7 +26,8 @@ describe "AdminUserPages" do
       it { should have_selector('td', text: "#{admin.city}") }
       it { should have_selector('td', text: "#{admin.country}") }
       it { should have_selector('td', text: "#{admin.email}") }
-      it { should have_link("Framework", framework_path) }
+      it { should have_link("Framework", href: framework_path) }
+      it { should have_link("Users", href: admin_users_path) }
 
       describe "pagination" do
 

@@ -1,0 +1,28 @@
+<% provide(:title, 'Current vendors') %>
+<h1>Current vendors</h1>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/admin_menu_side" %>
+		</section>
+	</aside>
+
+	<div class="span8">
+		<%= form_tag admin_businesses_path, method: 'get',
+				id: "businesses_search" do %>
+			<p>
+				<%= text_field_tag :search, params[:search], 
+					class: "half-width", 
+						placeholder: 'Filter by vendor name, town, or country' %>
+				<span class="js-content glyphicon glyphicon-search"></span>
+				<span class="html-content"><%= submit_tag "Search", title: nil %></span>
+			</p>
+
+			<div id="businesses"><%= render 'businesses' %></div>
+			<div class="navigator">
+			    <%= link_to "<- Return to main admin menu", root_path %> 
+			</div>
+		<% end %>
+	</div>
+</div>

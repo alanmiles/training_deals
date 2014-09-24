@@ -19,7 +19,7 @@
 					</div>
 					<div class="box-fill">
 						<%= f.collection_select :product_id, @products, 
-							:id, :title_and_price, prompt: true %>
+							:id, :title, prompt: true %>
 					</div>
 				</div>
 				<%= render 'fields', f: f %>
