@@ -114,6 +114,8 @@ describe "AdminUserPages" do
 
   describe "when not signed in" do
     
+    let!(:other_user)  { FactoryGirl.create(:user) }
+
     describe "trying to access Index page" do 
 
       describe "redirect to the signin page" do
@@ -148,7 +150,7 @@ describe "AdminUserPages" do
 
     describe "trying to access the Show page" do
 
-      let!(:other_user)  { FactoryGirl.create(:user) }
+      
 
       describe "redirect to the signin page" do
         
@@ -179,11 +181,27 @@ describe "AdminUserPages" do
         end
       end
     end
+
+    describe "trying to delete a user" do
+
+      it "should not delete a user" do
+        expect do
+            delete admin_user_path(other_user)
+        end.not_to change(User, :count)
+      end
+
+      describe "redirect to root" do
+
+        before { delete admin_user_path(other_user) }
+        forbidden_without_signin
+      end
+    end
   end
 
   describe "when signed in but not as admin" do
 
     let(:user)    { FactoryGirl.create(:user) }
+    let!(:alt_user)  { FactoryGirl.create(:user) }
     
     before { sign_in user, no_capybara: true }
 
@@ -204,6 +222,25 @@ describe "AdminUserPages" do
       specify do
         expect(page).to redirect_to(root_url)
         expect(flash[:error]).to eq("Permission denied.")
+      end
+    end
+
+    describe "attempting to Destroy" do
+
+      it "should not delete the existing user" do
+        expect do
+            delete admin_user_path(alt_user)
+        end.not_to change(User, :count)
+      end
+
+      describe "redirects to root path" do
+
+        before { delete admin_user_path(alt_user) }
+        
+        specify do
+          expect(response).to redirect_to(root_path)
+          expect(flash[:error]).to eq("Permission denied.")
+        end
       end
     end
   end

@@ -168,6 +168,21 @@ describe "AdminBusinessPages" do
         end
       end
     end
+
+    describe "trying to delete a business" do
+
+      it "should not delete a business" do
+        expect do
+            delete admin_business_path(owner_biz)
+        end.not_to change(Business, :count)
+      end
+
+      describe "redirect to root" do
+
+        before { delete admin_business_path(owner_biz) }
+        forbidden_without_signin
+      end
+    end
   end
 
   describe "when signed in but not as admin" do
@@ -193,6 +208,25 @@ describe "AdminBusinessPages" do
       specify do
         expect(page).to redirect_to(root_url)
         expect(flash[:error]).to eq("Permission denied.")
+      end
+    end
+
+    describe "attempting to Destroy" do
+
+      it "should not delete the existing business" do
+        expect do
+            delete admin_business_path(owner_biz)
+        end.not_to change(Business, :count)
+      end
+
+      describe "redirects to root path" do
+
+        before { delete admin_business_path(owner_biz) }
+        
+        specify do
+          expect(response).to redirect_to(root_path)
+          expect(flash[:error]).to eq("Permission denied.")
+        end
       end
     end
   end

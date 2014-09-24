@@ -6,3 +6,6 @@
 <% if @business.website? %>
 	<div>Website: <%= link_to(@business.website, "#{@business.website}", target: "_blank") %></div>
 <% end %>
+<div>Added by <%= @founder.name %> <em>&lt;<%= @founder.email %>&gt;</em> 
+	on <%= formatted_shortdate(@business.created_at) %>
+</div>

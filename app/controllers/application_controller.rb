@@ -13,6 +13,20 @@ class ApplicationController < ActionController::Base
         end
     end
 
+    def signed_in_user
+        unless signed_in?
+          store_location
+          redirect_to signin_url, notice: "Page not accessible. Please sign in or sign up."
+        end
+    end
+
+    def admin_user
+        unless current_user.admin?
+          flash[:error] = "Permission denied."
+          redirect_to(root_url) 
+        end
+    end
+
     def not_signed_in
       unless signed_in?
         store_location

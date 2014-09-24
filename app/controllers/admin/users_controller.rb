@@ -1,6 +1,7 @@
 class Admin::UsersController < ApplicationController
   
-  	before_action :signed_in_user
+  	before_action :illegal_action, only: :destroy
+    before_action :signed_in_user
   	before_action :admin_user
 
   	helper_method :sort_column, :sort_direction
@@ -30,20 +31,6 @@ class Admin::UsersController < ApplicationController
   	end
 
   	private
-
-    	def signed_in_user
-      		unless signed_in?
-        		store_location
-        		redirect_to signin_url, notice: "Page not accessible. Please sign in or sign up."
-      		end
-    	end
-
-    	def admin_user
-      		unless current_user.admin?
-        		flash[:error] = "Permission denied."
-        		redirect_to(root_url) 
-      		end
-    	end
 
     	def sort_column
       		["LOWER(name)", "city", "country", "email"].include?(params[:sort]) ? params[:sort] : "LOWER(name)"

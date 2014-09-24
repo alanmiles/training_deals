@@ -1,8 +1,9 @@
 class Admin::BusinessesController < ApplicationController
   
-  	before_action :signed_in_user
-  	before_action :admin_user
-
+  	before_action :illegal_action, only: :destroy
+    before_action :signed_in_user, except: :destroy
+    before_action :admin_user 
+  	
   	helper_method :sort_column, :sort_direction
 
 	def index
@@ -16,6 +17,7 @@ class Admin::BusinessesController < ApplicationController
   	def show
 		@business = Business.find(params[:id])
     @ownerships = @business.ownerships
+    @founder = User.find(@business.created_by)
 	end
 
 	def destroy
@@ -27,19 +29,7 @@ class Admin::BusinessesController < ApplicationController
 
   	private
 
-    	def signed_in_user
-      		unless signed_in?
-        		store_location
-        		redirect_to signin_url, notice: "Page not accessible. Please sign in or sign up."
-      		end
-    	end
-
-    	def admin_user
-      		unless current_user.admin?
-        		flash[:error] = "Permission denied."
-        		redirect_to(root_url) 
-      		end
-    	end
+    	
 
     	def sort_column
       		["LOWER(name)", "city", "country"].include?(params[:sort]) ? params[:sort] : "LOWER(name)"
