@@ -12,11 +12,14 @@ class User < ActiveRecord::Base
 	validates :email, 		presence: true, format: { with: VALID_EMAIL_REGEX },
 							uniqueness: { case_sensitive: false }
 	
-	validates :password,	length: { minimum: 6 }
+	validates :password,	presence: { on: :create }, length: { minimum: 6 }
 	validates :latitude,	presence: true
 
 	def User.new_remember_token
-		SecureRandom.urlsafe_base64
+		begin
+			tkn = SecureRandom.urlsafe_base64
+		end while User.exists?(remember_token: tkn)
+		tkn
 	end
 
 	def User.digest(token)
@@ -44,6 +47,13 @@ class User < ActiveRecord::Base
 		else
 			all
 		end
+	end
+
+	def send_password_reset
+	  	self.password_reset_token = User.new_remember_token
+	  	self.password_reset_sent_at = Time.zone.now
+	  	save!(:validate => false)
+	  	UserMailer.password_reset(self).deliver
 	end
 
 	private

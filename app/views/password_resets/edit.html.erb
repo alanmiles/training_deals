@@ -1,0 +1,41 @@
+<% provide(:title, 'Reset password') %>
+<h1>Reset password</h1>
+
+<div class="row">
+  <aside class="span3">
+    <section>
+      
+    </section>
+    
+  </aside>
+  <div class="span6">
+
+    <%= form_for @user, :url => password_reset_path(params[:id]) do |f| %>  
+      <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <div class="alert alert-error">
+            The form contains <%= pluralize(@user.errors.count, "error") %>.
+          </div>
+          <ul>
+            <% @user.errors.full_messages.each do |msg| %>
+              <li>* <%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="entry-page">
+        <div class="field">
+          <%= f.label :password %>
+          <%= f.password_field :password, 
+                placeholder: "At least 6 numbers / mixed-case letters / symbols" %>
+        </div>
+        <div class="field">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation,
+                placeholder: "Repeat password to confirm you typed what you meant to" %>
+        </div>
+      </div>
+      <div class="actions"><%= f.submit "Update Password", class: "btn btn-primary" %></div>
+    <% end %>
+  </div>
+</div>

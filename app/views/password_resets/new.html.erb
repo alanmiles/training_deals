@@ -1,0 +1,28 @@
+<% flash.each do  |key, value| %>
+	<%= content_tag(:div, value, class: "alert alert-#{key}") %>
+<% end %>
+
+<% provide(:title, 'Reset password') %>
+<h1>Reset password</h1>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			
+		</section>
+		
+	</aside>
+	<div class="span6">
+		<%= form_tag password_resets_path, method: :post do %>
+
+			<div class="entry-page">
+			  	<div class="field">
+			    	<%= label_tag :email %>
+			    	<%= text_field_tag :email, params[:email],
+			    		placeholder: "Enter the email address you use for this site" %>
+			  	</div>
+			</div>
+		  	<div class="actions"><%= submit_tag "Reset Password", class: "btn btn-primary" %></div>
+		<% end %>
+	</div>
+</div>

@@ -2,6 +2,7 @@ TrainingDeals::Application.routes.draw do
   
   resources :users, except: [:index, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
+  resources :password_resets
   resources :training_methods do
     collection { post :sort }
   end
