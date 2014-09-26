@@ -25,6 +25,9 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:businesses) }
   it { should respond_to(:admin) }
+  it { should respond_to(:password_reset_token) }
+  it { should respond_to(:password_reset_sent_at) }
+
 
   it { should be_valid }
   it { should_not be_admin }
@@ -137,5 +140,22 @@ describe User do
   describe "when latitude is not present" do
     before { @user.latitude = nil }
     it { should_not be_valid }
+  end
+
+  it "generates a unique password_reset_token each time" do
+    @user.send_password_reset
+    last_token = @user.password_reset_token
+    @user.send_password_reset
+    @user.password_reset_token.should_not eq(last_token)
+  end
+
+  it "saves the time the password reset was sent" do
+    @user.send_password_reset
+    @user.reload.password_reset_sent_at.should be_present
+  end
+
+  it "delivers email to user" do
+    @user.send_password_reset
+    last_email.to.should include (@user.email)
   end
 end
