@@ -1,0 +1,4 @@
+<option value="">Select a topic</option>
+<% @topics.each do |topic| %>
+	<option value="<%= topic.id %>"><%= topic.description %></option>
+<% end %>

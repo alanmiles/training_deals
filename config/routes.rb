@@ -36,24 +36,27 @@ TrainingDeals::Application.routes.draw do
     resources :topic_selections, only: [:new, :create]
   end
   resources :topic_selections, only: [:new, :create]
+  resources :results
   namespace :admin do
     resources :users, only: [:index, :show, :destroy]
     resources :businesses, only: [:index, :show, :destroy]
   end
 
   root  'static_pages#home'
-  match '/signup',          to: 'users#new',                via: 'get'
-  match '/signin',          to: 'sessions#new',             via: 'get'
-  match '/signout',         to: 'sessions#destroy',         via: 'delete'
-  match '/about',           to: 'static_pages#about',       via: 'get'
-  match '/contact',         to: 'static_pages#contact',     via: 'get'
-  match '/admin_menu',      to: 'static_pages#admin_menu',  via: 'get'
-  match '/framework',       to: 'admin_pages#framework',    via: 'get'
-  match '/users_menu',      to: 'admin_pages#users_menu',   via: 'get'
-  match '/vendors_menu',    to: 'admin_pages#vendors_menu', via: 'get'
-  match '/feedback',        to: 'admin_pages#feedback',     via: 'get'
-  match '/billings',        to: 'admin_pages#billings',     via: 'get'
-  match '/text_editor',     to: 'admin_pages#text_editor',  via: 'get'
+  match '/signup',            to: 'users#new',                      via: 'get'
+  match '/signin',            to: 'sessions#new',                   via: 'get'
+  match '/signout',           to: 'sessions#destroy',               via: 'delete'
+  match '/about',             to: 'static_pages#about',             via: 'get'
+  match '/contact',           to: 'static_pages#contact',           via: 'get'
+  match '/admin_menu',        to: 'static_pages#admin_menu',        via: 'get'
+  match '/select_categories', to: 'static_pages#select_categories', via: 'get'
+  match '/select_topics',     to: 'static_pages#select_topics',     via: 'get'
+  match '/framework',         to: 'admin_pages#framework',          via: 'get'
+  match '/users_menu',        to: 'admin_pages#users_menu',         via: 'get'
+  match '/vendors_menu',      to: 'admin_pages#vendors_menu',       via: 'get'
+  match '/feedback',          to: 'admin_pages#feedback',           via: 'get'
+  match '/billings',          to: 'admin_pages#billings',           via: 'get'
+  match '/text_editor',       to: 'admin_pages#text_editor',        via: 'get'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

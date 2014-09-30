@@ -1,10 +1,48 @@
-<div class="center hero-unit">
-	<h1><%= image_tag("hroomph_title.png", alt: "HROOMPH - The Training app") %></h1>
+<div class="row">
+	<aside class="span3">
+		<section>
+			<p>What would you like to learn?</p>
+			<h5>Topic</h5>
+			<%= form_tag results_path, method: 'get', 
+							id: "products_search" do %>
 
-	<h2>
-		Optimizing training budgets.  Maximizing training sales.
-	</h2>
+		
+				<%= select "genre", "genre_id",
+					@genres.pluck(:description, :id), 
+				 	{ prompt: true },
+					{ id: 'genre_select' } %>
+  
+  				<div class="hidden-content">
+	  				
+	  				<%= select "category", "category_id",
+	  					@categories.pluck(:description, :id),
+	  					{ include_blank: "Select a category" }, 
+	  					{ id: 'cat_select' } %>
+	  			</div>
 
-	<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+	  			<div class="hidden-content-2">
+				
+					<%= select "topic", "topic_id", 
+						@topics.pluck(:description, :id), 
+						{ include_blank: "Select a topic" },
+						{ id: "topic_select" } %>
+
+				</div>
+				
+				<%= submit_tag "Search", title: nil, class: "btn btn-primary btn-small" %>
+			<% end %>
+		</section>
+	</aside>
+	<div class="span8">
+		<div class="center hero-unit">
+			<h1><%= image_tag("hroomph_title.png", alt: "HROOMPH - The Training app") %></h1>
+
+			<h2>
+				Optimizing training budgets.  Maximizing training sales.
+			</h2>
+
+			<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+		</div>
+	</div>
 </div>
 
