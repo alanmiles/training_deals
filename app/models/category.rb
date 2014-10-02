@@ -2,6 +2,7 @@ class Category < ActiveRecord::Base
 
 	belongs_to 	:genre
 	has_many	:topics, 			dependent: :destroy
+	has_many	:products,			through: :topics
 
 	accepts_nested_attributes_for 	:topics
 
@@ -26,5 +27,9 @@ class Category < ActiveRecord::Base
 			.having('topics.count >0')
 			.group('categories.id')
 			.order('categories.description')
+	end
+
+	def active_products
+		products.joins(:business).where("products.current =? and businesses.inactive = ?", true, false)
 	end
 end

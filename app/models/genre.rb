@@ -4,6 +4,7 @@ class Genre < ActiveRecord::Base
 	
 	has_many :categories,			dependent: :destroy
 	has_many :topics,				through: :categories
+	has_many :products,				through: :categories
 
 	accepts_nested_attributes_for 	:categories
 
@@ -27,6 +28,10 @@ class Genre < ActiveRecord::Base
 			.having('topics.count >0')
 			.group('genres.id')
 			.order('position')
+	end
+
+	def active_products
+		products.joins(:business).where("products.current =? and businesses.inactive = ?", true, false)
 	end
 
 end

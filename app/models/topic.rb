@@ -25,4 +25,8 @@ class Topic < ActiveRecord::Base
 		return genre_name + " >> " + category_name + " >> " + self.description
 	end
 
+	def active_products
+		products.joins(:business).where("products.current =? and businesses.inactive = ?", true, false)
+	end
+
 end

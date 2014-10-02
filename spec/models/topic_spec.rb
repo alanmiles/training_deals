@@ -15,6 +15,7 @@ describe Topic do
   it { should respond_to(:created_by) }
   it { should respond_to(:status) }
   its(:category) { should eq category }
+  it { should respond_to(:products) }
 
   it { should be_valid }
 

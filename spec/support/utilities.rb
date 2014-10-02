@@ -29,6 +29,76 @@ def valid_signup
     fill_in "Confirm password", with: "foobar" 
 end
 
+def build_product_list
+	let!(:founder) 			{ FactoryGirl.create(:user) }
+	let!(:administrator)	{ FactoryGirl.create(:user) }
+	let!(:founder_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}  #founder is automatically an owner
+	let!(:other_biz)		{ FactoryGirl.create(:business, created_by: founder.id)}
+	let(:closed_biz)		{ FactoryGirl.create(:business, created_by: founder.id, inactive: true)}
+	let!(:ownership_1)		{ FactoryGirl.create(:ownership, business: founder_biz, user: administrator,
+								 email_address: administrator.email) }
+	let!(:ownership_2)		{ FactoryGirl.create(:ownership, business: other_biz, user: administrator,
+								 email_address: administrator.email) }
+	let!(:event_method)		{ FactoryGirl.create(:training_method, description: "Seminar",
+									event: true) }
+	let!(:non_event_method)	{ FactoryGirl.create(:training_method, event: false) }
+	let!(:length)			{ FactoryGirl.create(:content_length) }
+	let!(:duration)			{ FactoryGirl.create(:duration) }
+	let!(:genre_1)			{ FactoryGirl.create(:genre, status: 1) }
+	let!(:genre_2)			{ FactoryGirl.create(:genre, description: 'Work', status: 1) }
+	let!(:pending_genre)		{ FactoryGirl.create(:genre, description: 'Play', status: 3) }
+	let!(:no_topic_genre)		{ FactoryGirl.create(:genre, description: 'Leisure', status: 1) }
+	let!(:genre_1_cat_1)		{ FactoryGirl.create(:category, genre: genre_1, status: 1) }
+	let!(:genre_1_cat_2)		{ FactoryGirl.create(:category, genre: genre_1, status: 1) }
+	let!(:genre_1_pending_cat)	{ FactoryGirl.create(:category, genre: genre_1, status: 2) }
+	let!(:genre_1_no_topic_cat)	{ FactoryGirl.create(:category, genre: genre_1, status: 1) }
+	let!(:genre_2_cat_1)		{ FactoryGirl.create(:category, genre: genre_2, status: 1) }
+	let!(:genre_2_cat_2)		{ FactoryGirl.create(:category, genre: genre_2, status: 1) }
+	let!(:genre_1_cat_1_topic_1)	{ FactoryGirl.create(:topic, category: genre_1_cat_1, status: 1) }
+	let!(:genre_1_cat_1_topic_2)	{ FactoryGirl.create(:topic, category: genre_1_cat_1, status: 1) }
+	let!(:genre_1_cat_2_topic_1)	{ FactoryGirl.create(:topic, category: genre_1_cat_2, status: 1) }
+	let!(:genre_2_cat_2_topic_1)	{ FactoryGirl.create(:topic, category: genre_2_cat_2, status: 1) }
+	let!(:pending_topic)		{ FactoryGirl.create(:topic, category: genre_1_cat_1, status: 2 ) }
+
+	let!(:product_1) 	{ FactoryGirl.create(:product, title: "Latest product",
+				business: founder_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+	
+	let!(:non_event_product) { FactoryGirl.create(:product, title: "Non event",
+				business: founder_biz,
+				topic: genre_1_cat_1_topic_1, training_method: non_event_method,
+				content_length: length) }
+
+	let!(:admin_product) 	{ FactoryGirl.create(:product, title: "Admin product",
+				business: other_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+
+	let!(:delisted_product) 	{ FactoryGirl.create(:product, title: "Delisted product",
+				business: founder_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360,
+				current: false) }
+
+	let!(:genre2_product) 	{ FactoryGirl.create(:product, title: "Genre 2 product",
+				business: other_biz,
+				topic: genre_2_cat_2_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+
+	let!(:genre1_topic2_product) { FactoryGirl.create(:product, title: "Topic2 Product",
+				business: founder_biz,
+				topic: genre_1_cat_2_topic_1, training_method: non_event_method,
+				content_length: length) }
+
+	let!(:closed_biz_product) 	{ FactoryGirl.create(:product, title: "Closed biz product",
+				business: closed_biz,
+				topic: genre_1_cat_1_topic_1, training_method: event_method, 
+				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+
+
+end
+
 Rspec::Matchers.define :have_error_message do |message|
 	match do |page|
 		expect(page).to have_selector('div.alert.alert-error', text: message)

@@ -101,6 +101,10 @@ class Product < ActiveRecord::Base
 		events.where("start_date >= ?", Date.today).count
 	end
 
+	def self.live
+		self.joins(:business).where("products.current = ? and businesses.inactive = ?", true, false)
+	end
+
 	private
 
 		def add_currency

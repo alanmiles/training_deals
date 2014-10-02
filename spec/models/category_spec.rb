@@ -14,6 +14,8 @@ describe Category do
   it { should respond_to(:created_by) }
   it { should respond_to(:status) }
   its(:genre) { should eq genre }
+  it { should respond_to(:topics) }
+  it { should respond_to(:products) }
 
   it { should be_valid }
 

@@ -11,6 +11,9 @@ describe Genre do
   it { should respond_to(:position) }
   it { should respond_to(:created_by) }
   it { should respond_to(:status) }
+  it { should respond_to(:categories) }
+  it { should respond_to(:topics) }
+  it { should respond_to(:products) }
   it { should be_valid }
 
   describe "when description is not present" do

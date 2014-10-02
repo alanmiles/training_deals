@@ -19,6 +19,8 @@
 			</ul>
 		<% end %>
 
-		<%= @genre.description %> - <%= @category.description %>
+		<%= @genre.description %><br />
+		<%= @category.description %><br />
+		<%= @topic.description unless params[:topic][:topic_id].empty? %>
 	</div>
 </div>
