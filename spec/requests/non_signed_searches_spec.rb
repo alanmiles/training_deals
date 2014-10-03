@@ -18,7 +18,7 @@ describe "NonSignedSearches" do
 		it { should_not have_content("(5 found)") }
 		it { should have_selector("#genre_select", text: "#{genre_1.description}") }
 		it { should have_selector("#genre_select", text: "#{genre_2.description}") }
-		it { should have_button("Search") }
+		it { should have_button("View results") }
 
 		describe "select a Genre", js: true do
 
@@ -66,6 +66,30 @@ describe "NonSignedSearches" do
 				end
 			end
 		end
+	end
 
+	describe "Conduct a search" do
+
+		before { visit root_path }
+
+		describe "Without selecting a genre" do
+
+			before { click_button "View results" }
+
+			pending "can't test because of modal dialog - should not pass to results controller"
+
+		end
+
+		describe "When genre is selected, but not category or topic" do
+
+			before do
+				select "#{genre_1.description}", from: 'genre_select'
+				click_button "View results"
+			end
+
+			it { should have_title("Search results") }
+
+
+		end
 	end
 end

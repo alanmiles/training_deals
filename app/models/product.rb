@@ -60,6 +60,40 @@ class Product < ActiveRecord::Base
 		sprintf("%g", duration_number)
 	end
 
+	def formatted_content_number
+		sprintf("%g", content_number)
+	end
+
+	def formatted_standard_price
+		if standard_cost == 0
+			s_price = 'FREE'
+		else
+			s_price = "#{business.currency_symbol} #{ActionController::Base.helpers.number_with_precision(self.standard_cost, precision: 2, delimiter: ',')}"
+		end
+		return s_price
+	end
+
+	def title_and_price
+		title + " (#{formatted_standard_price})"
+	end
+
+	def format_details
+		method = training_method.description
+		unless content_length.nil?
+			content = " - #{ActionController::Base.helpers.pluralize(formatted_content_number, 
+				self.content_length.description.downcase)}"
+		else
+			content = ""
+		end
+		unless duration_id.nil?
+			duration = " - #{ActionController::Base.helpers.pluralize(formatted_duration_number, 
+				self.duration.time_unit.downcase)}"
+		else
+			duration = ""
+		end
+		return method + content + duration
+	end
+
 	def schedulable?
 		if current?
 			@method = TrainingMethod.find(self.training_method_id)
@@ -73,11 +107,6 @@ class Product < ActiveRecord::Base
 		Product.joins(:training_method)
 			.where("training_methods.event =? and products.current =?", true, true)
 			.order("products.title")
-	end
-
-	def title_and_price
-		@business = Business.find(self.business_id)
-		self.title + " (" + @business.currency_symbol + " " + sprintf("%.2f", self.standard_cost) + ")"
 	end
 
 	def has_future_events?

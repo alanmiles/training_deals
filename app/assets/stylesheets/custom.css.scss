@@ -533,6 +533,23 @@ input {
   width: 85%;
 }
 
+/* product search */
+.product-search {
+  ul {
+    list-style: none;
+    li {
+      margin-bottom: 15px;
+      a {
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+      .image-display {
+        float: right;
+      }
+    }
+  } 
+}
+
 /* entry pages */
 
 .entry-page {

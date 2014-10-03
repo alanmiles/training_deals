@@ -24,20 +24,11 @@
 		<div class="paragraph">
 			<div class="subject">Format:</div>
 			<div class="detail">
-				<%= @product.training_method.description %>
-				<% if @product.content_length_id? %>
-					- <%= pluralize(sprintf("%g", @product.content_number), 
-					@product.content_length.description.downcase) %>
-				<% end %>
-				<% if @product.duration_id? %>
-					- <%= pluralize(sprintf("%g", @product.duration_number), 
-					@product.duration.time_unit.downcase) %>
-				<% end %>
+				<%= @product.format_details %>
 			</div>
 			<div class="subject">Standard price:</div>
 			<div class="detail">
-				<%= @business.currency_symbol %> 
-				<%= number_with_precision(@product.standard_cost, precision: 2, delimiter: ',') %>
+				<%= @product.formatted_standard_price %>
 			</div>
 		</div>
 		<div class="paragraph">

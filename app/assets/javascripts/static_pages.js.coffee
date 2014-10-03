@@ -73,3 +73,10 @@ $ ->
      
     success: (data, textStatus, jqXHR) ->
         console.log("Dynamic category select OK!")
+
+jQuery ->
+    $("form#products_search").submit (search) ->  
+        genreVal = $("#genre_select option:selected").val()
+        if genreVal is ""
+        	search.preventDefault()
+        	alert "You need to make a selection before clicking on 'View results'"

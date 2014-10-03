@@ -1,5 +1,5 @@
-<h1>Results#index</h1>
-<p>Find me in app/views/results/index.html.erb</p>
+<% provide(:title, "Search results") %>
+<h1>Search results</h1>
 <div class="row">
 	<aside class="span3">
 		<section>
@@ -8,19 +8,31 @@
 	</aside>
 
 	<div class="span8">
-		<% if false %>
+		<div class="product-search">
 			<ul> 
 				<% @products.each do |product| %>
 					<%= content_tag_for :li, product do %>
-						<%= product.title %>,
-						<%= product.business.name %>
+							
+						<div><%= link_to product.title, "#" %></div>
+						<div class="image-display">
+							<%= image_tag(product.image_url(:thumb), class: "img-rounded") if product.image %>
+						</div>
+						<div>
+							<%= product.format_details %> - <%= product.formatted_standard_price %>
+						</div>
+						<div>
+							<%= product.content %>
+							<% unless product.qualification.blank? %>
+									(Qualification: <%= product.qualification %>)
+							<% end %>
+						</div>
+						<div><em><%= product.business.name %>, <%= product.business.city %>, <%= product.business.country %></em></div>
+						
 					<% end %>
 				<% end %>
 			</ul>
-		<% end %>
-
-		<%= @genre.description %><br />
-		<%= @category.description %><br />
-		<%= @topic.description unless params[:topic][:topic_id].empty? %>
+		</div>
+		<%= will_paginate @products %>
+		
 	</div>
 </div>
