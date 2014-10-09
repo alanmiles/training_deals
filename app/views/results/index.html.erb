@@ -3,36 +3,78 @@
 <div class="row">
 	<aside class="span3">
 		<section>
-		
+			<div class="explain">
+				<p><strong><%= number_with_delimiter(pluralize(@products.count, "result")) %></strong>
+				 	for <em><%= @search_string %></em>. Refine your search using the options below.</p>
+			</div>
+		</section>
+		<section>
+			
+			<div class="explain">
+				<%= form_tag results_path, :method => :get do %>
+					<p>
+						<strong>Format:</strong>
+						
+						<% if false %>
+							<%= collection_select("product", "training_method_id", 
+								@t_methods, :training_method_id, :description, 
+								{ prompt: "All formats" },
+								{ id: "method-filter" }) %>
+						<% end %>
+
+						<%= collection_select("product", "training_method_id", 
+							@t_methods, :id, :description, 
+							{ prompt: "All formats" },
+							{ id: "method-filter" }) %>
+					</p>
+					<p>
+						<strong>Location: </strong><em>(where relevant)</em>
+					</p>
+					<p>
+						<strong>Price:</strong>
+					</p>
+					<p>
+						<strong>Discounted only:</strong>
+					</p>
+					<p>
+						<strong>Qualification:</strong>
+					</p>
+					<p>
+						<strong>Supplier:</strong>
+					</p>
+					<p>
+						<strong>A key word or phrase:</strong>
+					</p>
+					<p>
+						<strong>Accepting orders now:</strong>
+					</p>
+					<p>
+						<strong>Sort order:</strong>
+						<ul>
+							<li>Most recently added</li>
+							<li>Alphabetical</li>
+							<li>Best customer rating</li>
+							<li>Price - low to high</li>
+							<li>Price - high to low</li>
+							<li>Best discounts</li>
+							<li>Distance - closest first</li>
+						</ul>
+					</p>
+				<% end %>
+			</div>
+			
+
 		</section>
 	</aside>
 
 	<div class="span8">
 		<div class="product-search">
-			<ul> 
-				<% @products.each do |product| %>
-					<%= content_tag_for :li, product do %>
-							
-						<div><%= link_to product.title, "#" %></div>
-						<div class="image-display">
-							<%= image_tag(product.image_url(:thumb), class: "img-rounded") if product.image %>
-						</div>
-						<div>
-							<%= product.format_details %> - <%= product.formatted_standard_price %>
-						</div>
-						<div>
-							<%= product.content %>
-							<% unless product.qualification.blank? %>
-									(Qualification: <%= product.qualification %>)
-							<% end %>
-						</div>
-						<div><em><%= product.business.name %>, <%= product.business.city %>, <%= product.business.country %></em></div>
-						
-					<% end %>
-				<% end %>
-			</ul>
+			<%= render 'display' %>
 		</div>
-		<%= will_paginate @products %>
+		
+		<div class="navigator">
+		    <%= link_to "<- Back to Home Page", root_path %> 
+		</div>
 		
 	</div>
 </div>

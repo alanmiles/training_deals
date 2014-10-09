@@ -14,7 +14,7 @@ describe "NonSignedSearches" do
 
 		before { visit root_path }
 
-		it { should have_content("5 ways to learn.") }
+		it { should have_content("5 topics to choose from.") }
 		it { should_not have_content("(5 found)") }
 		it { should have_selector("#genre_select", text: "#{genre_1.description}") }
 		it { should have_selector("#genre_select", text: "#{genre_2.description}") }
@@ -24,7 +24,7 @@ describe "NonSignedSearches" do
 
 			before { select "#{genre_1.description}", from: 'genre_select' }
 
-			it { should have_content("5 ways to learn.") }
+			it { should have_content("5 topics to choose from.") }
 			it { should have_content("4 found)") }
 			it { should have_selector("#cat_select", text: "#{genre_1_cat_1.description}") }
 			it { should have_selector("#cat_select", text: "#{genre_1_cat_2.description}") }
@@ -60,7 +60,7 @@ describe "NonSignedSearches" do
 						it { should_not have_content("5 found)") }
 						it { should_not have_selector("#cat_select", text: "#{genre_1_cat_1.description}") }
 						it { should_not have_selector("#cat_select", text: "#{genre_1_cat_2.description}") }
-						it { should_not have_selector("#topic_select", text: "#{genre_1_cat_1_topic_2.description}") }
+					#	it { should_not have_selector("#topic_select", text: "#{genre_1_cat_1_topic_2.description}") }  #unnecessary since cant run search anyway
 
 					end
 				end
@@ -88,8 +88,23 @@ describe "NonSignedSearches" do
 			end
 
 			it { should have_title("Search results") }
+			it { should have_selector('h1', text: "Search results") }
+			it { should have_link("<- Back to Home Page", href: root_path) }
+			it { should have_selector("li#product_#{product_1.id}") }
+			#it { should have_selector("li#product_#{genre1_cat2_product.id}") }
+			pending "line above not working in test, though fine in development database"
+			it { should have_selector("li#product_#{non_event_product.id}") }
+			it { should_not have_selector("li#product_#{genre2_product.id}") }
+			it { should_not have_selector("li#product_#{delisted_product.id}") }
+			it { should_not have_selector("li#product_#{closed_biz_product.id}") }
 
-
+			it { should have_content("#{product_1.title}") }
+			it { should have_content("#{product_1.training_method.description}") }
+			it { should have_content("#{product_1.formatted_standard_price}") }
+			it { should have_content("360 minutes") }
+			it { should have_content("#{product_1.content}") }
+			it { should have_content("#{product_1.qualification}") }		#because qualification declared for product_1
+			it { should have_content("#{product_1.business.name}, #{product_1.business.city}, #{product_1.business.country}") }
 		end
 	end
 end

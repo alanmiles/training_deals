@@ -23,6 +23,7 @@ class StaticPagesController < ApplicationController
       @genre_count = @genre.active_products.count
       @categories = Category.with_topics
         .where("categories.genre_id = ? and categories.status = ?", params[:genre_id], 1) 
+      @topics = Topic.where("status =? and category_id=?", 1, @categories.first)
       respond_to do |format|
         format.js
       end

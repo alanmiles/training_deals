@@ -3,7 +3,6 @@ $ ->
 		newGenre = $("#genre_select option:selected").text()
 		if newGenre == "Please select"
 			$("#cat_select").empty()
-			$("#topic_select").empty()
 			$(".hidden-content").hide()
 			$(".hidden-content-2").hide()
 			$(".display-total").empty()
@@ -27,7 +26,6 @@ $ ->
 	$(document).on 'change', '#cat_select', (event) ->
 		newCat = $("#cat_select option:selected").text()
 		if newCat == "Select a category"
-			$("#topic_select").empty()
 			$(".hidden-content-2").hide()
 			$.ajax 'genre_totals',
 		      type: 'GET'

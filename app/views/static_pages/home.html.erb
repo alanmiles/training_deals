@@ -2,8 +2,8 @@
 	<aside class="span3">
 		<section>
 			<div class="add-bottom-space">
-				<%= number_with_delimiter(pluralize(Product.live.count, "way")) %> to learn.<br />
-				Choose yours!
+				<%= number_with_delimiter(pluralize(Product.live.count, "topic")) %> to choose from.<br />
+				What's yours?
 			</div>
 
 			<%= form_tag results_path, method: 'get', 
@@ -31,10 +31,8 @@
 						{ id: "topic_select" } %>
 
 				</div>
-				<div id="topic_products">
-
-				</div>
-				<%= submit_tag "View results", title: nil, class: "btn btn-primary btn-small" %> 
+			
+				<%= submit_tag "View results", name: nil, class: "btn btn-primary btn-small" %> 
 				<div class="display-total"></div>
 			<% end %>
 		</section>

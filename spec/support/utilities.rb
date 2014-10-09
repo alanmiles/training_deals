@@ -63,7 +63,8 @@ def build_product_list
 	let!(:product_1) 	{ FactoryGirl.create(:product, title: "Latest product",
 				business: founder_biz,
 				topic: genre_1_cat_1_topic_1, training_method: event_method, 
-				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
+				content_length: nil, content_number: nil, duration_id: duration.id, 
+				duration_number: 360, qualification: "Qualification 1") }
 	
 	let!(:non_event_product) { FactoryGirl.create(:product, title: "Non event",
 				business: founder_biz,
@@ -86,7 +87,7 @@ def build_product_list
 				topic: genre_2_cat_2_topic_1, training_method: event_method, 
 				content_length: nil, content_number: nil, duration_id: duration.id, duration_number: 360) }
 
-	let!(:genre1_topic2_product) { FactoryGirl.create(:product, title: "Topic2 Product",
+	let!(:genre1_cat2_product) { FactoryGirl.create(:product, title: "Topic2 Product",
 				business: founder_biz,
 				topic: genre_1_cat_2_topic_1, training_method: non_event_method,
 				content_length: length) }

@@ -32,4 +32,9 @@ class Category < ActiveRecord::Base
 	def active_products
 		products.joins(:business).where("products.current =? and businesses.inactive = ?", true, false)
 	end
+
+	def classification
+		genre_name = genre.description
+		return genre_name + " >> " + self.description
+	end
 end

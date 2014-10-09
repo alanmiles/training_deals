@@ -36,7 +36,11 @@ TrainingDeals::Application.routes.draw do
     resources :topic_selections, only: [:new, :create]
   end
   resources :topic_selections, only: [:new, :create]
-  resources :results
+  resources :results do
+    collection do
+      get 'filter_by_method'
+    end
+  end
   namespace :admin do
     resources :users, only: [:index, :show, :destroy]
     resources :businesses, only: [:index, :show, :destroy]
@@ -54,6 +58,7 @@ TrainingDeals::Application.routes.draw do
   match '/genre_totals',      to: 'static_pages#genre_totals',      via: 'get'
   match '/category_totals',   to: 'static_pages#category_totals',   via: 'get'
   match '/topic_totals',      to: 'static_pages#topic_totals',      via: 'get'
+  match '/filter_by_method',  to: 'results#filter_by_method',       via: 'get' 
   match '/framework',         to: 'admin_pages#framework',          via: 'get'
   match '/users_menu',        to: 'admin_pages#users_menu',         via: 'get'
   match '/vendors_menu',      to: 'admin_pages#vendors_menu',       via: 'get'

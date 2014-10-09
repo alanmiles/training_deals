@@ -1,3 +1,23 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$ ->
+	$(".pagination a").click ->
+		$.get @href, null, null, "script"
+		false
+
+$ ->
+	$(document).on 'change', '#method-filter', (evt) ->
+		newMethod = $("#method-filter option:selected").text()
+		$.ajax 'filter_by_method',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				method_id: $("#method-filter option:selected").val()
+			}
+		$(".pagination a").click ->
+			$.get @href, null, null, "script"
+			false	
+
+#    error: (jqXHR, textStatus, errorThrown) ->
+#        console.log("AJAX Error: #{textStatus}")
+#     
+#    success: (data, textStatus, jqXHR) ->
+#        console.log("Dynamic category select OK!")

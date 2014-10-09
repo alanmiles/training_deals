@@ -134,6 +134,13 @@ class Product < ActiveRecord::Base
 		self.joins(:business).where("products.current = ? and businesses.inactive = ?", true, false)
 	end
 
+	#def self.t_methods
+	#	self.joins(:training_method)
+    #        .select("training_method_id", "training_methods.description")
+    #        .distinct
+    #        .order("training_methods.description")
+	#end
+
 	private
 
 		def add_currency
