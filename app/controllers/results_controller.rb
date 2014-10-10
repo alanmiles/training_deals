@@ -7,7 +7,7 @@ class ResultsController < ApplicationController
     end
     @location = request.location.city
     if @location.nil? || @location.blank?
-      @location = "Unknown"
+      @location = "unknown"
     end
     session[:genre] = params[:genre][:genre_id]
     session[:category] = params[:category][:category_id]
