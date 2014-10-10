@@ -1,6 +1,14 @@
 class ResultsController < ApplicationController
   
   def index
+    @ip = request.remote_ip
+    if @ip = "127.0.0.1"
+      @ip = "86.24.222.18"
+    end
+    @location = request.location.city
+    if @location.nil? || @location.blank?
+      @location = "Unknown"
+    end
     session[:genre] = params[:genre][:genre_id]
     session[:category] = params[:category][:category_id]
     session[:topic] = params[:topic][:topic_id]
