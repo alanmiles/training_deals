@@ -12,9 +12,36 @@ $ ->
 			data: {
 				method_id: $("#method-filter option:selected").val()
 			}
-		$(".pagination a").click ->
-			$.get @href, null, null, "script"
-			false	
+#		$(".pagination a").click ->
+#			$.get @href, null, null, "script"
+#			false
+
+$ ->
+	$("#q_filter").keyup ->
+		$.ajax 'filter_by_qualification',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				qualification_string: $("#q_filter").val()
+			}
+
+$ ->
+	$("#supply_filter").keyup ->
+		$.ajax 'filter_by_supplier',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				supplier_string: $("#supply_filter").val()
+			}
+
+$ ->
+	$("#kword_filter").keyup ->
+		$.ajax 'filter_by_keyword',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				keyword_string: $("#kword_filter").val()
+			}	
 
 #    error: (jqXHR, textStatus, errorThrown) ->
 #        console.log("AJAX Error: #{textStatus}")

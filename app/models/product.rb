@@ -134,12 +134,30 @@ class Product < ActiveRecord::Base
 		self.joins(:business).where("products.current = ? and businesses.inactive = ?", true, false)
 	end
 
-	#def self.t_methods
-	#	self.joins(:training_method)
-    #        .select("training_method_id", "training_methods.description")
-    #        .distinct
-    #        .order("training_methods.description")
-	#end
+	def self.q_filter(q_filter)
+		if q_filter
+			where('qualification ILIKE ?', "%#{q_filter}%")
+		else
+			all
+		end
+	end
+
+	def self.supply_filter(supply_filter)
+		if supply_filter
+			joins(:business).where('businesses.name ILIKE ?', "%#{supply_filter}%")
+		else
+			all
+		end
+	end
+
+	def self.keyword_filter(keyword_filter)
+		if keyword_filter
+			where("title ILIKE ? OR content ILIKE ? OR outcome ILIKE ?", 
+					"%#{keyword_filter}%", "%#{keyword_filter}%", "%#{keyword_filter}%")
+		else
+			all
+		end
+	end
 
 	private
 

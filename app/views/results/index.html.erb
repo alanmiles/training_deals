@@ -14,18 +14,12 @@
 				<%= form_tag results_path, :method => :get do %>
 					<p>
 						<strong>Format:</strong>
-						
-						<% if false %>
-							<%= collection_select("product", "training_method_id", 
-								@t_methods, :training_method_id, :description, 
-								{ prompt: "All formats" },
-								{ id: "method-filter" }) %>
-						<% end %>
 
 						<%= collection_select("product", "training_method_id", 
 							@t_methods, :id, :description, 
 							{ prompt: "All formats" },
 							{ id: "method-filter" }) %>
+				<% end %>
 					</p>
 					<p>
 						<strong>Location: </strong><em>(where relevant)</em>
@@ -36,15 +30,30 @@
 					<p>
 						<strong>Discounted only:</strong>
 					</p>
-					<p>
+				<%= form_tag results_path, method: 'get', 
+							id: "qualification_filter" do %>
+					<p>	
 						<strong>Qualification:</strong>
+						<%= text_field_tag :q_filter, params[:q_filter], 
+								 placeholder: 'Filters as you type qualification'  %>
 					</p>
+				<% end %>
+				<%= form_tag results_path, method: 'get', 
+							id: "supplier_filter" do %>
 					<p>
-						<strong>Supplier:</strong>
+						<strong>Supplier name:</strong>
+						<%= text_field_tag :supply_filter, params[:supply_filter], 
+								 placeholder: 'Filters as you type supplier'  %>
 					</p>
+				<% end %>
+				<%= form_tag results_path, method: 'get', 
+							id: "keyword_filter" do %>
 					<p>
-						<strong>A key word or phrase:</strong>
+						<strong>A key word or phrase:</strong> (in title, description or benefits)
+						<%= text_field_tag :kword_filter, params[:kword_filter], 
+								 placeholder: 'Filters as you type'  %>
 					</p>
+				<% end %>
 					<p>
 						<strong>Accepting orders now:</strong>
 					</p>
@@ -60,7 +69,7 @@
 							<li>Distance - closest first</li>
 						</ul>
 					</p>
-				<% end %>
+				
 			</div>
 			
 

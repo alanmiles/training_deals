@@ -5,6 +5,9 @@ class ResultsController < ApplicationController
     session[:category] = params[:category][:category_id]
     session[:topic] = params[:topic][:topic_id]
     session[:method] = nil
+    session[:qualification] = nil
+    session[:supplier] = nil
+    session[:kword] = nil
 #    @products = find_products.paginate(per_page: 3, page: params[:page])
     @products = find_products
     @search_string = find_search_string
@@ -28,6 +31,34 @@ class ResultsController < ApplicationController
     end
   end
 
+  def filter_by_qualification
+    session[:qualification] = params[:qualification_string]
+    @products = find_products
+    respond_to do |format|
+      format.html 
+      format.json { render json: @products }
+      format.js
+    end
+  end
+
+  def filter_by_supplier
+    session[:supplier] = params[:supplier_string]
+    @products = find_products
+    respond_to do |format|
+      format.html 
+      format.json { render json: @products }
+      format.js
+    end
+  end
+
+  def filter_by_keyword
+    session[:kword] = params[:keyword_string]
+    @products = find_products
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def show
   end
 
@@ -47,6 +78,9 @@ class ResultsController < ApplicationController
         products = @topic.active_products
       end
       products = products.where("training_method_id = ?", session[:method]) unless session[:method].nil? || session[:method].blank?
+      products = products.q_filter(session[:qualification]) unless session[:qualification].nil? || session[:qualification].blank?
+      products = products.supply_filter(session[:supplier]) unless session[:supplier].nil? || session[:supplier].blank?
+      products = products.keyword_filter(session[:kword]) unless session[:kword].nil? || session[:kword].blank?
       products
     end
 
