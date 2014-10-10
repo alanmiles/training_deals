@@ -6,9 +6,7 @@ class ResultsController < ApplicationController
       @ip = "50.78.167.161"
     end
     @location = request.location.try(:city)
-    if @location.nil? || @location.blank?
-      @location = "unknown"
-    end
+    
     session[:genre] = params[:genre][:genre_id]
     session[:category] = params[:category][:category_id]
     session[:topic] = params[:topic][:topic_id]
