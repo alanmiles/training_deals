@@ -2,10 +2,10 @@ class ResultsController < ApplicationController
 
   def index
     @ip = request.remote_ip
-    if @ip = "127.0.0.1"
+    if @ip == "127.0.0.1"
       @ip = "50.78.167.161"
     end
-    @location = request.location
+    @location = request.location.try(:city)
     if @location.nil? || @location.blank?
       @location = "unknown"
     end
