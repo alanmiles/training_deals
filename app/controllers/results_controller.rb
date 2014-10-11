@@ -5,7 +5,7 @@ class ResultsController < ApplicationController
     if @ip == "127.0.0.1"
       @ip = "50.78.167.161"
     end
-    @location = request.location.try(:city)
+    @location = request.location.country
     
     session[:genre] = params[:genre][:genre_id]
     session[:category] = params[:category][:category_id]
