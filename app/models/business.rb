@@ -1,7 +1,7 @@
 class Business < ActiveRecord::Base
 
 	##before_save						:capitalize_locality
-	#geocoded_by :full_address 
+	geocoded_by :street_address 
 	##accepts_nested_attributes_for :ownerships
 
 	mount_uploader :logo, LogoUploader

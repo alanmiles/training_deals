@@ -62,6 +62,7 @@ TrainingDeals::Application.routes.draw do
   match '/filter_by_qualification',   to: 'results#filter_by_qualification',        via: 'get'
   match '/filter_by_supplier',        to: 'results#filter_by_supplier',             via: 'get'
   match '/filter_by_keyword',         to: 'results#filter_by_keyword',              via: 'get'
+  match '/filter_by_location',        to: 'results#filter_by_location',             via: 'get'
   match '/framework',                 to: 'admin_pages#framework',                  via: 'get'
   match '/users_menu',                to: 'admin_pages#users_menu',                 via: 'get'
   match '/vendors_menu',              to: 'admin_pages#vendors_menu',               via: 'get'

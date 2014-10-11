@@ -4,8 +4,7 @@ $ ->
 		false
 
 $ ->
-	$(document).on 'change', '#method-filter', (evt) ->
-		newMethod = $("#method-filter option:selected").text()
+	$(document).on 'change', '#method-filter', () ->
 		$.ajax 'filter_by_method',
 			type: 'GET'
 			dataType: 'script'
@@ -15,6 +14,15 @@ $ ->
 #		$(".pagination a").click ->
 #			$.get @href, null, null, "script"
 #			false
+
+$ ->
+	$(document).on 'change', '#location_id', () ->
+		$.ajax 'filter_by_location',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				loc_id: $("#location_id option:selected").text()
+			}
 
 $ ->
 	$("#q_filter").keyup ->

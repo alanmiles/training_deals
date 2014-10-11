@@ -19,12 +19,17 @@
 							@t_methods, :id, :description, 
 							{ prompt: "All formats" },
 							{ id: "method-filter" }) %>
+					</p>
 				<% end %>
-					</p>
+				<%= form_tag results_path, method: 'get', 
+							id: "location_filter" do %>
 					<p>
-						<strong>Location: </strong><em>(where relevant)</em><br />
-						Detected location: <%= @ip %> <%= @location %>
+						<strong>Location: </strong><em>(where relevant)</em>
+						<div id="ip-addr"><%= @ip %></div><div id="ip-country"><%= @country %></div>
+						<%= select_tag(:location_id, options_for_select(
+							[['Nearby', 1], ['Further away', 2], ['This country', 3], ['Worldwide', 4]], 4)) %>
 					</p>
+				<% end %>
 					<p>
 						<strong>Price:</strong>
 					</p>

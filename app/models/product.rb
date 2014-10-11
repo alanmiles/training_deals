@@ -159,6 +159,11 @@ class Product < ActiveRecord::Base
 		end
 	end
 
+	def self.select_by_country(country)
+		joins(:business).where('businesses.country = ?', country)
+	end
+
+
 	private
 
 		def add_currency
