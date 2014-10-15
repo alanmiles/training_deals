@@ -4,7 +4,8 @@ class ResultsController < ApplicationController
     @ip = request.remote_ip
     if @ip == "127.0.0.1"
       #@ip = "50.78.167.161"
-      @ip = "86.24.222.18"
+      #@ip = "86.24.222.18"
+      @ip = "82.18.13.139"
     end
     @country = request.location.country
     @country = "United Kingdom" if @country == "Reserved"
@@ -19,16 +20,18 @@ class ResultsController < ApplicationController
     session[:supplier] = nil
     session[:kword] = nil
     session[:country] = @country
+    session[:latitude] = @visitor.latitude
+    session[:longitude] = @visitor.longitude
 #    @products = find_products.paginate(per_page: 3, page: params[:page])
     @products = find_products
     @search_string = find_search_string
 #    @t_methods = @products.t_methods
     @t_methods = TrainingMethod.product_selection(@products)
-    respond_to do |format|
-      format.html
-      format.json { render json: @products }
-      format.js
-    end
+#    respond_to do |format|
+#      format.html
+#      format.json { render json: @products }
+#      format.js
+#    end
   end
 
   def filter_by_method
@@ -100,9 +103,13 @@ class ResultsController < ApplicationController
       products = products.q_filter(session[:qualification]) unless session[:qualification].nil? || session[:qualification].blank?
       products = products.supply_filter(session[:supplier]) unless session[:supplier].nil? || session[:supplier].blank?
       products = products.keyword_filter(session[:kword]) unless session[:kword].nil? || session[:kword].blank?
-      unless session[:loctn].nil? || session[:loctn].blank? || session[:loctn] == "Worldwide"
+      unless session[:loctn].nil? || session[:loctn].blank?
         if session[:loctn] == "This country"
           products = products.select_by_country(session[:country])
+        elsif session[:loctn] == "Within 50 km"     # within 50kms
+          products = products.nearby(session[:latitude], session[:longitude])
+        elsif session[:loctn] == "Within 200 km"   #within 200 kms
+          products = products.accessible(session[:latitude], session[:longitude])
         else
           products
         end

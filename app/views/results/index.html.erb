@@ -18,16 +18,16 @@
 						<%= collection_select("product", "training_method_id", 
 							@t_methods, :id, :description, 
 							{ prompt: "All formats" },
-							{ id: "method-filter" }) %>
+							{ id: "method-filter", class: "reduced-height" }) %>
 					</p>
 				<% end %>
-				<%= form_tag results_path, method: 'get', 
-							id: "location_filter" do %>
+				<%= form_tag results_path, method: 'get' do %>
 					<p>
 						<strong>Location: </strong><em>(where relevant)</em>
-						<div id="ip-addr"><%= @ip %></div><div id="ip-country"><%= @country %></div>
-						<%= select_tag(:location_id, options_for_select(
-							[['Nearby', 1], ['Further away', 2], ['This country', 3], ['Worldwide', 4]], 4)) %>
+						<%= select_tag(:location_id, 
+							options_for_select(
+							[['Within 50 km', 1], ['Within 200 km', 2], ['This country', 3], ['Worldwide', 4]], 4)) 
+						%>
 					</p>
 				<% end %>
 					<p>

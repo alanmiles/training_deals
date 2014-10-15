@@ -163,6 +163,16 @@ class Product < ActiveRecord::Base
 		joins(:business).where('businesses.country = ?', country)
 	end
 
+	def self.nearby(latitude, longitude)
+		joins(:business).merge(Business.close_to(latitude, longitude))
+	end
+
+	def self.accessible(latitude, longitude)
+		joins(:business).merge(Business.accessible_from(latitude, longitude))
+	end
+
+
+
 
 	private
 

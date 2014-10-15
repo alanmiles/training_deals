@@ -17,6 +17,8 @@ class Business < ActiveRecord::Base
 	has_many :events, through: :products
 	has_many :training_methods, through: :products
 
+
+
 	validates :name, 				presence: true, length: { maximum: 75 },
 									uniqueness: { scope: [:country, :city], case_sensitive: false }
 	validates :street_address, 		presence: true
@@ -34,6 +36,31 @@ class Business < ActiveRecord::Base
 													only_integer: true }
 	validates :website, 			allow_blank: true, 
 		uri: { format: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix }
+
+	scope :close_to, -> (latitude, longitude, distance_in_meters = 50000) {
+		where(%{
+			ST_DWithin(
+				ST_GeographyFromText(
+					'SRID=4326;POINT(' || businesses.longitude || ' ' || businesses.latitude || ')'
+				),
+				ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
+				%d
+			)
+		} % [longitude, latitude, distance_in_meters])
+	}
+
+	scope :accessible_from, -> (latitude, longitude, distance_in_meters = 200000) {
+		where(%{
+			ST_DWithin(
+				ST_GeographyFromText(
+					'SRID=4326;POINT(' || businesses.longitude || ' ' || businesses.latitude || ')'
+				),
+				ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
+				%d
+			)
+		} % [longitude, latitude, distance_in_meters])
+	}
+
 
 	def website= url_str
 	  unless url_str.blank?

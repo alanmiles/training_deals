@@ -8,9 +8,10 @@ class Visitor < ActiveRecord::Base
             :message => "Sorry, we can't identify your home area. It'll work if you sign in."}
 
     def self.find_or_create_by(ip, country)
-    	visitor = Visitor.find_by ip_address: "#{ip}" 
+    	visitor = Visitor.find_by_ip_address(ip) 
     	if visitor.nil?
-    		visitor = Visitor.create(ip_address: "#{ip}", country: "#{country}")
+    		visitor = Visitor.create(ip_address: ip, country: "#{country}")
     	end
+        visitor
     end
 end

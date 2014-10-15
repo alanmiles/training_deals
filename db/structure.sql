@@ -23,6 +23,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -42,8 +56,8 @@ CREATE TABLE businesses (
     state character varying(255),
     postal_code character varying(255),
     country character varying(255),
-    latitude double precision,
-    longitude double precision,
+    latitude numeric(9,6) NOT NULL,
+    longitude numeric(9,6) NOT NULL,
     hide_address boolean DEFAULT false,
     phone character varying(255),
     alt_phone character varying(255),
@@ -432,8 +446,8 @@ CREATE TABLE users (
     location character varying(255),
     city character varying(255),
     country character varying(255),
-    latitude double precision,
-    longitude double precision,
+    latitude numeric(9,6) NOT NULL,
+    longitude numeric(9,6) NOT NULL,
     password_reset_token character varying(255),
     password_reset_sent_at timestamp without time zone
 );
@@ -465,9 +479,8 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 CREATE TABLE visitors (
     id integer NOT NULL,
     ip_address character varying(255),
-    latitude double precision,
-    longitude double precision,
-    city character varying(255),
+    latitude numeric(9,6),
+    longitude numeric(9,6),
     country character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -716,6 +729,13 @@ CREATE INDEX index_genres_on_description ON genres USING btree (description);
 
 
 --
+-- Name: index_on_businesses_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_on_businesses_location ON businesses USING gist (st_geographyfromtext((((('SRID=4326;POINT('::text || longitude) || ' '::text) || latitude) || ')'::text)));
+
+
+--
 -- Name: index_ownerships_on_business_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -836,3 +856,11 @@ INSERT INTO schema_migrations (version) VALUES ('20140906003601');
 INSERT INTO schema_migrations (version) VALUES ('20140924121201');
 
 INSERT INTO schema_migrations (version) VALUES ('20141011094357');
+
+INSERT INTO schema_migrations (version) VALUES ('20141011223210');
+
+INSERT INTO schema_migrations (version) VALUES ('20141011224134');
+
+INSERT INTO schema_migrations (version) VALUES ('20141012092645');
+
+INSERT INTO schema_migrations (version) VALUES ('20141012105954');

@@ -2,9 +2,8 @@ class CreateVisitors < ActiveRecord::Migration
   def change
     create_table :visitors do |t|
       t.string :ip_address
-      t.float :latitude
-      t.float :longitude
-      t.string :city
+      t.decimal :latitude, precision: 9, scale: 6
+      t.decimal :longitude, precision: 9, scale: 6
       t.string :country
 
       t.timestamps

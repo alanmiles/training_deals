@@ -133,6 +133,20 @@ p {
   } 
 }
 
+input, textarea, select, .uneditable-input {
+  border: 1px solid #bbb;
+  width: 100%;
+  margin-bottom: 15px;
+  @include box_sizing;
+}
+
+input {
+  height: auto !important;
+  .numeric {
+    text-align: right;
+  }
+}
+
 .padtop10 {
   padding-top: 8px;
 }
@@ -236,6 +250,10 @@ aside, .sidebar {
       line-height: 1.5;
       font-size: 1.1em;
       }
+    }
+    select, input {
+      margin-bottom: 0px;
+      font-size: 1em;
     }
   }
   section {
@@ -401,20 +419,6 @@ form.button_to {
       color: #005580;
       text-decoration: underline;
     }
-  }
-}
-
-input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
-  width: 100%;
-  margin-bottom: 15px;
-  @include box_sizing;
-}
-
-input {
-  height: auto !important;
-  .numeric {
-    text-align: right;
   }
 }
 
