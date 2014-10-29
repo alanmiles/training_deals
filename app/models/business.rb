@@ -37,34 +37,37 @@ class Business < ActiveRecord::Base
 	validates :website, 			allow_blank: true, 
 		uri: { format: /(^$)|(^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$)/ix }
 
-	scope :close_to, -> (latitude, longitude, distance_in_meters = 50000) {
-		where(%{
-			ST_DWithin(
-				ST_GeographyFromText(
-					'SRID=4326;POINT(' || businesses.longitude || ' ' || businesses.latitude || ')'
-				),
-				ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
-				%d
-			)
-		} % [longitude, latitude, distance_in_meters])
-	}
+	#scope :close_to, -> (latitude, longitude, distance_in_meters = 50000) {
+	#	where(%{
+	#		ST_DWithin(
+	#			ST_GeographyFromText(
+	#				'SRID=4326;POINT(' || businesses.longitude || ' ' || businesses.latitude || ')'
+	#			),
+	#			ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
+	#			%d
+	#		)
+	#	} % [longitude, latitude, distance_in_meters])
+	#}
 
-	scope :accessible_from, -> (latitude, longitude, distance_in_meters = 200000) {
-		where(%{
-			ST_DWithin(
-				ST_GeographyFromText(
-					'SRID=4326;POINT(' || businesses.longitude || ' ' || businesses.latitude || ')'
-				),
-				ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
-				%d
-			)
-		} % [longitude, latitude, distance_in_meters])
-	}
+	#scope :accessible_from, -> (latitude, longitude, distance_in_meters = 200000) {
+	#	where(%{
+	#		ST_DWithin(
+	#			ST_GeographyFromText(
+	#				'SRID=4326;POINT(' || businesses.longitude || ' ' || businesses.latitude || ')'
+	#			),
+	#			ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
+	#			%d
+	#		)
+	#	} % [longitude, latitude, distance_in_meters])
+	#}
 
 	def self.neighbourhood(latitude, longitude, distance_in_miles = 30)
 		self.near([latitude, longitude], distance_in_miles)
 	end
-	
+
+	def self.accessible_from(latitude, longitude, distance_in_miles = 120)
+		self.near([latitude, longitude], distance_in_miles)
+	end
 
 
 	def website= url_str

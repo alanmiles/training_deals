@@ -729,13 +729,6 @@ CREATE INDEX index_genres_on_description ON genres USING btree (description);
 
 
 --
--- Name: index_on_businesses_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_on_businesses_location ON businesses USING gist (st_geographyfromtext((((('SRID=4326;POINT('::text || longitude) || ' '::text) || latitude) || ')'::text)));
-
-
---
 -- Name: index_ownerships_on_business_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -860,7 +853,3 @@ INSERT INTO schema_migrations (version) VALUES ('20141011094357');
 INSERT INTO schema_migrations (version) VALUES ('20141011223210');
 
 INSERT INTO schema_migrations (version) VALUES ('20141011224134');
-
-INSERT INTO schema_migrations (version) VALUES ('20141012092645');
-
-INSERT INTO schema_migrations (version) VALUES ('20141012105954');
