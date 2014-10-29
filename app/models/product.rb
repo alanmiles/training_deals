@@ -171,8 +171,9 @@ class Product < ActiveRecord::Base
 		joins(:business).merge(Business.accessible_from(latitude, longitude))
 	end
 
-
-
+	def self.reachable(latitude, longitude)
+		select("products.*").joins(:business).merge(Business.neighbourhood(latitude, longitude).references(:business))
+	end
 
 	private
 

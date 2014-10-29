@@ -61,6 +61,11 @@ class Business < ActiveRecord::Base
 		} % [longitude, latitude, distance_in_meters])
 	}
 
+	def self.neighbourhood(latitude, longitude, distance_in_miles = 30)
+		self.near([latitude, longitude], distance_in_miles)
+	end
+	
+
 
 	def website= url_str
 	  unless url_str.blank?
