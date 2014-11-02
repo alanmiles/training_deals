@@ -9,8 +9,8 @@ class Admin::UsersController < ApplicationController
 	def index
     	@users = User.search(params[:search])
               .order(sort_column + " " + sort_direction)
-              .paginate(per_page: 15, page: params[:page])
-      @total = @users.search(params[:search]).count
+              .page(params[:page]).per(15)
+      #@total = @users.search(params[:search]).count
   	end
 
   	def show

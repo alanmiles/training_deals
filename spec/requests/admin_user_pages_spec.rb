@@ -16,7 +16,7 @@ describe "AdminUserPages" do
 
       it { should have_title('All users') }
       it { should have_link('<- Return to main admin menu', href: root_path) }
-      it { should have_selector('.table-total', text: 'Total users: 1') }
+      it { should have_selector('.table-total', text: 'Displaying 1 user') }
       it { should have_selector('#search') }
       it { should have_selector('th', text: 'Name') }
       it { should have_selector('th', text: 'Town') }
@@ -34,7 +34,7 @@ describe "AdminUserPages" do
         before(:all)  { 15.times { FactoryGirl.create(:user) } }
         after(:all)   { User.delete_all }
 
-        it { should have_selector('div.pagination') }
+        it { should have_selector('nav.pagination') }
       
       end
 
@@ -49,14 +49,14 @@ describe "AdminUserPages" do
 
         it { should have_selector("tr:nth-child(2)", text: user_a.name) }
         it { should have_selector("tr:last-child", text: admin.name) }
-        it { should have_selector('.table-total', text: 'Total users: 2') }
+        it { should have_selector('.table-total', text: 'Displaying all 2 users') }
       end
 
       describe "filtering the list" do
 
         before { fill_in "search", with: "aa" }
       
-        it { should have_selector('.table-total', text: 'Total users: 1') }
+        it { should have_selector('.table-total', text: 'Displaying 1 user') }
 
       end
 

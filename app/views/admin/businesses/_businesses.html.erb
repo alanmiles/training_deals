@@ -1,10 +1,10 @@
-<span class='table-total'>Total vendors: <%= @total %></span>
+<span class="table-total"><%= page_entries_info @businesses %></span>
 <%= hidden_field_tag :direction, params[:direction] %>
 <%= hidden_field_tag :sort, params[:sort] %>
 <table class="table table-striped table-bordered table-condensed">
 
 	<tr>
-		<th><%= sortable "name"  %></th>
+		<th><%= sortable "LOWER(name)", "Name"  %></th>
 		<th><%= sortable "city", "Town" %></th>
 		<th><%= sortable "country" %></th>
 		<th></th>
@@ -26,4 +26,4 @@
 		<% end %>
 	<% end %>
 </table>
-<%= will_paginate @businesses %>
+<%= paginate @businesses, remote: true %>

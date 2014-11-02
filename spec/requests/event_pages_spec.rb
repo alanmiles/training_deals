@@ -284,7 +284,7 @@ describe "EventPages" do
 					    visit my_business_events_path(administrator_biz)
 					end
 					
-					it { should have_selector('div.pagination') }
+					it { should have_selector('nav.pagination') }
 				    
 				end
 

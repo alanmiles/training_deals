@@ -4,8 +4,9 @@
 	<aside class="span3">
 		<section>
 			<div class="explain">
-				<p><strong><%= number_with_delimiter(pluralize(@products.count, "result")) %></strong>
-				 	for <em><%= @search_string %></em>. Refine your search using the options below.</p>
+				<p>
+					<em><%= @search_string %></em> selected. Refine your search using the options below.
+				</p>
 			</div>
 		</section>
 		<section>
@@ -84,7 +85,7 @@
 
 	<div class="span8">
 		<div class="product-search">
-			<%= render 'display' %>
+			<%= render 'products' %>
 		</div>
 		
 		<div class="navigator">

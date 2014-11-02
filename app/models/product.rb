@@ -1,7 +1,5 @@
 class Product < ActiveRecord::Base
 
-	#attr_accessor :genre_id
-	#attr_accessor :category_id
 	mount_uploader :image, ImageUploader
 
 	belongs_to :business
@@ -162,14 +160,6 @@ class Product < ActiveRecord::Base
 	def self.select_by_country(country)
 		joins(:business).where('businesses.country = ?', country)
 	end
-
-	#def self.nearby(latitude, longitude)
-	#	joins(:business).merge(Business.close_to(latitude, longitude))
-	#end
-
-	#def self.accessible(latitude, longitude)
-	#	joins(:business).merge(Business.accessible_from(latitude, longitude))
-	#end
 
 	def self.nearby(latitude, longitude)
 		includes(:business).merge(Business.neighbourhood(latitude, longitude).references(:business))

@@ -19,7 +19,7 @@ describe "AdminBusinessPages" do
 
       it { should have_title('Current vendors') }
       it { should have_link('<- Return to main admin menu', href: root_path) }
-      it { should have_selector('.table-total', text: 'Total vendors: 1') }
+      it { should have_selector('.table-total', text: 'Displaying 1 business') }
       it { should have_selector('#search') }
       it { should have_selector('th', text: 'Name') }
       it { should have_selector('th', text: 'Town') }
@@ -56,14 +56,14 @@ describe "AdminBusinessPages" do
 
         it { should have_selector("tr:nth-child(2)", text: biz_a.name) }
         it { should have_selector("tr:last-child", text: owner_biz.name) }
-        it { should have_selector('.table-total', text: 'Total vendors: 2') }
+        it { should have_selector('.table-total', text: 'Displaying all 2 businesses') }
       end
 
       describe "filtering the list" do
 
         before { fill_in "search", with: "aa" }
       
-        it { should have_selector('.table-total', text: 'Total vendors: 1') }
+        it { should have_selector('.table-total', text: 'Displaying 1 business') }
 
       end
 

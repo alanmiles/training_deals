@@ -22,61 +22,65 @@ class ResultsController < ApplicationController
     session[:country] = @country
     session[:latitude] = @visitor.latitude
     session[:longitude] = @visitor.longitude
-#    @products = find_products.paginate(per_page: 3, page: params[:page])
-    @products = find_products
+    @products = find_products.page(params[:page]).per(3)
+#    @products = find_products
     @search_string = find_search_string
 #    @t_methods = @products.t_methods
     @t_methods = TrainingMethod.product_selection(@products)
-#    respond_to do |format|
-#      format.html
-#      format.json { render json: @products }
-#      format.js
-#    end
+    respond_to do |format|
+      format.html
+      format.json { render json: @products }
+      format.js
+    end
   end
 
   def filter_by_method
     session[:method] = params[:method_id]
  #   @products = find_products.paginate(per_page: 3, page: params[:pr_page])
-    @products = find_products
+    @products = find_products.page(params[:page]).per(3)
     respond_to do |format|
       format.html 
-      format.json { render json: @products }
+      format.json { render json: @results }
       format.js
     end
   end
 
   def filter_by_location
     session[:loctn] = params[:loc_id]
-    @products = find_products
+    @products = find_products.page(params[:page]).per(3)
     respond_to do |format|
+      format.html 
+      format.json { render json: @results }
       format.js
     end
   end
 
   def filter_by_qualification
     session[:qualification] = params[:qualification_string]
-    @products = find_products
+    @products = find_products.page(params[:page]).per(3)
     respond_to do |format|
       format.html 
-      format.json { render json: @products }
+      format.json { render json: @results }
       format.js
     end
   end
 
   def filter_by_supplier
     session[:supplier] = params[:supplier_string]
-    @products = find_products
+    @products = find_products.page(params[:page]).per(3)
     respond_to do |format|
       format.html 
-      format.json { render json: @products }
+      format.json { render json: @results }
       format.js
     end
   end
 
   def filter_by_keyword
     session[:kword] = params[:keyword_string]
-    @products = find_products
+    @products = find_products.page(params[:page]).per(3)
     respond_to do |format|
+      format.html 
+      format.json { render json: @results }
       format.js
     end
   end
@@ -114,7 +118,9 @@ class ResultsController < ApplicationController
           products
         end
       end
-      products
+      @count_of_products = products.count
+      #products
+      products.page(params[:page]).per(3)
     end
 
     def find_search_string

@@ -9,9 +9,9 @@ class Admin::BusinessesController < ApplicationController
 	def index
     	@businesses = Business.where("inactive = ?", false)
     		  	.search(params[:search])
-              	.order(sort_column + " " + sort_direction)
-              	.paginate(per_page: 15, page: params[:page])
-      	@total = @businesses.search(params[:search]).count
+            .order(sort_column + " " + sort_direction)
+            .page(params[:page]).per(15)
+      	#@total = @businesses.search(params[:search]).count
   	end
 
   	def show
@@ -28,8 +28,6 @@ class Admin::BusinessesController < ApplicationController
   	end
 
   	private
-
-    	
 
     	def sort_column
       		["LOWER(name)", "city", "country"].include?(params[:sort]) ? params[:sort] : "LOWER(name)"

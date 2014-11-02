@@ -1,7 +1,7 @@
-$ ->
-	$(".pagination a").click ->
-		$.get @href, null, null, "script"
-		false
+#$ ->
+#  $(".paginator a").on "click", ->
+#    $.getScript @href
+#    false
 
 $ ->
 	$(document).on 'change', '#method-filter', () ->
@@ -49,7 +49,7 @@ $ ->
 			dataType: 'script'
 			data: {
 				keyword_string: $("#kword_filter").val()
-			}	
+			}
 
 #    error: (jqXHR, textStatus, errorThrown) ->
 #        console.log("AJAX Error: #{textStatus}")

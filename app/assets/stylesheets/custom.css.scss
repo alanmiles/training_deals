@@ -539,6 +539,12 @@ form.button_to {
 
 /* product search */
 .product-search {
+  .pagination-total {
+    padding: 0 0 10px 25px;
+    color: $grayMediumText;
+    font-style: italic;
+    font-size: 0.9em;
+  }
   ul {
     list-style: none;
     li {

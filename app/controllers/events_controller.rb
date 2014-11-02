@@ -11,7 +11,7 @@ class EventsController < ApplicationController
   	#@business = Business.find(params[:my_business_id])
     @events = @business.current_and_future_events.search(params[:search])
               .order(sort_column + " " + sort_direction)
-              .paginate(per_page: 15, page: params[:page])
+              .page(params[:page]).per(15)
     session.delete(:product_page)
   end
 

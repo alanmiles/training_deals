@@ -44,7 +44,7 @@ jQuery ->
   tableTopNav()
 
 jQuery ->
-  $(document).on "click", "#events th a, #events .pagination a", ->
+  $(document).on "click", "#events th a", ->
     $.getScript @href 
     false
     tableTopNav()
