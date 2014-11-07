@@ -1,4 +1,4 @@
-<span class='table-total'><%= page_entries_info @users %></span>
+<div class='table-total'><%= page_entries_info @users %></div>
 <%= hidden_field_tag :direction, params[:direction] %>
 <%= hidden_field_tag :sort, params[:sort] %>
 <table class="table table-striped table-bordered table-condensed">
@@ -30,4 +30,5 @@
 		<% end %>
 	<% end %>
 </table>
+
 <%= paginate @users, remote: true %>

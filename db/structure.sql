@@ -694,6 +694,13 @@ CREATE UNIQUE INDEX index_businesses_on_country_and_city_and_name ON businesses 
 
 
 --
+-- Name: index_businesses_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_businesses_on_latitude_and_longitude ON businesses USING btree (latitude, longitude);
+
+
+--
 -- Name: index_categories_on_genre_id_and_description; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -778,6 +785,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
+-- Name: index_users_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_latitude_and_longitude ON users USING btree (latitude, longitude);
+
+
+--
 -- Name: index_users_on_remember_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -789,6 +803,13 @@ CREATE INDEX index_users_on_remember_token ON users USING btree (remember_token)
 --
 
 CREATE INDEX index_visitors_on_ip_address ON visitors USING btree (ip_address);
+
+
+--
+-- Name: index_visitors_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_visitors_on_latitude_and_longitude ON visitors USING btree (latitude, longitude);
 
 
 --
@@ -853,3 +874,9 @@ INSERT INTO schema_migrations (version) VALUES ('20141011094357');
 INSERT INTO schema_migrations (version) VALUES ('20141011223210');
 
 INSERT INTO schema_migrations (version) VALUES ('20141011224134');
+
+INSERT INTO schema_migrations (version) VALUES ('20141103105054');
+
+INSERT INTO schema_migrations (version) VALUES ('20141103105455');
+
+INSERT INTO schema_migrations (version) VALUES ('20141103105520');

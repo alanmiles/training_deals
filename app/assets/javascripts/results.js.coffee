@@ -25,12 +25,12 @@ $ ->
 			}
 
 $ ->
-	$("#q_filter").keyup ->
+	$("#qual_filter").keyup ->
 		$.ajax 'filter_by_qualification',
 			type: 'GET'
 			dataType: 'script'
 			data: {
-				qualification_string: $("#q_filter").val()
+				qualification_string: $("#qual_filter").val()
 			}
 
 $ ->

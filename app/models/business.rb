@@ -61,12 +61,12 @@ class Business < ActiveRecord::Base
 	#	} % [longitude, latitude, distance_in_meters])
 	#}
 
-	def self.neighbourhood(latitude, longitude, distance_in_miles = 30)
-		self.near([latitude, longitude], distance_in_miles)
+	def self.neighbourhood(latitude, longitude, distance_in_kms = 50)
+		self.near([latitude, longitude], distance_in_kms)
 	end
 
-	def self.accessible_from(latitude, longitude, distance_in_miles = 120)
-		self.near([latitude, longitude], distance_in_miles)
+	def self.accessible_from(latitude, longitude, distance_in_kms = 200)
+		self.near([latitude, longitude], distance_in_kms)
 	end
 
 
