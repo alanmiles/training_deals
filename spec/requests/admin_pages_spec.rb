@@ -6,7 +6,8 @@ describe "AdminPages" do
 
   	describe "signed in as Admin" do 
   
-  		let(:admin) { FactoryGirl.create(:admin) }
+  		let(:admin)       { FactoryGirl.create(:admin) }
+      let!(:ex_rate)    { FactoryGirl.create(:exchange_rate) }
   		before {sign_in admin }
 
   		describe "accessing the Framework menu" do
@@ -19,6 +20,7 @@ describe "AdminPages" do
 	    	it { should have_link('Time periods', href: durations_path) }
         it { should have_link('Content lengths', href: content_lengths_path) }
         it { should have_link('Genres / categories / topics', href: genres_path) }
+        it { should have_link('Currency rates', href: exchange_rates_path) }
         it { should have_link('Return to main admin menu', href: root_path) }
         check_admin_menu
   		end
@@ -347,6 +349,29 @@ describe "AdminPages" do
           end
         end
       end
+
+      describe "working with ExchangeRates" do
+
+        describe "viewing the currencies list" do
+          
+          let!(:us_currency) { ExchangeRate.create(currency_code: "USD", rate: 1) }
+          let!(:uk_currency) { ExchangeRate.create(currency_code: "GBP", rate: 0.628975) }
+
+          before do
+           visit exchange_rates_path 
+          end
+
+          it { should have_title('Exchange rates') }
+          it { should have_content('Exchange rates') }
+          it { should have_link("Framework menu", href: framework_path) }
+          it { should have_selector('td', text: uk_currency.currency_code) }
+          it { should have_selector('td', text: us_currency.rate) }
+          it { should have_link('Get the latest rates') }
+          it { should have_content("#{formatted_shortdate(Date.today)}") }
+        
+          pending "updating rates not included in test suite but working properly - including deletion then adding back"
+        end
+      end
   	end
 
   	describe "deny access to non-admin users" do
@@ -602,6 +627,40 @@ describe "AdminPages" do
               describe "should redirect to root" do
 
                 before { delete duration_path(existing_unit) }
+                not_administrator
+              end
+            end
+          end
+        end
+
+        describe "in the ExchangeRates controller" do
+
+          describe "viewing the currencies list" do
+          
+            let!(:us_currency) { ExchangeRate.create(currency_code: "USD", rate: 1) }
+            let!(:uk_currency) { ExchangeRate.create(currency_code: "GBP", rate: 0.628975) }
+
+            describe "GET requests" do
+
+              describe "Index" do
+                @title = "Exchange rates"
+                before { get exchange_rates_path }
+                non_admin_illegal_get(@title)
+              end
+            end
+          end
+
+          describe "attempting to manipulate the ContentLength data" do
+            
+            describe "Create" do
+
+              let(:params) do
+                { exchange_rate: { currency_code: "XXX" } }
+              end
+
+              describe "should redirect to root" do
+
+                before { post exchange_rates_path(params) }
                 not_administrator
               end
             end
@@ -864,6 +923,40 @@ describe "AdminPages" do
               describe "should redirect to root" do
 
                 before { delete duration_path(existing_unit) }
+                not_administrator
+              end
+            end
+          end
+        end
+
+        describe "in the ExchangeRates controller" do
+
+          describe "viewing the currencies list" do
+          
+            let!(:us_currency) { ExchangeRate.create(currency_code: "USD", rate: 1) }
+            let!(:uk_currency) { ExchangeRate.create(currency_code: "GBP", rate: 0.628975) }
+
+            describe "GET requests" do
+
+              describe "Index" do
+                @title = "Exchange rates"
+                before { get exchange_rates_path }
+                non_admin_illegal_get(@title)
+              end
+            end
+          end
+
+          describe "attempting to manipulate the ContentLength data" do
+            
+            describe "Create" do
+
+              let(:params) do
+                { exchange_rate: { currency_code: "XXX" } }
+              end
+
+              describe "should redirect to root" do
+
+                before { post exchange_rates_path(params) }
                 not_administrator
               end
             end

@@ -211,7 +211,8 @@ CREATE TABLE events (
     updated_at timestamp without time zone,
     price numeric(8,2),
     places_available integer DEFAULT 0,
-    places_sold integer DEFAULT 0
+    places_sold integer DEFAULT 0,
+    price_in_dollars numeric(8,2)
 );
 
 
@@ -232,6 +233,38 @@ CREATE SEQUENCE events_id_seq
 --
 
 ALTER SEQUENCE events_id_seq OWNED BY events.id;
+
+
+--
+-- Name: exchange_rates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE exchange_rates (
+    id integer NOT NULL,
+    currency_code character varying(255),
+    rate numeric(11,6),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: exchange_rates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE exchange_rates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: exchange_rates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE exchange_rates_id_seq OWNED BY exchange_rates.id;
 
 
 --
@@ -330,7 +363,8 @@ CREATE TABLE products (
     web_link character varying(255),
     created_by integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    price_in_dollars numeric(8,2)
 );
 
 
@@ -545,6 +579,13 @@ ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY exchange_rates ALTER COLUMN id SET DEFAULT nextval('exchange_rates_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY genres ALTER COLUMN id SET DEFAULT nextval('genres_id_seq'::regclass);
 
 
@@ -628,6 +669,14 @@ ALTER TABLE ONLY durations
 
 ALTER TABLE ONLY events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exchange_rates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY exchange_rates
+    ADD CONSTRAINT exchange_rates_pkey PRIMARY KEY (id);
 
 
 --
@@ -722,10 +771,24 @@ CREATE INDEX index_durations_on_time_unit ON durations USING btree (time_unit);
 
 
 --
+-- Name: index_events_on_price_in_dollars; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_events_on_price_in_dollars ON events USING btree (price_in_dollars);
+
+
+--
 -- Name: index_events_on_product_id_and_start_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_events_on_product_id_and_start_date ON events USING btree (product_id, start_date);
+
+
+--
+-- Name: index_exchange_rates_on_currency_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_exchange_rates_on_currency_code ON exchange_rates USING btree (currency_code);
 
 
 --
@@ -754,6 +817,13 @@ CREATE INDEX index_products_on_business_id ON products USING btree (business_id)
 --
 
 CREATE UNIQUE INDEX index_products_on_business_id_and_topic_id_and_title ON products USING btree (business_id, topic_id, title);
+
+
+--
+-- Name: index_products_on_price_in_dollars; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_products_on_price_in_dollars ON products USING btree (price_in_dollars);
 
 
 --
@@ -880,3 +950,13 @@ INSERT INTO schema_migrations (version) VALUES ('20141103105054');
 INSERT INTO schema_migrations (version) VALUES ('20141103105455');
 
 INSERT INTO schema_migrations (version) VALUES ('20141103105520');
+
+INSERT INTO schema_migrations (version) VALUES ('20141111093711');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113110528');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113110555');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113111859');
+
+INSERT INTO schema_migrations (version) VALUES ('20141113111918');

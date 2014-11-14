@@ -169,6 +169,42 @@ class Product < ActiveRecord::Base
 		includes(:business).merge(Business.accessible_from(latitude, longitude).references(:business))
 	end
 
+	def self.calculate_dollar_price
+		@products = Product.where("current =?", TRUE)   #if delisted product is activated, update method will recalc dollar price
+		@products.each do |p|
+			curr = p.currency
+			if curr == "USD"
+				if p.standard_cost != p.price_in_dollars
+					p.price_in_dollars = p.standard_cost
+					p.save
+				end
+			else
+				xchange = ExchangeRate.find_by_currency_code(curr)
+				unless xchange.nil?
+					if p.standard_cost == 0
+						p.price_in_dollars = 0
+					else
+						newval = p.standard_cost / xchange.rate
+						p.price_in_dollars = newval
+					end
+					p.save
+				end
+			end
+		end
+	end
+
+	def dollar_price_convert
+		if self.standard_cost == 0
+			self.price_in_dollars = 0
+		elsif self.currency == "USD"
+			self.price_in_dollars = self.standard_cost
+		else
+			xchange = ExchangeRate.find_by_currency_code(self.currency)
+			self.price_in_dollars = (self.standard_cost / xchange.rate) unless xchange.nil?
+		end
+		self.save
+	end
+
 	private
 
 		def add_currency

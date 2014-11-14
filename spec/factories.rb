@@ -27,6 +27,11 @@ FactoryGirl.define do
 		description "Module"
 	end
 
+	factory :exchange_rate do
+		currency_code "CAD"
+		rate 1.130936
+	end
+
 	factory :genre do
 		description "College"
 		status 2

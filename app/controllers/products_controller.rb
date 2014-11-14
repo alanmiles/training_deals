@@ -45,6 +45,7 @@ class ProductsController < ApplicationController
     @product = @business.products.build(product_params)
     if @product.save
       session[:category_select] = nil
+      @product.dollar_price_convert
       flash[:success] = "Successfully created. Please check the details carefully"
       redirect_to product_path(@product)
     else
@@ -97,6 +98,7 @@ class ProductsController < ApplicationController
   def update
     #@product = Product.find(params[:id])
     if @product.update_attributes(product_params)
+      @product.dollar_price_convert
       session[:product] = nil
       flash[:success] = "Details updated."
       redirect_to product_path(@product)
@@ -125,7 +127,7 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(:title, :ref_code, :qualification,
                       :training_method_id, :duration_id, :duration_number,
-                      :content_length_id, :content_number, :standard_cost,
+                      :content_length_id, :content_number, :currency, :standard_cost, :price_in_dollars,
                       :content, :outcome, :current, :image, :remote_image_url, 
                       :image_cache, :remove_image, :web_link,
                       :topic_id, :created_by)

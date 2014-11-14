@@ -1,0 +1,37 @@
+<% provide(:title, 'Exchange rates') %>
+<h1>Exchange rates</h1>
+
+<div class="row">
+	<aside class="span3">
+		<section>
+			<%= render "/shared/admin_menu_side" %>
+		</section>
+	</aside>
+
+	<div class="span8">
+		<div class="add-bottom-space">
+			Last updated: <%= @time_ref %>
+			<div class = "right-button">
+				<%= link_to "Get the latest rates", exchange_rates_path, 
+					method: :post, class: "btn btn-primary" %>
+			</div>
+		</div>
+		<table class="table table-striped table-bordered table-condensed">
+			<tr>
+				<th>Currency code</th>
+				<th>Rate</th>
+				<th>Updated</th>
+			</tr>
+			<% @exchange_rates.each do |rate| %>
+			  	<tr>
+					<td><%= rate.currency_code %></td>
+					<td><%= rate.rate %></td>
+					<td><%= rate.updated_at.strftime('%d-%b-%Y') %></td>
+				</tr>
+			<% end %>
+		</table>
+	</div>
+	<div class="navigator">
+	    <%= link_to "<- Framework menu", framework_path %> 
+	</div>
+</div>

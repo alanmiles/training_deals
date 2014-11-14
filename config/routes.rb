@@ -19,6 +19,7 @@ TrainingDeals::Application.routes.draw do
   resources :categories do
     resources :topics, shallow: true
   end
+  resources :exchange_rates, only: [:index, :create]
   resources :my_businesses do
     resources :ownerships, except: :show, shallow: true do
       collection { post :sort }

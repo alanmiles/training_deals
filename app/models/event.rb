@@ -84,4 +84,57 @@ class Event < ActiveRecord::Base
 		remaining_places > 0
 	end
 
+	def self.calculate_dollar_price
+		@events = Event.where("end_date >=?", Date.today)
+		@events.each do |e|
+			curr = Product.find(e.product_id).currency
+			if curr == "USD"
+				if e.price != e.price_in_dollars
+					e.price_in_dollars = e.price
+					e.save
+				end
+			else
+				xchange = ExchangeRate.find_by_currency_code(curr)
+				unless xchange.nil?
+					if e.price == 0
+						e.price_in_dollars = 0
+					else
+						newval = e.price / xchange.rate
+						e.price_in_dollars = newval
+					end
+					e.save
+				end
+			end
+		end
+	end
+
+	def dollar_price_convert
+		if self.price == 0
+			self.price_in_dollars = 0
+		else
+			curr = Product.find(self.product_id).currency
+			if curr == "USD"
+				self.price_in_dollars = self.price
+			else
+				xchange = ExchangeRate.find_by_currency_code(curr)
+				self.price_in_dollars = (self.price / xchange.rate) unless xchange.nil?
+			end
+		end
+		self.save
+	end
+
+	#def dollar_price_convert
+	#	if price == 0
+	#		price_in_dollars = 0
+	#	else
+	#		curr = Product.find(product_id).currency
+	#		if curr == "USD"
+	#			price_in_dollars = price
+	#		else
+	#			xchange = ExchangeRate.find_by_currency_code(curr)
+	#			price_in_dollars = (price / xchange.rate) unless xchange.nil?
+	#		end
+	#	end
+	#	self.save
+	#end
 end

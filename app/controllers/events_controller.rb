@@ -40,6 +40,7 @@ class EventsController < ApplicationController
       end
       @selected_period = params[:event][:time_of_day]
       if @event.save
+          @event.dollar_price_convert
         	flash[:success] = "Successfully created. Please check the details carefully."
         	redirect_to event_path(@event)
       else
@@ -109,6 +110,7 @@ class EventsController < ApplicationController
       @event.attendance_days = attended.split.join(", ")
     end
     if @event.update_attributes(event_params)
+      @event.dollar_price_convert
       flash[:success] = "Updated event details"
       if session[:product_page]
         redirect_to_product
@@ -150,9 +152,9 @@ class EventsController < ApplicationController
   private
 
     def event_params
-      params.require(:event).permit(:product_id, :start_date, :end_date, :price, :attendance_days, 
-        :created_by, :weekdays, :start_time, :finish_time, :time_of_day, :location, :note,
-        :places_available, :places_sold )
+      params.require(:event).permit(:product_id, :start_date, :end_date, :price, :price_in_dollars, 
+        :attendance_days, :created_by, :weekdays, :start_time, :finish_time, :time_of_day, :location, 
+        :note, :places_available, :places_sold )
     end
 
     def sort_column
