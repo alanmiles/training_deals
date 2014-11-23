@@ -11,6 +11,7 @@ namespace :db do
 		make_topics
 		make_businesses
 		make_ownerships
+		make_exchange_rates
 	end	
 end
 
