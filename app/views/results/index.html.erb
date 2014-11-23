@@ -31,12 +31,16 @@
 						%>
 					</p>
 				<% end %>
+				<%= form_tag results_path, :method => :get do %>
 					<p>
 						<strong>Price:</strong>
+						<%= select_tag(:price_id, 
+							options_for_select(
+							[['Free', 1], ['Budget', 2], ['Mid-range', 3], ['$1000 or more', 4], 
+							['Any price', 5]], 5)) 
+						%>
 					</p>
-					<p>
-						<strong>Discounted only:</strong>
-					</p>
+				<% end %>	
 				<%= form_tag results_path, method: 'get', 
 							id: "qualification_filter" do %>
 					<p>	
@@ -61,29 +65,20 @@
 								 placeholder: 'Filters as you type'  %>
 					</p>
 				<% end %>
-					<p>
-						<strong>Accepting orders now:</strong>
-					</p>
-					<p>
-						<strong>Sort order:</strong>
-						<ul>
-							<li>Most recently added</li>
-							<li>Alphabetical</li>
-							<li>Best customer rating</li>
-							<li>Price - low to high</li>
-							<li>Price - high to low</li>
-							<li>Best discounts</li>
-							<li>Distance - closest first</li>
-						</ul>
-					</p>
 				
 			</div>
-			
-
 		</section>
 	</aside>
 
 	<div class="span8">
+		<span class="arrange-order">Sort by 
+			<%= select_tag(:arrange_id, 
+				options_for_select(
+				[['Latest added', 1], ['Alphabetical', 2], ['Best reviews', 3], 
+				['Lowest price', 4], ['Highest price', 5], ['Best discounts', 6],
+				['Nearest', 7]], 1)) 
+			%>
+		</span>
 		<div class="product-search">
 			<%= render 'products' %>
 		</div>

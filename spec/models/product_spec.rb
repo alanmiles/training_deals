@@ -6,6 +6,9 @@ describe Product do
     Business.any_instance.stub(:geocode).and_return([1,1]) 
   end
   
+  let!(:cn_currency)  { FactoryGirl.create(:exchange_rate) }
+  let!(:uk_currency)  { FactoryGirl.create(:exchange_rate, currency_code: "GBP", rate: 0.63) }
+  let!(:us_currency)  { FactoryGirl.create(:exchange_rate, currency_code: "USD", rate: 1) }
   let!(:user) { FactoryGirl.create(:user) }
   let!(:business) { FactoryGirl.create(:business, created_by: user.id) }
   let(:genre) { FactoryGirl.create(:genre, description: "Career", created_by: user.id) }
@@ -43,6 +46,7 @@ describe Product do
   it { should respond_to(:content_number) }
   it { should respond_to(:currency) }
   it { should respond_to(:standard_cost) }
+  it { should respond_to(:price_in_dollars) }
   it { should respond_to(:content) }
   it { should respond_to(:outcome) }
   it { should respond_to(:current) }
@@ -179,6 +183,25 @@ describe Product do
     before { @product.standard_cost = 0 }
     it { should be_valid }
   end
+
+  describe "price_in_dollars" do
+    it "should auto-calculate value on create" do
+      @product.save
+      @xchange = ExchangeRate.find_by_currency_code(@product.currency)
+      converted_val = @product.standard_cost / @xchange.rate
+      expect(@product.price_in_dollars).to eq converted_val
+    end
+
+    it "should recalculate on price update" do
+      @product.save
+      @xchange = ExchangeRate.find_by_currency_code(@product.currency)
+      new_price = @product.standard_cost + 10
+      @product.standard_cost = new_price
+      @product.save
+      new_val = new_price / @xchange.rate
+      expect(@product.price_in_dollars).to eq new_val
+    end
+   end
 
   describe "when content is not present" do
     before { @product.content = " " }

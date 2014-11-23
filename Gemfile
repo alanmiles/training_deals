@@ -31,6 +31,8 @@ group :test do
 	gem 'cucumber-rails', '1.4.0', :require => false
 	gem 'database_cleaner', github: 'bmabey/database_cleaner'
 	gem 'growl', '1.0.3'
+	gem 'webmock', '1.20.4'
+	gem 'vcr', '2.9.3'
 end
 
 # Use SCSS for stylesheets

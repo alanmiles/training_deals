@@ -8,6 +8,8 @@ Spork.prefork do
   require 'rspec/rails'
   require 'rspec/autorun'
   require 'capybara/rspec'
+  require 'webmock/rspec'
+  require 'vcr'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -72,4 +74,11 @@ Spork.each_run do
   # Capybara because it starts the web server in a thread.
   ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
   # This code will be run each time we run our specs.
+
+  VCR.configure do |c|
+    c.cassette_library_dir = 'vcr_cassettes'
+    c.hook_into :webmock
+    c.ignore_localhost = true
+  end
+
 end

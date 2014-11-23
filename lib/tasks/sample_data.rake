@@ -119,6 +119,11 @@ def make_ownerships
 	task_details(@path, @model)
 end
 
+def make_exchange_rates
+	@path = 'public/data/exchange_rates.csv'
+	@model = ExchangeRate
+	task_details(@path, @model)
+end
 
 def task_details(path, model)
 	lines = File.new(path).readlines

@@ -91,4 +91,5 @@ FactoryGirl.define do
 		places_sold 4
 		created_by 1
 	end
+
 end

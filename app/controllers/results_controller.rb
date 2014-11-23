@@ -10,18 +10,23 @@ class ResultsController < ApplicationController
     @country = request.location.country
     @country = "United Kingdom" if @country == "Reserved"
     @visitor = Visitor.find_or_create_by(@ip, @country)
+    @iso_country = Country.find_country_by_name(@country)
+    session[:local_currency] = @iso_country.currency['code']
+    session[:local_currency_symbol] = @iso_country.currency['symbol']
     
     session[:genre] = params[:genre][:genre_id]
     session[:category] = params[:category][:category_id]
     session[:topic] = params[:topic][:topic_id]
     session[:method] = nil
     session[:loctn] = nil
+    session[:price] = nil
     session[:qualification] = nil
     session[:supplier] = nil
     session[:kword] = nil
     session[:country] = @country
     session[:latitude] = @visitor.latitude
     session[:longitude] = @visitor.longitude
+    session[:arrangement] = nil
     @products = find_products
 #    @products = find_products
     @search_string = find_search_string
@@ -46,6 +51,16 @@ class ResultsController < ApplicationController
 
   def filter_by_location
     session[:loctn] = params[:loc_id]
+    @products = find_products
+    respond_to do |format|
+      format.html 
+      format.json { render json: @results }
+      format.js
+    end
+  end
+
+  def filter_by_price
+    session[:price] = params[:prc_id]
     @products = find_products
     respond_to do |format|
       format.html 
@@ -84,6 +99,16 @@ class ResultsController < ApplicationController
     end
   end
 
+  def sort_by_arrangement
+    session[:arrangement] = params[:arr_id]
+    @products = find_products
+    respond_to do |format|
+      format.html 
+      format.json { render json: @results }
+      format.js
+    end
+  end
+
   def show
   end
 
@@ -103,6 +128,7 @@ class ResultsController < ApplicationController
         products = @topic.active_products
       end
       products = products.where("training_method_id = ?", session[:method]) unless session[:method].nil? || session[:method].blank?
+      products = products.price_filter(session[:price]) unless session[:price].nil? || session[:price].blank?
       products = products.q_filter(session[:qualification]) unless session[:qualification].nil? || session[:qualification].blank?
       products = products.supply_filter(session[:supplier]) unless session[:supplier].nil? || session[:supplier].blank?
       products = products.keyword_filter(session[:kword]) unless session[:kword].nil? || session[:kword].blank?
@@ -117,6 +143,7 @@ class ResultsController < ApplicationController
           products
         end
       end
+      products = products.list_arrange(session[:arrangement], session[:latitude], session[:longitude])
       @count_of_products = products.count
       #products
       products.page(params[:page]).per(10)

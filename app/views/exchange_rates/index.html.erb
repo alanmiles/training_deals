@@ -10,7 +10,8 @@
 
 	<div class="span8">
 		<div class="add-bottom-space">
-			Last updated: <%= @time_ref %>
+			Last updated: <%= @time_ref %> 
+			<%-# link_to "Download to CSV", exchange_rates_path(format: "csv") -%>
 			<div class = "right-button">
 				<%= link_to "Get the latest rates", exchange_rates_path, 
 					method: :post, class: "btn btn-primary" %>

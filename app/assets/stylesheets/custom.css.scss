@@ -460,6 +460,17 @@ form.button_to {
   margin-bottom: 15px;
 }
 
+.arrange-order {
+  color: $grayMediumText;
+  font-size: 0.9em;
+  select {
+    width: 25%;
+    font-size: 1em;
+    vertical-align: baseline;
+    margin-bottom: 0;
+  }
+}
+
 .paragraph {
   clear: both;
   padding-top: 10px;
@@ -537,10 +548,17 @@ form.button_to {
   width: 85%;
 }
 
+.currency-convert {
+  color: green;
+  font-size: 0.9em;
+  font-style: italic;
+  padding-left: 15px;
+}
+
 /* product search */
 .product-search {
   .pagination-total {
-    padding: 0 0 10px 25px;
+    padding: 0 0 0px 15px;
     color: $grayMediumText;
     font-style: italic;
     font-size: 0.9em;

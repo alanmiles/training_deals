@@ -10,7 +10,8 @@ class Product < ActiveRecord::Base
 
 	has_many	:events, dependent: :destroy
 
-	before_create	:add_currency
+	before_create	:add_currency_and_dollar_convert
+	before_save		:convert_to_dollars
 
 	validates :business,			presence: true
 	validates :topic,				presence: true
@@ -92,6 +93,16 @@ class Product < ActiveRecord::Base
 		return method + content + duration
 	end
 
+	def non_event?
+		if current?
+			@method = TrainingMethod.find(self.training_method_id)
+			! @method.event?
+		else
+			false
+		end
+	end
+
+
 	def schedulable?
 		if current?
 			@method = TrainingMethod.find(self.training_method_id)
@@ -157,6 +168,37 @@ class Product < ActiveRecord::Base
 		end
 	end
 
+	def self.price_filter(range_filter)
+		if range_filter == "1"
+			where("price_in_dollars =?", 0)
+		elsif range_filter == "2"
+			where("price_in_dollars >? AND price_in_dollars <?", 0, 100)
+		elsif range_filter == "3"
+			where("price_in_dollars >=? AND price_in_dollars <?", 100, 1000)
+		elsif range_filter == "4"
+			where("price_in_dollars >=?", 1000)
+		else
+			all
+		end
+	end 
+
+	def self.list_arrange(select, latitude, longitude)
+		if select == "1"
+			order("created_at DESC")
+		elsif select == "2"
+			order("title ASC")
+		elsif select == "4"
+			order("price_in_dollars ASC")
+		elsif select == "5"
+			order("price_in_dollars DESC")
+		elsif select == "7"
+			includes(:business).merge(Business.near([latitude, longitude], distance_in_kms=20000)
+					.order("distance"))
+		else
+			order("created_at DESC")
+		end
+	end
+
 	def self.select_by_country(country)
 		joins(:business).where('businesses.country = ?', country)
 	end
@@ -169,7 +211,7 @@ class Product < ActiveRecord::Base
 		includes(:business).merge(Business.accessible_from(latitude, longitude).references(:business))
 	end
 
-	def self.calculate_dollar_price
+	def self.calculate_dollar_price    #used when currencies are updated
 		@products = Product.where("current =?", TRUE)   #if delisted product is activated, update method will recalc dollar price
 		@products.each do |p|
 			curr = p.currency
@@ -193,25 +235,33 @@ class Product < ActiveRecord::Base
 		end
 	end
 
-	def dollar_price_convert
-		if self.standard_cost == 0
-			self.price_in_dollars = 0
-		elsif self.currency == "USD"
-			self.price_in_dollars = self.standard_cost
-		else
-			xchange = ExchangeRate.find_by_currency_code(self.currency)
-			self.price_in_dollars = (self.standard_cost / xchange.rate) unless xchange.nil?
-		end
-		self.save
+	def price_conversion(currency)
+		@xchange = ExchangeRate.find_by_currency_code(currency)
+		value = sprintf("%.2f", (self.price_in_dollars * @xchange.rate))
 	end
 
 	private
 
-		def add_currency
+		def add_currency_and_dollar_convert
 			unless self.business_id.nil?
 				@business = Business.find(self.business_id)
 				unless @business.nil?
-					self.currency = @business.currency_code 
+					xchange = ExchangeRate.find_by_currency_code(@business.currency_code)
+					self.currency = @business.currency_code
+					self.price_in_dollars = self.standard_cost / xchange.rate unless xchange.nil?
+				end
+			end
+		end
+
+		def convert_to_dollars
+			unless self.currency.nil?
+				if self.standard_cost == 0
+					self.price_in_dollars = 0
+				elsif self.currency == "USD"
+					self.price_in_dollars = self.standard_cost
+				else
+					xchange = ExchangeRate.find_by_currency_code(self.currency)
+					self.price_in_dollars = (self.standard_cost / xchange.rate) unless xchange.nil?
 				end
 			end
 		end

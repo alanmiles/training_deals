@@ -25,6 +25,15 @@ $ ->
 			}
 
 $ ->
+	$(document).on 'change', '#price_id', () ->
+		$.ajax 'filter_by_price',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				prc_id: $("#price_id option:selected").val()
+			}
+
+$ ->
 	$("#qual_filter").keyup ->
 		$.ajax 'filter_by_qualification',
 			type: 'GET'
@@ -49,6 +58,15 @@ $ ->
 			dataType: 'script'
 			data: {
 				keyword_string: $("#kword_filter").val()
+			}
+
+$ ->
+	$(document).on 'change', '#arrange_id', () ->
+		$.ajax 'sort_by_arrangement',
+			type: 'GET'
+			dataType: 'script'
+			data: {
+				arr_id: $("#arrange_id option:selected").val()
 			}
 
 #    error: (jqXHR, textStatus, errorThrown) ->

@@ -9,6 +9,11 @@ describe "NonSignedSearches" do
  		Visitor.any_instance.stub(:geocode).and_return([1,1]) 
 	end
 
+	#exchange-rates
+	let!(:default_rate)		{ FactoryGirl.create(:exchange_rate) }
+	let!(:uk_rate)			{ FactoryGirl.create(:exchange_rate, currency_code: "GBP", rate: 0.637742) }
+	let!(:us_rate)			{ FactoryGirl.create(:exchange_rate, currency_code: "USD", rate: 1) }
+
 	#users
 	let!(:founder) 			{ FactoryGirl.create(:user) }
 	let!(:administrator)	{ FactoryGirl.create(:admin) }
@@ -192,6 +197,7 @@ describe "NonSignedSearches" do
 				end
 			end
 		end
+
 	end
 
 	describe "Conduct a search" do
@@ -241,6 +247,9 @@ describe "NonSignedSearches" do
 			it { should have_content("Admin product") }
 			it { should have_content("Topic2 Product") }
 			it { should have_content("Displaying all 10 products") }
+			it { should have_selector("li#product_#{non_event_product_foreign.id}", text: "(approx £") }
+			pending "cannot test converted price itself - rspec complains of coercing ExchangeRate into Big Decimal"
+			it { should_not have_selector("li#product_#{product_1.id}", text: "(approx £") }
 
 			describe "filter by format", js: true do
 
@@ -252,7 +261,7 @@ describe "NonSignedSearches" do
 				#it { should have_content("Latest product 1") }
 				#it { should_not have_content("Non event") }
 				#it { should have_content("Displaying all 5 products") }
-				pending "find moew reliable test method for js"
+				pending "find more reliable test method for js"
 
 				describe "refilter by qualification" do
 

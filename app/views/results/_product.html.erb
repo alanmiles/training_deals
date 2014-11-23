@@ -10,6 +10,16 @@
 			<% end %>
 			<div>
 				<%= product.format_details %> - <%= product.formatted_standard_price %>
+			    <% if product.currency != session[:local_currency] %>
+					<span class="currency-convert">(approx <%= session[:local_currency_symbol] %>
+						<%= product.price_conversion(session[:local_currency]) %>)</span>
+					</em>
+				<% end %>
+				<% if product.non_event? %>
+					<%= image_tag "Order_small.png" %>
+				<% elsif product.has_future_events? %>
+					<%= image_tag "Book_small.png" %>
+				<% end %>
 			</div>
 			<div class="blurb">
 				<%= product.content %>

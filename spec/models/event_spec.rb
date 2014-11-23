@@ -7,6 +7,9 @@ describe Event do
     Business.any_instance.stub(:geocode).and_return([1,1]) 
   end
   
+  let!(:cn_currency)  { FactoryGirl.create(:exchange_rate) }
+  let!(:uk_currency)  { FactoryGirl.create(:exchange_rate, currency_code: "GBP", rate: 0.63) }
+  let!(:us_currency)  { FactoryGirl.create(:exchange_rate, currency_code: "USD", rate: 1) }
   let!(:user) { FactoryGirl.create(:user) }
   let!(:business) { FactoryGirl.create(:business, created_by: user.id) }
   let!(:genre) { FactoryGirl.create(:genre, description: "Career", created_by: user.id) }
@@ -38,6 +41,7 @@ describe Event do
 	  it { should respond_to(:product_id) }
 	  it { should respond_to(:start_date) }
 	  it { should respond_to(:price) }
+	  it { should respond_to(:price_in_dollars) }
 	  it { should respond_to(:end_date) }
 	  it { should respond_to(:places_available) }
 	  it { should respond_to(:places_sold) }
@@ -87,6 +91,25 @@ describe Event do
 	  describe "when price is 0" do
 	    before { @event.price = 0 }
 	    it { should be_valid }
+	  end
+
+	  describe "price_in_dollars" do
+	    it "should auto-calculate value on create" do
+	      @event.save
+	      @xchange = ExchangeRate.find_by_currency_code(product.currency)
+	      converted_val = @event.price / @xchange.rate
+	      expect(@event.price_in_dollars).to eq converted_val
+	    end
+
+	    it "should recalculate on price update" do
+	    	@event.save
+	    	@xchange = ExchangeRate.find_by_currency_code(product.currency)
+	    	new_price = @event.price + 10
+	    	@event.price = new_price
+	    	@event.save
+	    	new_val = new_price / @xchange.rate
+	    	expect(@event.price_in_dollars).to eq new_val
+	    end
 	  end
 
 	  describe "when places_available is missing" do

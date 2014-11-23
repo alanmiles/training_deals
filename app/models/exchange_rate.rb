@@ -23,4 +23,19 @@ class ExchangeRate < ActiveRecord::Base
 			end
 		end
 	end
+
+	def self.to_csv
+		#CSV.generate do |csv|
+		#	csv << column_names
+		#	all.each do |xchange|
+		#		csv << xchange.attributes.values_at(*column_names)
+		#	end
+		#end
+		CSV.generate do |csv|
+			csv << column_names[1..2]
+			all.each do |xchange|
+				csv << xchange.attributes.values_at(*column_names[1..2])
+			end
+		end
+	end
 end

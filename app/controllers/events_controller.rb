@@ -40,7 +40,6 @@ class EventsController < ApplicationController
       end
       @selected_period = params[:event][:time_of_day]
       if @event.save
-          @event.dollar_price_convert
         	flash[:success] = "Successfully created. Please check the details carefully."
         	redirect_to event_path(@event)
       else
@@ -110,7 +109,6 @@ class EventsController < ApplicationController
       @event.attendance_days = attended.split.join(", ")
     end
     if @event.update_attributes(event_params)
-      @event.dollar_price_convert
       flash[:success] = "Updated event details"
       if session[:product_page]
         redirect_to_product
@@ -164,4 +162,5 @@ class EventsController < ApplicationController
     def sort_direction
     	%w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     end
+
 end

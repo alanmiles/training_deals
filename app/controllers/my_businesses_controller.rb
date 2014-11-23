@@ -10,7 +10,7 @@ class MyBusinessesController < ApplicationController
       redirect_to my_business_path(@business)
     else
       @businesses = current_user.businesses.order('name')
-      release_mybiz
+      release_mybiz     #session[:mybiz] set to nil
     end
   end
 

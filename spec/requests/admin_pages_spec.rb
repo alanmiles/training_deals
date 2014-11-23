@@ -366,10 +366,22 @@ describe "AdminPages" do
           it { should have_link("Framework menu", href: framework_path) }
           it { should have_selector('td', text: uk_currency.currency_code) }
           it { should have_selector('td', text: us_currency.rate) }
+          it { should_not have_selector('td', text: "AUD") }
           it { should have_link('Get the latest rates') }
           it { should have_content("#{formatted_shortdate(Date.today)}") }
         
           pending "updating rates not included in test suite but working properly - including deletion then adding back"
+        
+          it "updates the rates to current" do
+
+            VCR.use_cassette('rates_update') do
+              
+              click_link "Get the latest rates"
+              page.should have_selector('td', text: "AUD")
+              pending "not tested - updated price_in_dollars for Products or Events"
+            end
+          end
+
         end
       end
   	end

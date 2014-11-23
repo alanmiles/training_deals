@@ -7,6 +7,8 @@ class Event < ActiveRecord::Base
 
 	belongs_to 	:product
 
+	before_save :convert_price_to_dollars
+
 	validates :product,			presence: true, product_event: true
 	validates :start_date,		presence: true, uniqueness: { scope: :product_id, 
 									message: "is a duplicate for this product"  }
@@ -84,7 +86,7 @@ class Event < ActiveRecord::Base
 		remaining_places > 0
 	end
 
-	def self.calculate_dollar_price
+	def self.calculate_dollar_price      #used when currency rates are updated
 		@events = Event.where("end_date >=?", Date.today)
 		@events.each do |e|
 			curr = Product.find(e.product_id).currency
@@ -108,33 +110,25 @@ class Event < ActiveRecord::Base
 		end
 	end
 
-	def dollar_price_convert
-		if self.price == 0
-			self.price_in_dollars = 0
-		else
-			curr = Product.find(self.product_id).currency
-			if curr == "USD"
-				self.price_in_dollars = self.price
-			else
-				xchange = ExchangeRate.find_by_currency_code(curr)
-				self.price_in_dollars = (self.price / xchange.rate) unless xchange.nil?
-			end
-		end
-		self.save
+	def price_conversion(currency)
+		@xchange = ExchangeRate.find_by_currency_code(currency)
+		value = sprintf("%.2f", (self.price_in_dollars * @xchange.rate))
 	end
 
-	#def dollar_price_convert
-	#	if price == 0
-	#		price_in_dollars = 0
-	#	else
-	#		curr = Product.find(product_id).currency
-	#		if curr == "USD"
-	#			price_in_dollars = price
-	#		else
-	#			xchange = ExchangeRate.find_by_currency_code(curr)
-	#			price_in_dollars = (price / xchange.rate) unless xchange.nil?
-	#		end
-	#	end
-	#	self.save
-	#end
+	private
+
+		def convert_price_to_dollars
+			if self.price == 0
+				self.price_in_dollars = 0
+			else
+				curr = Product.find(self.product_id).currency
+				if curr == "USD"
+					self.price_in_dollars = self.price
+				else
+					xchange = ExchangeRate.find_by_currency_code(curr)
+					self.price_in_dollars = (self.price / xchange.rate) unless xchange.nil?
+				end
+			end
+
+		end
 end
