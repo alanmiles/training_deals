@@ -6,7 +6,11 @@ class ExchangeRate < ActiveRecord::Base
 									numericality: { greater_than: 0 }
 
 	def self.last_updated
-		self.first.updated_at.strftime('%d-%b-%Y')
+		update_date = self.first.updated_at
+		if update_date.nil?
+			update_date = self.first.created_at
+		end
+		output_date = update_date.strftime('%d-%b-%Y')
 	end
 
 	def self.get_latest
