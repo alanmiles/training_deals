@@ -62,11 +62,17 @@ class Business < ActiveRecord::Base
 	#}
 
 	def self.neighbourhood(latitude, longitude, distance_in_kms = 50)
-		self.near([latitude, longitude], distance_in_kms)
+		#self.near([latitude, longitude], distance_in_kms)
+		center_point = [latitude, longitude]
+		box = Geocoder::Calculations.bounding_box(center_point, distance_in_kms)
+		self.within_bounding_box(box)
 	end
 
 	def self.accessible_from(latitude, longitude, distance_in_kms = 200)
-		self.near([latitude, longitude], distance_in_kms)
+		#self.near([latitude, longitude], distance_in_kms)
+		center_point = [latitude, longitude]
+		box = Geocoder::Calculations.bounding_box(center_point, distance_in_kms)
+		self.within_bounding_box(box)
 	end
 
 

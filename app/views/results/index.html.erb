@@ -5,7 +5,10 @@
 		<section>
 			<div class="explain">
 				<p>
-					<em><%= @search_string %></em> selected. Refine your search using the options below.
+					<b><em><%= @search_string %></em></b> selected. 
+						<%= link_to "(Re-select)", root_path %>
+					
+					<span class="add-top-space">Refine your search by:-</span>
 				</p>
 			</div>
 		</section>
@@ -24,7 +27,7 @@
 				<% end %>
 				<%= form_tag results_path, method: 'get' do %>
 					<p>
-						<strong>Location: </strong><em>(where relevant)</em>
+						<strong>Location: </strong>
 						<%= select_tag(:location_id, 
 							options_for_select(
 							[['Within 50 km', 1], ['Within 200 km', 2], ['This country', 3], ['Worldwide', 4]], 4)) 
@@ -79,6 +82,11 @@
 				['Nearest', 7]], 1)) 
 			%>
 		</span>
+		<div class="key-right">
+			Key: <%= image_tag "green_button.png" %> Available now |
+			<%= image_tag "blue_button.png" %> Taking bookings |
+			<%= image_tag "gold_button.png" %> Special deal
+		</div>
 		<div class="product-search">
 			<%= render 'products' %>
 		</div>

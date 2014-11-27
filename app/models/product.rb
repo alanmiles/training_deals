@@ -127,6 +127,15 @@ class Product < ActiveRecord::Base
 		count > 0
 	end
 
+	def has_discounted_events?
+		if has_future_events?
+			count = events.where("start_date >= ? AND price <?", Date.today, standard_cost).count
+		else
+			count = 0
+		end
+		count > 0
+	end
+
 	def next_future_events
 		events.where("start_date >= ?", Date.today).order("start_date ASC").limit(3)
 	end
@@ -184,18 +193,18 @@ class Product < ActiveRecord::Base
 
 	def self.list_arrange(select, latitude, longitude)
 		if select == "1"
-			order("created_at DESC")
+			order("products.created_at DESC")
 		elsif select == "2"
-			order("title ASC")
+			order("products.title ASC")
 		elsif select == "4"
-			order("price_in_dollars ASC")
+			order("products.price_in_dollars ASC")
 		elsif select == "5"
-			order("price_in_dollars DESC")
+			order("products.price_in_dollars DESC")
 		elsif select == "7"
 			includes(:business).merge(Business.near([latitude, longitude], distance_in_kms=20000)
 					.order("distance"))
 		else
-			order("created_at DESC")
+			order("products.created_at DESC")
 		end
 	end
 

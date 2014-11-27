@@ -15,11 +15,16 @@
 						<%= product.price_conversion(session[:local_currency]) %>)</span>
 					</em>
 				<% end %>
-				<% if product.non_event? %>
-					<%= image_tag "Order_small.png" %>
-				<% elsif product.has_future_events? %>
-					<%= image_tag "Book_small.png" %>
-				<% end %>
+				<span class="aligned-button">
+					<% if product.non_event? %>
+						<%= image_tag "green_button.png" %>
+					<% elsif product.has_future_events? %>
+						<%= image_tag "blue_button.png" %>
+					<% end %>
+					<% if product.has_discounted_events? %>
+						<%= image_tag "gold_button.png" %>
+					<% end %>
+				</span>
 			</div>
 			<div class="blurb">
 				<%= product.content %>
