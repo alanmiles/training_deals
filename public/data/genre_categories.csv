@@ -1,7 +1,29 @@
 genre_id;description;created_by;status
 Career;Sales;1;1
-Career;Finance;1;1
+Career;Accounting/Finance;1;1
 Career;Human Resources;1;1
-Career;Information Technology;1;1
+Career;IT/Software Development;1;1
 College;Psychology;1;1
 Personal interests;Computers;1;1
+Career;Admin/Clerical;1;1
+Career;Business Management;1;1
+Career;Construction;1;1
+Career;Creative/Design;1;1
+Career;Customer Support;1;1
+Career;Engineering;1;1
+Career;Food/Drinks;1;1
+Career;Hospitality;1;1
+Career;Installation;1;1
+Career;Legal;1;1
+Career;Logistics/Transportation;1;1
+Career;Maintenance/Repair;1;1
+Career;Marketing;1;1
+Career;Medical/Health;1;1
+Career;Operations/Production;1;1
+Career;Project Management;1;1
+Career;Quality Assurance;1;1
+Career;R&D;1;1
+Career;Security;1;1
+Career;Training/Instruction;1;1
+Career;Warehouse;1;1
+Career;Writing;1;1

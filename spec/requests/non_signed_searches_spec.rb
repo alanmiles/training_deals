@@ -234,6 +234,7 @@ describe "NonSignedSearches" do
 			it { should have_content("#{product_1.formatted_standard_price}") }
 			it { should have_content("360 minutes") }
 			it { should have_content("#{product_1.content}") }
+			it { should have_content("#{product_1.outcome}") }
 			it { should have_content("#{product_1.qualification}") }		#because qualification declared for product_1
 			it { should have_content("#{product_1.business.name}, #{product_1.business.city}, #{product_1.business.country}") }
 			it { should have_content("Latest product 1") }
@@ -251,26 +252,32 @@ describe "NonSignedSearches" do
 			pending "cannot test converted price itself - rspec complains of coercing ExchangeRate into Big Decimal"
 			it { should_not have_selector("li#product_#{product_1.id}", text: "(approx £") }
 
+			#format filtering - only include relevant formats
+			it { should have_selector("#method-filter", text: "Seminar") }
+			it { should have_selector("#method-filter", text: "All formats") }
+			it { should have_selector("#method-filter", text: "Book") }
+			it { should_not have_selector("#method-filter", text: "Training course") }
+
+
 			describe "filter by format", js: true do
 
-				#before do
-				#	find("#method-filter").select("#{event_method.description}")
-				#	sleep 1
-				#end 
+				before do
+					select('Book', from: 'method-filter')
+					sleep 5
+				end 
 
-				#it { should have_content("Latest product 1") }
-				#it { should_not have_content("Non event") }
-				#it { should have_content("Displaying all 5 products") }
-				pending "find more reliable test method for js"
+				it { should have_content("Non event") }
+				it { should_not have_content("Latest product 1") }
+				it { should have_content("Displaying all 5 products") }
 
 				describe "refilter by qualification" do
 
 					#before do
-					#	fill_in "qual_filter", with: "Q"
-					#	sleep 1	
+					#	fill_in "qual_filter", with: "Q\t"
+					#	#sleep 5
 					#end
 
-					#it { should have_content("Displaying all 5 products") }
+					#it { should have_content("Displaying all 2 products") }
 					pending "result is cleared before transaction can run - don't know how to fix"
 				end
 

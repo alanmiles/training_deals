@@ -578,18 +578,24 @@ form.button_to {
   ul {
     list-style: none;
     li {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       a {
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.3em;
       }
       .image-display {
+        display: inline;
         float: right;
         padding-left: 25px;
       }
-      .blurb {
+      .product-format {
         font-size: 0.9em;
-        padding: 5px 0px;
+        color: green;
+      }
+      .blurb, .supplier {
+        font-size: 0.9em;
+      }
+      .qualification {
+        color: #7A52CC;
       }
     }
   } 

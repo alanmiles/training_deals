@@ -1,9 +1,9 @@
 genre;category;description;created_by;status
 Career;Sales;Direct sales;1;1
 Career;Sales;Telephone sales;1;1
-Career;Finance;Accountancy;1;1
-Career;Finance;Finance for non-financial people;1;1
-Career;Information Technology;Hardware knowledge;1;1
-Career;Information Technology;Windows;1;1
+Career;Accounting/Finance;Accountancy;1;1
+Career;Accounting/Finance;Finance for non-financial people;1;1
+Career;IT/Software Development;Hardware knowledge;1;1
+Career;IT/Software Development;Windows;1;1
 College;Psychology;Psychology;1;1
 Personal interests;Computers;Windows;1;1

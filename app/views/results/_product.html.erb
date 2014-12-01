@@ -1,14 +1,14 @@
 <ul id="products-list"> 
 	<% @products.each do |product| %>
 		<%= content_tag_for :li, product do %>
-				
-			<div><%= link_to product.title, "#" %></div>
+			
 			<% if product.image_url %>
 				<div class="image-display">
 					<%= image_tag(product.image_url(:thumb), class: "img-rounded") if product.image %>
 				</div>
-			<% end %>
-			<div>
+			<% end %>	
+			<div class="product-title"><%= link_to product.title, "#" %></div>
+			<div class="product-format">
 				<%= product.format_details %> - <%= product.formatted_standard_price %>
 			    <% if product.currency != session[:local_currency] %>
 					<span class="currency-convert">(approx <%= session[:local_currency_symbol] %>
@@ -28,11 +28,12 @@
 			</div>
 			<div class="blurb">
 				<%= product.content %>
+				<%= product.outcome %>
 				<% unless product.qualification.blank? %>
-						(Qualification: <%= product.qualification %>)
+						<span class="qualification">(Qualification: <%= product.qualification %>)</span>
 				<% end %>
 			</div>
-			<div><em><%= product.business.name %>, <%= product.business.city %>, <%= product.business.country %></em></div>
+			<div class="supplier"><em><%= product.business.name %>, <%= product.business.city %>, <%= product.business.country %></em></div>
 			
 		<% end %>
 	<% end %>

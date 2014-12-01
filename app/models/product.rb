@@ -12,6 +12,7 @@ class Product < ActiveRecord::Base
 
 	before_create	:add_currency_and_dollar_convert
 	before_save		:convert_to_dollars
+	#before_save		:check_for_terminators
 
 	validates :business,			presence: true
 	validates :topic,				presence: true
@@ -274,6 +275,16 @@ class Product < ActiveRecord::Base
 				end
 			end
 		end
+
+		def check_for_terminators
+			unless self.content == /^[\S\s].+[.|!|?|'|"|;|:|-]$/
+				self.content = self.content + "."
+			end
+			unless self.outcome == /^[\S\s].+[.|!|?|'|"|;|:|-]$/
+				self.outcome = self.outcome + "."
+			end
+		end
+
 
 
 end
